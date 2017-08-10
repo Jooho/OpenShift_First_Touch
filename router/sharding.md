@@ -12,7 +12,7 @@ Router sharding is accomplished by giving different routers different selection 
 Routes in projects labeled zone=dmz would be serviced by the DMZ router.  All other routes would be serviced by the regular router.
 
 First to set up the DMZ router:
-# This is easiset to do in the default projects
+
 ```
 [user@host ~ ]$ oc project default 
 [user@host ~ ]$ oadm router router-shard-dmz --replicas=0 --selector='region=dmzinfra'            
