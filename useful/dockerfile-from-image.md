@@ -5,7 +5,7 @@ Retrieve Dockerfile from Image
 ```
 docker run -v /var/run/docker.sock:/var/run/docker.sock dockerfile-from-image <IMAGE_TAG_OR_ID>
 
-docker run --rm -v /var/run/docker.sock:/var/run/docker.sock  docker-from-file-image  docker-from-file-image
+docker run --rm -v /var/run/docker.sock:/var/run/docker.sock  ljhiyh/docker-from-file-image  docker-from-file-image
 ```
 
 **Build Image**
