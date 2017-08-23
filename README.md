@@ -1,4 +1,4 @@
-# OpenShift_First_Touch
+# Jhouse Openshift
 
 ETCD
 ----
