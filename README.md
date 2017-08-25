@@ -2,7 +2,7 @@
 
 ETCD
 ----
-- [etcd_recovery_unhealthy_member](./etc/etcd_recovery_unhealthy_member.md)
+- [etcd_recovery_unhealthy_member](./etcd/etcd_recovery_unhealthy_member.md)
 
 
 Router
