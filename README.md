@@ -21,6 +21,9 @@ Useful
 -------
 - [dockerfile-from-image](./useful/dockerfile-from-image.md)
 
+EFK
+---
+- [debugging-gathering-efk-object](./efk/debugging-gathering-efk-object.md)
 
 APM
 ----
