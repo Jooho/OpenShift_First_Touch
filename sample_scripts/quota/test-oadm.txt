@@ -1,0 +1,179 @@
+I0413 10:51:03.560181   43791 loader.go:330] Config loaded from file /root/backup/.kube/config
+I0413 10:51:03.560675   43791 round_trippers.go:296] GET https://master1.example.com:8443/api
+I0413 10:51:03.560685   43791 round_trippers.go:303] Request Headers:
+I0413 10:51:03.560691   43791 round_trippers.go:306]     Accept: application/json, */*
+I0413 10:51:03.560695   43791 round_trippers.go:306]     User-Agent: oadm/v1.3.0+52492b4 (linux/amd64) kubernetes/52492b4
+I0413 10:51:03.560700   43791 round_trippers.go:306]     Authorization: Bearer Wj1sRyLy57WGQ9iq8BP3oDb3AB0REzOrNN7-2jD7MzM
+I0413 10:51:03.597072   43791 round_trippers.go:321] Response Status: 200 OK in 36 milliseconds
+I0413 10:51:03.597097   43791 round_trippers.go:324] Response Headers:
+I0413 10:51:03.597101   43791 round_trippers.go:327]     Cache-Control: no-store
+I0413 10:51:03.597105   43791 round_trippers.go:327]     Content-Type: application/json
+I0413 10:51:03.597109   43791 round_trippers.go:327]     Date: Thu, 13 Apr 2017 14:51:03 GMT
+I0413 10:51:03.597113   43791 round_trippers.go:327]     Content-Length: 138
+I0413 10:51:03.597150   43791 request.go:901] Response Body: {"kind":"APIVersions","versions":["v1"],"serverAddressByClientCIDRs":[{"clientCIDR":"0.0.0.0/0","serverAddress":"192.168.200.200:8443"}]}
+I0413 10:51:03.597345   43791 round_trippers.go:296] GET https://master1.example.com:8443/apis
+I0413 10:51:03.597351   43791 round_trippers.go:303] Request Headers:
+I0413 10:51:03.597355   43791 round_trippers.go:306]     Accept: application/json, */*
+I0413 10:51:03.597358   43791 round_trippers.go:306]     User-Agent: oadm/v1.3.0+52492b4 (linux/amd64) kubernetes/52492b4
+I0413 10:51:03.597362   43791 round_trippers.go:306]     Authorization: Bearer Wj1sRyLy57WGQ9iq8BP3oDb3AB0REzOrNN7-2jD7MzM
+I0413 10:51:03.598548   43791 round_trippers.go:321] Response Status: 200 OK in 1 milliseconds
+I0413 10:51:03.598559   43791 round_trippers.go:324] Response Headers:
+I0413 10:51:03.598563   43791 round_trippers.go:327]     Content-Length: 1392
+I0413 10:51:03.598567   43791 round_trippers.go:327]     Cache-Control: no-store
+I0413 10:51:03.598570   43791 round_trippers.go:327]     Content-Type: application/json
+I0413 10:51:03.598574   43791 round_trippers.go:327]     Date: Thu, 13 Apr 2017 14:51:03 GMT
+I0413 10:51:03.598607   43791 request.go:901] Response Body: {"kind":"APIGroupList","groups":[{"name":"apps","versions":[{"groupVersion":"apps/v1alpha1","version":"v1alpha1"}],"preferredVersion":{"groupVersion":"apps/v1alpha1","version":"v1alpha1"},"serverAddressByClientCIDRs":[{"clientCIDR":"0.0.0.0/0","serverAddress":"192.168.200.200:8443"}]},{"name":"authentication.k8s.io","versions":[{"groupVersion":"authentication.k8s.io/v1beta1","version":"v1beta1"}],"preferredVersion":{"groupVersion":"authentication.k8s.io/v1beta1","version":"v1beta1"},"serverAddressByClientCIDRs":[{"clientCIDR":"0.0.0.0/0","serverAddress":"192.168.200.200:8443"}]},{"name":"autoscaling","versions":[{"groupVersion":"autoscaling/v1","version":"v1"}],"preferredVersion":{"groupVersion":"autoscaling/v1","version":"v1"},"serverAddressByClientCIDRs":[{"clientCIDR":"0.0.0.0/0","serverAddress":"192.168.200.200:8443"}]},{"name":"batch","versions":[{"groupVersion":"batch/v1","version":"v1"},{"groupVersion":"batch/v2alpha1","version":"v2alpha1"}],"preferredVersion":{"groupVersion":"batch/v1","version":"v1"},"serverAddressByClientCIDRs":[{"clientCIDR":"0.0.0.0/0","serverAddress":"192.168.200.200:8443"}]},{"name":"extensions","versions":[{"groupVersion":"extensions/v1beta1","version":"v1beta1"}],"preferredVersion":{"groupVersion":"extensions/v1beta1","version":"v1beta1"},"serverAddressByClientCIDRs":[{"clientCIDR":"0.0.0.0/0","serverAddress":"192.168.200.200:8443"}]}]}
+I0413 10:51:03.599278   43791 round_trippers.go:296] GET https://master1.example.com:8443/oapi
+I0413 10:51:03.599286   43791 round_trippers.go:303] Request Headers:
+I0413 10:51:03.599290   43791 round_trippers.go:306]     User-Agent: oadm/v3.3.0.32 (linux/amd64) openshift/37bd7ea
+I0413 10:51:03.599293   43791 round_trippers.go:306]     Authorization: Bearer Wj1sRyLy57WGQ9iq8BP3oDb3AB0REzOrNN7-2jD7MzM
+I0413 10:51:03.599296   43791 round_trippers.go:306]     Accept: application/json, */*
+I0413 10:51:03.600463   43791 round_trippers.go:321] Response Status: 200 OK in 1 milliseconds
+I0413 10:51:03.600478   43791 round_trippers.go:324] Response Headers:
+I0413 10:51:03.600482   43791 round_trippers.go:327]     Cache-Control: no-store
+I0413 10:51:03.600486   43791 round_trippers.go:327]     Content-Type: application/json
+I0413 10:51:03.600489   43791 round_trippers.go:327]     Date: Thu, 13 Apr 2017 14:51:03 GMT
+I0413 10:51:03.600493   43791 round_trippers.go:327]     Content-Length: 93
+I0413 10:51:03.600517   43791 request.go:901] Response Body: {"kind":"APIVersions","apiVersion":"v1","versions":["v1"],"serverAddressByClientCIDRs":null}
+I0413 10:51:03.600688   43791 round_trippers.go:296] GET https://master1.example.com:8443/oapi/v1/projects/test23
+I0413 10:51:03.600695   43791 round_trippers.go:303] Request Headers:
+I0413 10:51:03.600698   43791 round_trippers.go:306]     Accept: application/json, */*
+I0413 10:51:03.600701   43791 round_trippers.go:306]     User-Agent: oadm/v3.3.0.32 (linux/amd64) openshift/37bd7ea
+I0413 10:51:03.600704   43791 round_trippers.go:306]     Authorization: Bearer Wj1sRyLy57WGQ9iq8BP3oDb3AB0REzOrNN7-2jD7MzM
+I0413 10:51:03.602810   43791 round_trippers.go:321] Response Status: 404 Not Found in 2 milliseconds
+I0413 10:51:03.602836   43791 round_trippers.go:324] Response Headers:
+I0413 10:51:03.602846   43791 round_trippers.go:327]     Cache-Control: no-store
+I0413 10:51:03.602853   43791 round_trippers.go:327]     Content-Type: application/json
+I0413 10:51:03.602858   43791 round_trippers.go:327]     Date: Thu, 13 Apr 2017 14:51:03 GMT
+I0413 10:51:03.602871   43791 round_trippers.go:327]     Content-Length: 192
+I0413 10:51:03.602914   43791 request.go:901] Response Body: {"kind":"Status","apiVersion":"v1","metadata":{},"status":"Failure","message":"namespaces \"test23\" not found","reason":"NotFound","details":{"name":"test23","kind":"namespaces"},"code":404}
+I0413 10:51:03.603311   43791 request.go:562] Request Body: {"kind":"Project","apiVersion":"v1","metadata":{"name":"test23","creationTimestamp":null,"annotations":{"openshift.io/description":"","openshift.io/display-name":""}},"spec":{},"status":{}}
+I0413 10:51:03.603344   43791 round_trippers.go:296] POST https://master1.example.com:8443/oapi/v1/projects
+I0413 10:51:03.603348   43791 round_trippers.go:303] Request Headers:
+I0413 10:51:03.603351   43791 round_trippers.go:306]     Accept: application/json, */*
+I0413 10:51:03.603355   43791 round_trippers.go:306]     Content-Type: application/json
+I0413 10:51:03.603358   43791 round_trippers.go:306]     User-Agent: oadm/v3.3.0.32 (linux/amd64) openshift/37bd7ea
+I0413 10:51:03.603361   43791 round_trippers.go:306]     Authorization: Bearer Wj1sRyLy57WGQ9iq8BP3oDb3AB0REzOrNN7-2jD7MzM
+I0413 10:51:03.607804   43791 round_trippers.go:321] Response Status: 201 Created in 4 milliseconds
+I0413 10:51:03.607836   43791 round_trippers.go:324] Response Headers:
+I0413 10:51:03.607843   43791 round_trippers.go:327]     Cache-Control: no-store
+I0413 10:51:03.607849   43791 round_trippers.go:327]     Content-Type: application/json
+I0413 10:51:03.607856   43791 round_trippers.go:327]     Date: Thu, 13 Apr 2017 14:51:03 GMT
+I0413 10:51:03.607861   43791 round_trippers.go:327]     Content-Length: 383
+I0413 10:51:03.607934   43791 request.go:901] Response Body: {"kind":"Project","apiVersion":"v1","metadata":{"name":"test23","selfLink":"/oapi/v1/projects/test23","uid":"9de0c06d-2058-11e7-ac11-52540044ae75","resourceVersion":"374030","creationTimestamp":"2017-04-13T14:51:03Z","annotations":{"openshift.io/description":"","openshift.io/display-name":""}},"spec":{"finalizers":["openshift.io/origin","kubernetes"]},"status":{"phase":"Active"}}
+Created project test23
+I0413 10:51:03.610838   43791 round_trippers.go:296] GET https://master1.example.com:8443/oapi/v1/namespaces/test23/policybindings/:default
+I0413 10:51:03.611119   43791 round_trippers.go:303] Request Headers:
+I0413 10:51:03.611146   43791 round_trippers.go:306]     Authorization: Bearer Wj1sRyLy57WGQ9iq8BP3oDb3AB0REzOrNN7-2jD7MzM
+I0413 10:51:03.611159   43791 round_trippers.go:306]     Accept: application/json, */*
+I0413 10:51:03.611167   43791 round_trippers.go:306]     User-Agent: oadm/v3.3.0.32 (linux/amd64) openshift/37bd7ea
+I0413 10:51:03.614062   43791 round_trippers.go:321] Response Status: 404 Not Found in 2 milliseconds
+I0413 10:51:03.614079   43791 round_trippers.go:324] Response Headers:
+I0413 10:51:03.614086   43791 round_trippers.go:327]     Cache-Control: no-store
+I0413 10:51:03.614092   43791 round_trippers.go:327]     Content-Type: application/json
+I0413 10:51:03.614096   43791 round_trippers.go:327]     Date: Thu, 13 Apr 2017 14:51:03 GMT
+I0413 10:51:03.614099   43791 round_trippers.go:327]     Content-Length: 204
+I0413 10:51:03.614149   43791 request.go:901] Response Body: {"kind":"Status","apiVersion":"v1","metadata":{},"status":"Failure","message":"policybindings \":default\" not found","reason":"NotFound","details":{"name":":default","kind":"policybindings"},"code":404}
+I0413 10:51:03.614414   43791 round_trippers.go:296] GET https://master1.example.com:8443/oapi/v1/namespaces/test23/policybindings
+I0413 10:51:03.614422   43791 round_trippers.go:303] Request Headers:
+I0413 10:51:03.614425   43791 round_trippers.go:306]     Accept: application/json, */*
+I0413 10:51:03.614428   43791 round_trippers.go:306]     User-Agent: oadm/v3.3.0.32 (linux/amd64) openshift/37bd7ea
+I0413 10:51:03.614432   43791 round_trippers.go:306]     Authorization: Bearer Wj1sRyLy57WGQ9iq8BP3oDb3AB0REzOrNN7-2jD7MzM
+I0413 10:51:03.617361   43791 round_trippers.go:321] Response Status: 200 OK in 2 milliseconds
+I0413 10:51:03.617386   43791 round_trippers.go:324] Response Headers:
+I0413 10:51:03.617393   43791 round_trippers.go:327]     Cache-Control: no-store
+I0413 10:51:03.617400   43791 round_trippers.go:327]     Content-Type: application/json
+I0413 10:51:03.617406   43791 round_trippers.go:327]     Date: Thu, 13 Apr 2017 14:51:03 GMT
+I0413 10:51:03.617415   43791 round_trippers.go:327]     Content-Length: 153
+I0413 10:51:03.617470   43791 request.go:901] Response Body: {"kind":"PolicyBindingList","apiVersion":"v1","metadata":{"selfLink":"/oapi/v1/namespaces/test23/policybindings","resourceVersion":"374030"},"items":[]}
+I0413 10:51:03.617925   43791 request.go:562] Request Body: {"kind":"RoleBinding","apiVersion":"v1","metadata":{"name":"system:image-puller","namespace":"test23","creationTimestamp":null},"userNames":null,"groupNames":["system:serviceaccounts:test23"],"subjects":[{"kind":"SystemGroup","name":"system:serviceaccounts:test23"}],"roleRef":{"name":"system:image-puller"}}
+I0413 10:51:03.617978   43791 round_trippers.go:296] POST https://master1.example.com:8443/oapi/v1/namespaces/test23/rolebindings
+I0413 10:51:03.617986   43791 round_trippers.go:303] Request Headers:
+I0413 10:51:03.617993   43791 round_trippers.go:306]     Accept: application/json, */*
+I0413 10:51:03.617999   43791 round_trippers.go:306]     Content-Type: application/json
+I0413 10:51:03.618005   43791 round_trippers.go:306]     User-Agent: oadm/v3.3.0.32 (linux/amd64) openshift/37bd7ea
+I0413 10:51:03.618012   43791 round_trippers.go:306]     Authorization: Bearer Wj1sRyLy57WGQ9iq8BP3oDb3AB0REzOrNN7-2jD7MzM
+I0413 10:51:03.700543   43791 round_trippers.go:321] Response Status: 201 Created in 82 milliseconds
+I0413 10:51:03.700573   43791 round_trippers.go:324] Response Headers:
+I0413 10:51:03.700580   43791 round_trippers.go:327]     Content-Length: 472
+I0413 10:51:03.700587   43791 round_trippers.go:327]     Cache-Control: no-store
+I0413 10:51:03.700593   43791 round_trippers.go:327]     Content-Type: application/json
+I0413 10:51:03.700599   43791 round_trippers.go:327]     Date: Thu, 13 Apr 2017 14:51:03 GMT
+I0413 10:51:03.700658   43791 request.go:901] Response Body: {"kind":"RoleBinding","apiVersion":"v1","metadata":{"name":"system:image-puller","namespace":"test23","selfLink":"/oapi/v1/namespaces/test23/rolebindings/system:image-puller","uid":"9de2ed53-2058-11e7-ac11-52540044ae75","resourceVersion":"374034","creationTimestamp":"2017-04-13T14:51:03Z"},"userNames":null,"groupNames":["system:serviceaccounts:test23"],"subjects":[{"kind":"SystemGroup","name":"system:serviceaccounts:test23"}],"roleRef":{"name":"system:image-puller"}}
+I0413 10:51:03.701053   43791 round_trippers.go:296] GET https://master1.example.com:8443/oapi/v1/namespaces/test23/policybindings/:default
+I0413 10:51:03.701066   43791 round_trippers.go:303] Request Headers:
+I0413 10:51:03.701072   43791 round_trippers.go:306]     Accept: application/json, */*
+I0413 10:51:03.701078   43791 round_trippers.go:306]     User-Agent: oadm/v3.3.0.32 (linux/amd64) openshift/37bd7ea
+I0413 10:51:03.701084   43791 round_trippers.go:306]     Authorization: Bearer Wj1sRyLy57WGQ9iq8BP3oDb3AB0REzOrNN7-2jD7MzM
+I0413 10:51:03.703722   43791 round_trippers.go:321] Response Status: 200 OK in 2 milliseconds
+I0413 10:51:03.703745   43791 round_trippers.go:324] Response Headers:
+I0413 10:51:03.703752   43791 round_trippers.go:327]     Content-Type: application/json
+I0413 10:51:03.703759   43791 round_trippers.go:327]     Date: Thu, 13 Apr 2017 14:51:03 GMT
+I0413 10:51:03.703767   43791 round_trippers.go:327]     Content-Length: 765
+I0413 10:51:03.703774   43791 round_trippers.go:327]     Cache-Control: no-store
+I0413 10:51:03.703840   43791 request.go:901] Response Body: {"kind":"PolicyBinding","apiVersion":"v1","metadata":{"name":":default","namespace":"test23","selfLink":"/oapi/v1/namespaces/test23/policybindings/:default","uid":"9de329f7-2058-11e7-ac11-52540044ae75","resourceVersion":"374040","creationTimestamp":"2017-04-13T14:51:03Z"},"lastModified":"2017-04-13T14:51:03Z","policyRef":{"name":"default"},"roleBindings":[{"name":"system:image-puller","roleBinding":{"metadata":{"name":"system:image-puller","namespace":"test23","uid":"9de2ed53-2058-11e7-ac11-52540044ae75","resourceVersion":"374034","creationTimestamp":"2017-04-13T14:51:03Z"},"userNames":null,"groupNames":["system:serviceaccounts:test23"],"subjects":[{"kind":"SystemGroup","name":"system:serviceaccounts:test23"}],"roleRef":{"name":"system:image-puller"}}}]}
+I0413 10:51:03.704306   43791 round_trippers.go:296] GET https://master1.example.com:8443/oapi/v1/namespaces/test23/policybindings
+I0413 10:51:03.704318   43791 round_trippers.go:303] Request Headers:
+I0413 10:51:03.704324   43791 round_trippers.go:306]     Accept: application/json, */*
+I0413 10:51:03.704330   43791 round_trippers.go:306]     User-Agent: oadm/v3.3.0.32 (linux/amd64) openshift/37bd7ea
+I0413 10:51:03.704336   43791 round_trippers.go:306]     Authorization: Bearer Wj1sRyLy57WGQ9iq8BP3oDb3AB0REzOrNN7-2jD7MzM
+I0413 10:51:03.710122   43791 round_trippers.go:321] Response Status: 200 OK in 5 milliseconds
+I0413 10:51:03.710140   43791 round_trippers.go:324] Response Headers:
+I0413 10:51:03.710146   43791 round_trippers.go:327]     Content-Length: 876
+I0413 10:51:03.710153   43791 round_trippers.go:327]     Cache-Control: no-store
+I0413 10:51:03.710159   43791 round_trippers.go:327]     Content-Type: application/json
+I0413 10:51:03.710164   43791 round_trippers.go:327]     Date: Thu, 13 Apr 2017 14:51:03 GMT
+I0413 10:51:03.710216   43791 request.go:901] Response Body: {"kind":"PolicyBindingList","apiVersion":"v1","metadata":{"selfLink":"/oapi/v1/namespaces/test23/policybindings","resourceVersion":"374046"},"items":[{"metadata":{"name":":default","namespace":"test23","selfLink":"/oapi/v1/namespaces/test23/policybindings/:default","uid":"9de329f7-2058-11e7-ac11-52540044ae75","resourceVersion":"374040","creationTimestamp":"2017-04-13T14:51:03Z"},"lastModified":"2017-04-13T14:51:03Z","policyRef":{"name":"default"},"roleBindings":[{"name":"system:image-puller","roleBinding":{"metadata":{"name":"system:image-puller","namespace":"test23","uid":"9de2ed53-2058-11e7-ac11-52540044ae75","resourceVersion":"374034","creationTimestamp":"2017-04-13T14:51:03Z"},"userNames":null,"groupNames":["system:serviceaccounts:test23"],"subjects":[{"kind":"SystemGroup","name":"system:serviceaccounts:test23"}],"roleRef":{"name":"system:image-puller"}}}]}]}
+I0413 10:51:03.710594   43791 request.go:562] Request Body: {"kind":"RoleBinding","apiVersion":"v1","metadata":{"name":"system:image-builder","namespace":"test23","creationTimestamp":null},"userNames":["system:serviceaccount:test23:builder"],"groupNames":null,"subjects":[{"kind":"ServiceAccount","name":"builder"}],"roleRef":{"name":"system:image-builder"}}
+I0413 10:51:03.710634   43791 round_trippers.go:296] POST https://master1.example.com:8443/oapi/v1/namespaces/test23/rolebindings
+I0413 10:51:03.710641   43791 round_trippers.go:303] Request Headers:
+I0413 10:51:03.710647   43791 round_trippers.go:306]     Accept: application/json, */*
+I0413 10:51:03.710653   43791 round_trippers.go:306]     Content-Type: application/json
+I0413 10:51:03.710659   43791 round_trippers.go:306]     User-Agent: oadm/v3.3.0.32 (linux/amd64) openshift/37bd7ea
+I0413 10:51:03.710665   43791 round_trippers.go:306]     Authorization: Bearer Wj1sRyLy57WGQ9iq8BP3oDb3AB0REzOrNN7-2jD7MzM
+I0413 10:51:03.719535   43791 round_trippers.go:321] Response Status: 201 Created in 8 milliseconds
+I0413 10:51:03.719556   43791 round_trippers.go:324] Response Headers:
+I0413 10:51:03.719562   43791 round_trippers.go:327]     Content-Type: application/json
+I0413 10:51:03.719569   43791 round_trippers.go:327]     Date: Thu, 13 Apr 2017 14:51:03 GMT
+I0413 10:51:03.719577   43791 round_trippers.go:327]     Content-Length: 484
+I0413 10:51:03.719583   43791 round_trippers.go:327]     Cache-Control: no-store
+I0413 10:51:03.719624   43791 request.go:901] Response Body: {"kind":"RoleBinding","apiVersion":"v1","metadata":{"name":"system:image-builder","namespace":"test23","selfLink":"/oapi/v1/namespaces/test23/rolebindings/system:image-builder","uid":"9df1082f-2058-11e7-ac11-52540044ae75","resourceVersion":"374040","creationTimestamp":"2017-04-13T14:51:03Z"},"userNames":["system:serviceaccount:test23:builder"],"groupNames":null,"subjects":[{"kind":"ServiceAccount","namespace":"test23","name":"builder"}],"roleRef":{"name":"system:image-builder"}}
+I0413 10:51:03.719994   43791 round_trippers.go:296] GET https://master1.example.com:8443/oapi/v1/namespaces/test23/policybindings/:default
+I0413 10:51:03.720007   43791 round_trippers.go:303] Request Headers:
+I0413 10:51:03.720016   43791 round_trippers.go:306]     Accept: application/json, */*
+I0413 10:51:03.720021   43791 round_trippers.go:306]     User-Agent: oadm/v3.3.0.32 (linux/amd64) openshift/37bd7ea
+I0413 10:51:03.720026   43791 round_trippers.go:306]     Authorization: Bearer Wj1sRyLy57WGQ9iq8BP3oDb3AB0REzOrNN7-2jD7MzM
+I0413 10:51:03.726087   43791 round_trippers.go:321] Response Status: 200 OK in 6 milliseconds
+I0413 10:51:03.726108   43791 round_trippers.go:324] Response Headers:
+I0413 10:51:03.726116   43791 round_trippers.go:327]     Content-Length: 1182
+I0413 10:51:03.726123   43791 round_trippers.go:327]     Cache-Control: no-store
+I0413 10:51:03.726129   43791 round_trippers.go:327]     Content-Type: application/json
+I0413 10:51:03.726135   43791 round_trippers.go:327]     Date: Thu, 13 Apr 2017 14:51:03 GMT
+I0413 10:51:03.726191   43791 request.go:901] Response Body: {"kind":"PolicyBinding","apiVersion":"v1","metadata":{"name":":default","namespace":"test23","selfLink":"/oapi/v1/namespaces/test23/policybindings/:default","uid":"9de329f7-2058-11e7-ac11-52540044ae75","resourceVersion":"374049","creationTimestamp":"2017-04-13T14:51:03Z"},"lastModified":"2017-04-13T14:51:03Z","policyRef":{"name":"default"},"roleBindings":[{"name":"system:image-builder","roleBinding":{"metadata":{"name":"system:image-builder","namespace":"test23","uid":"9df1082f-2058-11e7-ac11-52540044ae75","resourceVersion":"374040","creationTimestamp":"2017-04-13T14:51:03Z"},"userNames":["system:serviceaccount:test23:builder"],"groupNames":null,"subjects":[{"kind":"ServiceAccount","namespace":"test23","name":"builder"}],"roleRef":{"name":"system:image-builder"}}},{"name":"system:image-puller","roleBinding":{"metadata":{"name":"system:image-puller","namespace":"test23","uid":"9de2ed53-2058-11e7-ac11-52540044ae75","resourceVersion":"374034","creationTimestamp":"2017-04-13T14:51:03Z"},"userNames":null,"groupNames":["system:serviceaccounts:test23"],"subjects":[{"kind":"SystemGroup","name":"system:serviceaccounts:test23"}],"roleRef":{"name":"system:image-puller"}}}]}
+I0413 10:51:03.726663   43791 round_trippers.go:296] GET https://master1.example.com:8443/oapi/v1/namespaces/test23/policybindings
+I0413 10:51:03.726675   43791 round_trippers.go:303] Request Headers:
+I0413 10:51:03.726681   43791 round_trippers.go:306]     Authorization: Bearer Wj1sRyLy57WGQ9iq8BP3oDb3AB0REzOrNN7-2jD7MzM
+I0413 10:51:03.726687   43791 round_trippers.go:306]     Accept: application/json, */*
+I0413 10:51:03.726692   43791 round_trippers.go:306]     User-Agent: oadm/v3.3.0.32 (linux/amd64) openshift/37bd7ea
+I0413 10:51:03.735661   43791 round_trippers.go:321] Response Status: 200 OK in 8 milliseconds
+I0413 10:51:03.735691   43791 round_trippers.go:324] Response Headers:
+I0413 10:51:03.735700   43791 round_trippers.go:327]     Content-Type: application/json
+I0413 10:51:03.735707   43791 round_trippers.go:327]     Date: Thu, 13 Apr 2017 14:51:03 GMT
+I0413 10:51:03.735713   43791 round_trippers.go:327]     Content-Length: 1293
+I0413 10:51:03.735721   43791 round_trippers.go:327]     Cache-Control: no-store
+I0413 10:51:03.735815   43791 request.go:901] Response Body: {"kind":"PolicyBindingList","apiVersion":"v1","metadata":{"selfLink":"/oapi/v1/namespaces/test23/policybindings","resourceVersion":"374051"},"items":[{"metadata":{"name":":default","namespace":"test23","selfLink":"/oapi/v1/namespaces/test23/policybindings/:default","uid":"9de329f7-2058-11e7-ac11-52540044ae75","resourceVersion":"374049","creationTimestamp":"2017-04-13T14:51:03Z"},"lastModified":"2017-04-13T14:51:03Z","policyRef":{"name":"default"},"roleBindings":[{"name":"system:image-builder","roleBinding":{"metadata":{"name":"system:image-builder","namespace":"test23","uid":"9df1082f-2058-11e7-ac11-52540044ae75","resourceVersion":"374040","creationTimestamp":"2017-04-13T14:51:03Z"},"userNames":["system:serviceaccount:test23:builder"],"groupNames":null,"subjects":[{"kind":"ServiceAccount","namespace":"test23","name":"builder"}],"roleRef":{"name":"system:image-builder"}}},{"name":"system:image-puller","roleBinding":{"metadata":{"name":"system:image-puller","namespace":"test23","uid":"9de2ed53-2058-11e7-ac11-52540044ae75","resourceVersion":"374034","creationTimestamp":"2017-04-13T14:51:03Z"},"userNames":null,"groupNames":["system:serviceaccounts:test23"],"subjects":[{"kind":"SystemGroup","name":"system:serviceaccounts:test23"}],"roleRef":{"name":"system:image-puller"}}}]}]}
+I0413 10:51:03.737293   43791 request.go:562] Request Body: {"kind":"RoleBinding","apiVersion":"v1","metadata":{"name":"system:deployer","namespace":"test23","creationTimestamp":null},"userNames":["system:serviceaccount:test23:deployer"],"groupNames":null,"subjects":[{"kind":"ServiceAccount","name":"deployer"}],"roleRef":{"name":"system:deployer"}}
+I0413 10:51:03.737684   43791 round_trippers.go:296] POST https://master1.example.com:8443/oapi/v1/namespaces/test23/rolebindings
+I0413 10:51:03.737692   43791 round_trippers.go:303] Request Headers:
+I0413 10:51:03.737696   43791 round_trippers.go:306]     Content-Type: application/json
+I0413 10:51:03.737699   43791 round_trippers.go:306]     User-Agent: oadm/v3.3.0.32 (linux/amd64) openshift/37bd7ea
+I0413 10:51:03.737703   43791 round_trippers.go:306]     Accept: application/json, */*
+I0413 10:51:03.737706   43791 round_trippers.go:306]     Authorization: Bearer Wj1sRyLy57WGQ9iq8BP3oDb3AB0REzOrNN7-2jD7MzM
+I0413 10:51:03.747044   43791 round_trippers.go:321] Response Status: 201 Created in 9 milliseconds
+I0413 10:51:03.747065   43791 round_trippers.go:324] Response Headers:
+I0413 10:51:03.747073   43791 round_trippers.go:327]     Cache-Control: no-store
+I0413 10:51:03.747080   43791 round_trippers.go:327]     Content-Type: application/json
+I0413 10:51:03.747086   43791 round_trippers.go:327]     Date: Thu, 13 Apr 2017 14:51:03 GMT
+I0413 10:51:03.747093   43791 round_trippers.go:327]     Content-Length: 471
+I0413 10:51:03.747135   43791 request.go:901] Response Body: {"kind":"RoleBinding","apiVersion":"v1","metadata":{"name":"system:deployer","namespace":"test23","selfLink":"/oapi/v1/namespaces/test23/rolebindings/system:deployer","uid":"9df543d2-2058-11e7-ac11-52540044ae75","resourceVersion":"374049","creationTimestamp":"2017-04-13T14:51:03Z"},"userNames":["system:serviceaccount:test23:deployer"],"groupNames":null,"subjects":[{"kind":"ServiceAccount","namespace":"test23","name":"deployer"}],"roleRef":{"name":"system:deployer"}}
+

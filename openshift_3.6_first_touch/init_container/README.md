@@ -1,4 +1,4 @@
-#Init Container
+# Init Container
 
 ## Description
 You run init containers in the same pod as your application container to create the environment your application requires or to satisfy any preconditions the application might have. You can run utilities that you would otherwise need to place into your application image. You can run them in different file system namespaces (view of the same file system) and offer them different secrets than your application container.
