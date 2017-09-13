@@ -5,7 +5,7 @@ NFS
 ---
 Selinux Util Packages
 ```
-yum install -y policycoreutils libselinux-utils
+yum install -y policycoreutils libselinux-utils policycoreutils-python 
 ```
 
 virt_sandbox_use_nfs looks deprecated : https://github.com/openshift/openshift-docs/issues/4746
