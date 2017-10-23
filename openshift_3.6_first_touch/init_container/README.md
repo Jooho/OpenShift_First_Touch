@@ -13,6 +13,7 @@ With init container, it is much easier because init container will start before 
 
 *1. Create pod has 2 init contaiers that wait until SVC hostname is resolved.*
 ```
+echo "
 apiVersion: v1
 kind: Pod
 metadata:
@@ -30,10 +31,10 @@ spec:
     command: ['sh', '-c', 'until nslookup myservice; do echo waiting for myservice; sleep 2; done;']
   - name: init-mydb
     image: busybox
-    command: ['sh', '-c', 'until nslookup mydb; do echo waiting for mydb; sleep 2; done;']
+    command: ['sh', '-c', 'until nslookup mydb; do echo waiting for mydb; sleep 2; done;']" |oc create -f -
 ```
 
-*2. Check init container *
+*2. Check init container*
 As command in init container say, it tries to resolve myservice.
 
 ```
