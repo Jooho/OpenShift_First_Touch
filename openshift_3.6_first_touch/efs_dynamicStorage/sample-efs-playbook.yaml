@@ -1,0 +1,9 @@
+---
+- hosts: localhost
+  tasks:
+    - name: Update groups
+      include: "./pure-generate-host-groups.yaml"
+- include: "/usr/share/ansible/openshift-ansible/playbooks/byo/openshift-cluster/initialize_groups.yml"
+- include: "/usr/share/ansible/openshift-ansible/playbooks/common/openshift-cluster/evaluate_groups.yml"
+
+- include: /usr/share/ansible/openshift-ansible/playbooks/common/openshift-cluster/openshift_provisioners.yml
