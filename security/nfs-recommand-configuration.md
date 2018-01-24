@@ -33,7 +33,48 @@ spec:
   template:
     spec:
       securityContext:  
-        suplementalGroups: [5555]
+        supplementalGroups: [5555]
 …
 ```
 
+- Patch command
+```
+oc patch dc/$DC -p '{"spec": {"template":{"spec":{"securityContext":{"supplementalGroups": [5555]}}}}}'
+```
+
+
+- Demo Purpose Commands
+```
+oc run nfs-test --image=registry.access.redhat.com/rhel7/rhel-tools -- tail -f /dev/null
+
+echo "apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: pv-nfs-test
+spec:
+  accessModes:
+  - ReadWriteMany
+  capacity:
+    storage: 1Gi
+  nfs:
+    path: /exports/test_vol
+    server: $NFS_SERVER
+  persistentVolumeReclaimPolicy: Retain "| oc create -f -
+
+
+echo "
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: test
+spec:
+  accessModes:
+  - ReadWriteMany
+  resources:
+    requests:
+      storage: 1G
+  volumeName: pv-nfs-test" |oc create -f -
+
+oc volume deploymentconfigs/sleep --add -t pvc --name=test-nfs-storage -t pvc  --claim-name=test --mount-path=/test 
+oc patch dc/$DC -p '{"spec": {"template":{"spec":{"securityContext":{"supplementalGroups": [5555]}}}}}'
+```
