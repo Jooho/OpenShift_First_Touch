@@ -20,9 +20,9 @@ spec:
         memory: "4Mi" 
       default:
         cpu: "300m" 
-        memory: "500Mi" 
+        memory: "200Mi" 
       defaultRequest:
         cpu: "200m" 
-        memory: "100Mi" 
+        memory: "50Mi" 
       maxLimitRequestRatio:
         cpu: "10" 
