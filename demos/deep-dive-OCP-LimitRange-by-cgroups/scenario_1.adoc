@@ -45,7 +45,7 @@ $ echo 0 |  tee -a cpuset.cpus
 $ echo 0 | sudo tee -a cpuset.mems
 ```
 
-*Step 5 - Attach the process to this cpuset *
+*Step 5 - Attach the process to this cpuset*
 ```
 $ echo 28689 | sudo tee -a tasks
 ```
