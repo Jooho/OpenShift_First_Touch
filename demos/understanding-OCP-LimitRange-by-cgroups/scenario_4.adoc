@@ -50,10 +50,6 @@ Working Directory /sys/fs/cgroup/cpu:
 |    └-─docker-5f41e014cc93de37e00af64a0468cf5340ca5932896d7b0a8e9b2cda0e145e0
 |            2.scope
 |          └─19208 /bin/bash
-├─system.slice
-│ ├─rhel-push-plugin.service
-│ │ └─18326 /usr/libexec/docker/rhel-push-plugin
-│ ├─dm-event.service
 ```
 
 
