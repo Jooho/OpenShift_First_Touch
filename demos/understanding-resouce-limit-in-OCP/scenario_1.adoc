@@ -16,7 +16,7 @@ $ systemctl status fredunit.scope
 ```
 
 
-*Step 2 -Check process information*
+*Step 2 - Check process information*
 ```
 $ more /proc/28689/cgroup
 sh-4.2# more /proc/28689/cgroup
