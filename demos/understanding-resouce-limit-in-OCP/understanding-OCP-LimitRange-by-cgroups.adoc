@@ -2,7 +2,9 @@ Basic knowledge of RHEL 7
 -------------------------
 
 In order to understand Quota and limitRange in OpenShift, we need to take a look at RHEL stuff first. In this chapter, I will explain basic information regarding cgroups, systemd and so on.
+
 Cgroups
+-------
 Cgroups is a feature in a Linux kernel that become very famous because of docker/kubernetes  these days. It allows us limiting the resource usage of processes. In RHEL 7, we can use cgroups by default and systemd help to mount important resources controllers in the /sys/fs/cgroups directory.
 
 excerpt from link:https://access.redhat.com/articles/754933[this article]
@@ -128,9 +130,18 @@ Cgroups Limit
 ~~~~~~~~~~~~~
 As I mentioned above, cgroup can divide resources for each process. This show how we set limit for cpu/memory and how to monitor assigned by cgroups.
 
+*2 ways to set limit in cgroups.*
+
 - link:./scenario_1.adoc[Scenario 1 : Use cpuset hierachy creating folder /sys/fs/cgroup (scope mode)]
 - link:./scenario_2.adoc[Scenario 2 : Use conf file to set cpu/memory amount for limit  (service mode)]
-- link:./scenario_3.adoc[Scenario 3 : Limit Test]
-- link:./scenario_4.adoc[Scenario 4 : Set up slices like Kubernetes do]
 
+*Give load to test limit*
+
+- link:./scenario_3.adoc[Scenario 3 : Limit Test]
+
+*Mimic the slices that kubernetes generate*
+
+Basically, Kubernetes uses 3 QoS(Burstable/Guaranteed/BestEffort) and Kubernetes creates slices based on the QoS. The way to generate slices is creating folders under /sys/fs/cgroup. It looks the chains of slices.
+
+- link:./scenario_4.adoc[Scenario 4 : Set up slices like Kubernetes do]
 
