@@ -16,7 +16,7 @@ $ systemctl status fredunit.scope
 ```
 
 
-*Step 2 -Check process information*
+*Step 2 - Check process information*
 ```
 $ more /proc/28689/cgroup
 sh-4.2# more /proc/28689/cgroup
@@ -54,7 +54,7 @@ $ echo 28689 | sudo tee -a tasks
 ```
 $  more /proc/28689/cgroup
 11:memory:/
-10:cpuset:/fred
+10:cpuset:/fred            <====
 9:hugetlb:/
 8:blkio:/
 7:net_prio,net_cls:/
