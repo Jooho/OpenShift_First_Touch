@@ -17,11 +17,8 @@ EOF
 # start script
 if [[ $1 == "" ]]
 then
-  echo "please specify inventory file"
   usage
-  exit 1
-else
-  inventory_file=$1
+  exit 1  
 fi
 
 
