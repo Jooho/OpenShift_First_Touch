@@ -32,7 +32,7 @@ else
    oc login -u $oc_user -p $oc_password $oc_server_url
 fi
 
-NAMESPACE=logging
+export NAMESPACE=logging
 ./logging-dump.sh
 
 echo "please upload 'logging-$Date' folder"
