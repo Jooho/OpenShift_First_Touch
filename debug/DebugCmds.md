@@ -31,6 +31,25 @@ curl -s --key /etc/elasticsearch/secret/admin-key --cert /etc/elasticsearch/secr
 ```
 curl -s --key /etc/elasticsearch/secret/admin-key --cert /etc/elasticsearch/secret/admin-cert --cacert /etc/elasticsearch/secret/admin-ca "https://localhost:9200/_cluster/pending_tasks"
 ```
+## [Storage]
+
+- Disk Usage
+```
+ du -d 1 -m -x /run
+```
+
+- Find deleted files but still remains
+```
+lsof -nP | grep '(deleted)'
+```
+
+## [Memory]
+- Shared Memory
+```
+ipcs -u
+ipcs -m
+ipcs -s -t
+```
 
 ## [Common]
 - Image Version Check
