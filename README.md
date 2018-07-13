@@ -1,31 +1,39 @@
 # Jhouse Openshift
 
+## Docs
+
+Volume
+------
+- [EmptyDir](./docs/volume/emptyDir.adoc)
+
+Memory
+------
+- [Shared Memory](./docs/memory/shared_memory.adoc)
+
 ETCD
 ----
-- [etcd_recovery_unhealthy_member](./etcd/etcd_recovery_unhealthy_member.md)
+- [etcd_recovery_unhealthy_member](./docs/etcd/etcd_recovery_unhealthy_member.md)
 
 
 Router
 ------
-- [sharding](./router/sharding.md)
+- [sharding](./docs/router/sharding.md)
 
 
 Security
 --------
-- [nfs-custom-scc](./security/nfs-custom-scc.md)
-- [nfs-recommand-configuration](./security/nfs-recommand-configuration.md)
-- [selinux](./security/selinux.md)
+- [nfs-custom-scc](./docs/security/nfs-custom-scc.md)
+- [nfs-recommand-configuration](./docs/security/nfs-recommand-configuration.md)
+- [selinux](./docs/security/selinux.md)
+
+EFK
+---
+- [debugging-gathering-efk-object](./docs/efk/debugging-gathering-efk-object.md)
 
 
 Useful
 -------
 - [dockerfile-from-image](./useful/dockerfile-from-image.md)
-
-
-EFK
----
-- [debugging-gathering-efk-object](./efk/debugging-gathering-efk-object.md)
-
 
 Sample Script
 ------------

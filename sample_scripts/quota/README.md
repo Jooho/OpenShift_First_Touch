@@ -36,6 +36,19 @@ LimitRange Demo
 Quota Demo
 ---
 
+Job
+
+Build
+
+BestEffort
+
+NotBestEffort
+
+compute-resources
+- pods
+- request.memory
+- limits.cpu
+- limits.memory
 
 
-
+Require Explicit Quota to Consume a Resource

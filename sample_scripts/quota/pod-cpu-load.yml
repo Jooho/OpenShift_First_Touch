@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: pod-cpu-load
+  labels:
+    purpose: "limitrange-demo"
+spec:
+  containers:
+  - name: cpu-load-container
+    image: centos
+    command:
+    - /usr/bin/sha1sum
+    - "/dev/zero"
+  restartPolicy: OnFailure

@@ -1,0 +1,51 @@
+emptyDir
+--------
+
+https://kubernetes.io/docs/concepts/storage/volumes/#emptydir
+```
+An emptyDir volume is first created when a Pod is assigned to a Node, and exists as long as that Pod is running on that node. As the name says, it is initially empty. Containers in the Pod can all read and write the same files in the emptyDir volume, though that volume can be mounted at the same or different paths in each Container. When a Pod is removed from a node for any reason, the data in the emptyDir is deleted forever.
+
+Note: A Container crashing does NOT remove a Pod from a node, so the data in an emptyDir volume is safe across Container crashes.
+Some uses for an emptyDir are:
+
+scratch space, such as for a disk-based merge sort
+checkpointing a long computation for recovery from crashes
+holding files that a content-manager Container fetches while a webserver Container serves the data
+By default, emptyDir volumes are stored on whatever medium is backing the node - that might be disk or SSD or network storage, depending on your environment. However, you can set the emptyDir.medium field to "Memory" to tell Kubernetes to mount a tmpfs (RAM-backed filesystem) for you instead. While tmpfs is very fast, be aware that unlike disks, tmpfs is cleared on node reboot and any files you write will count against your Container’s memory limit.
+```
+
+
+https://docs.docker.com/storage/#choose-the-right-type-of-mount
+```
+Volumes are stored in a part of the host filesystem which is managed by Docker (/var/lib/docker/volumes/ on Linux). Non-Docker processes should not modify this part of the filesystem. Volumes are the best way to persist data in Docker.
+
+Bind mounts may be stored anywhere on the host system. They may even be important system files or directories. Non-Docker processes on the Docker host or a Docker container can modify them at any time.
+
+tmpfs mounts are stored in the host system’s memory only, and are never written to the host system’s filesystem.
+
+tmpfs mounts: A tmpfs mount is not persisted on disk, either on the Docker host or within a container. It can be used by a container during the lifetime of the container, to store non-persistent state or sensitive information. For instance, internally, swarm services use tmpfs mounts to mount secrets into a service’s containers.
+```
+
+
+https://kb.novaordis.com/index.php/OpenShift_Volume_Concepts#EmptyDir
+```
+An "emptyDir", also known as a "temporary pod volume", is created when the pod is assigned to a node, and exists as long as the pod is running on the node. It is initially empty. Containers in a pod can all read and write the same files in the "emptyDir" volume, though the volume can be mounted at the same or different paths in each container.
+
+When the pod is removed from the node, the data is deleted. If the container crashes, that does not remove the pod from a node, so data in an empty dir is safe across container crashes.
+
+The "emptyDir" volumes are stored on whatever medium is backing the node (disk, network storage). The mapping on the local file system backing the node can be discovered by identifying the container and then executing a docker inspect:
+
+When emptyDir is backed by a node directory, the location of this directory is /var/lib/origin/openshift.local.volumes/pods/<id>/volumes/kubernetes.io~empty- but it can be configured in the Kubernetes node configuration file. How?
+
+"emptyDir" volume storage may be restricted by a quota based on the pod’s FSGroup, if the FSGroup parameter is enabled by the cluster administrator.
+
+```
+
+```
+EmptyDir Quota
+By default, pods can allocate on emptyDirs as much space as the underlying filesystem has available. It is possible to set up a configuration that would restrict space allocation to a quota enforced with the XFS quota mechanism, provided that the backing filesystem used to allocate space for emptyDirs is XFS. For more details see:
+```
+- link:https://kb.novaordis.com/index.php/OpenShift_Setting_and_Enforcing_emptyDir_Quotas[Setting and Enforcing emptyDir Quotas]
+
+- link:https://kb.novaordis.com/index.php/Oc_set#EmptyDir_Volume[Adding an EmptyDir Volume]
+
