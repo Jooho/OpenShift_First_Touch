@@ -1,3 +1,20 @@
+## [Glusterfs-CNS]
+
+- Mapping PVC and glusterfs ID
+```
+oc get pv -o template --template='{{ range .items }}{{ $type := index .metadata.annotations "gluster.org/type" }}{{ if $type }}PV Name: {{ .metadata.name }}  Volume Type: gluster-{{ $type }}  {{ if eq "file" $type }}Heketi Volume ID: {{ index .metadata.annotations "gluster.kubernetes.io/heketi-volume-id" }}  Gluster Volume Name: {{ .spec.glusterfs.path }}{{ println }}{{ end }}{{ if eq "block" $type }}Heketi BlockVolume ID: {{ index .metadata.annotations "gluster.org/volume-id" }}{{ println }}{{ end }}{{ end }}{{ end }}'
+
+e.g.
+PV Name: pvc-1a23d25a-5d6c-11e8-bbe9-005056917fec  Volume Type: gluster-file  Heketi Volume ID: 045037c8debbdf69064ce4bba587f2bf  Gluster Volume Name: vol_045037c8debbdf69064ce4bba587f2bf                   
+```
+- Get gluster volume info
+```
+$ oc rsh $gluster_pod
+
+$> gluster volume info all
+```
+
+
 ## [LDAP]
 ~~~
 ldapsearch -v -H ldaps://ldap2.example.com:389 -D "cn=read-only-admin,dc=example,dc=com" -w "redhat" -b "dc=example,dc=com" -o ldif-wrap=no  "(&(objectClass=groupOfNames))" -vvvv
@@ -50,6 +67,7 @@ ipcs -u
 ipcs -m
 ipcs -s -t
 ```
+
 
 ## [Common]
 - Image Version Check
