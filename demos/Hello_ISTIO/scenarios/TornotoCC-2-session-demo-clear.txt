@@ -1,0 +1,10 @@
+Clear
+~~~
+oc delete project chat
+oc delete project istio-system
+
+~~~
+
+Logout browser
+
+

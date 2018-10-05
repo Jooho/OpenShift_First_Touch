@@ -1,0 +1,13 @@
+apiVersion: networking.istio.io/v1alpha3
+kind: DestinationRule
+metadata:
+  name: chat-server
+spec:
+  host: chat-server
+  subsets:
+  - name: all
+    labels:
+      app: chat-server
+  trafficPolicy:
+    loadBalancer:
+      simple: RANDOM

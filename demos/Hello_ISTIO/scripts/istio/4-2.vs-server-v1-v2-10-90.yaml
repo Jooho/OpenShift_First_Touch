@@ -1,0 +1,19 @@
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: chat-server
+spec:
+  gateways:
+  - chat-gateway
+  hosts:
+  - chat-server-example-chat.apps.toronto.openshiftworkshop.com
+  http:
+  - route:
+    - destination:
+        host: chat-server
+        subset: v1
+      weight: 10
+    - destination:
+        host: chat-server
+        subset: v2
+      weight: 90

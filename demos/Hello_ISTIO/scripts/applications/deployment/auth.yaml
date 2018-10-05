@@ -1,0 +1,32 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: auth
+  labels:
+    app: auth
+spec:
+  ports:
+  - port: 8080
+    name: http
+  selector:
+    app: auth
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: auth-v1
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: auth
+        version: v1
+    spec:
+      containers:
+      - name: auth
+        image: ljhiyh/auth
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 8080
+

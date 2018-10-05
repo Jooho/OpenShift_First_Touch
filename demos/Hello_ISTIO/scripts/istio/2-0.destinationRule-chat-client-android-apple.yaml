@@ -1,0 +1,22 @@
+apiVersion: networking.istio.io/v1alpha3
+kind: DestinationRule
+metadata:
+  name: chat-client
+spec:
+  host: chat-client
+  trafficPolicy:
+    loadBalancer:
+      simple: ROUND_ROBIN
+  subsets:
+  - name: v1
+    labels:
+      app: chat-client
+      version: v1
+  - name: apple 
+    labels:
+      app: chat-client
+      version: apple
+  - name: android
+    labels:
+      app: chat-client
+      version: android

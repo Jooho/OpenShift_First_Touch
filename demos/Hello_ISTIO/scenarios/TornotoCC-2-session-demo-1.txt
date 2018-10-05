@@ -1,0 +1,63 @@
+
+# Begin~~!!!
+oc login https://master.toronto.openshiftworkshop.com:443 --token=oRiwy6MX6ICVmo6hajEwN5Fr3_e7VUz4TrbChhd2owE  
+
+##ISTIO
+curl -L https://github.com/istio/istio/releases/download/1.0.0/istio-1.0.0-linux.tar.gz | tar xz
+
+cd istio-1.0.0
+export ISTIO_HOME=`pwd`
+export PATH=$ISTIO_HOME/bin:$PATH
+
+oc apply -f install/kubernetes/helm/istio/templates/crds.yaml
+oc apply -f install/kubernetes/istio-demo.yaml
+oc project istio-system
+oc adm policy add-scc-to-group anyuid system:authenticated
+
+oc expose svc istio-ingressgateway
+oc expose svc servicegraph
+oc expose svc grafana
+oc expose svc prometheus
+oc expose svc tracing
+
+-------------------------------------------------------------
+
+
+#0 Demo project
+~~~
+oc new-project chat --display-name="Toronto Convergency Event Test Project - Chat Program" 
+oc adm policy add-scc-to-user privileged -z default,deployer -n chat
+oc delete limitrange --all
+~~~
+
+
+# Demo 1 - Base deployment
+
+## Redis
+oc new-app --template=redis-ephemeral -p REDIS_PASSWORD=redis
+
+oc apply -f <(istioctl kube-inject -f scripts/applications/deployment/redis.yaml )
+## Client
+oc apply -n chat -f <(istioctl kube-inject -f scripts/applications/deployment/chat-client-v1.yaml)
+oc apply -n chat -f <(istioctl kube-inject -f scripts/applications/deployment/chat-client-android.yaml)
+oc apply -n chat -f <(istioctl kube-inject -f scripts/applications/deployment/chat-client-apple.yaml)
+
+## Server
+oc apply -n chat -f <(istioctl kube-inject -f scripts/applications/deployment/chat-server-v1.yaml)
+
+## Auth
+oc apply -n chat -f <(istioctl kube-inject -f scripts/applications/deployment/auth.yaml)
+
+## Ingress
+oc expose  svc istio-ingressgateway --name chat-client-ingress --hostname="chat-client.apps.toronto.openshiftworkshop.com" -n istio-system
+oc expose  svc istio-ingressgateway --name chat-server-ingress --hostname="chat-server-example-chat.apps.toronto.openshiftworkshop.com" -n istio-system
+
+## istio 
+### Access chat-client v1 only
+oc apply -n chat -f scripts/istio/1-0.chat-gateway.yaml 
+oc apply -n chat -f scripts/istio/1-1.vs-client-server.yaml  
+oc apply -n chat -f scripts/istio/1-2.destinationRule-chat-client.yaml 
+
+
+chat-client.apps.toronto.openshiftworkshop.com
+

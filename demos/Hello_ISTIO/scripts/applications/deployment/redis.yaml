@@ -1,0 +1,62 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: redis
+spec:
+  replicas: 1
+  revisionHistoryLimit: 10
+  template:
+    metadata:
+      labels:
+        app: redis-ephemeral
+        name: redis
+    spec:
+      containers:
+      - env:
+        - name: REDIS_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              key: database-password
+              name: redis
+        image: registry.access.redhat.com/rhscl/redis-32-rhel7
+        imagePullPolicy: Always
+        name: redis
+        ports:
+        - containerPort: 6379
+        resources:
+          limits:
+            memory: 512Mi
+        volumeMounts:
+        - mountPath: /var/lib/redis/data
+          name: redis-data
+      volumes:
+      - emptyDir: {}
+        name: redis-data
+---
+apiVersion: v1
+data:
+  database-password: cmVkaXM=
+kind: Secret
+metadata:
+  annotations:
+    template.openshift.io/expose-password: '{.data[''database-password'']}'
+  labels:
+    app: redis-ephemeral
+    template: redis-ephemeral-template
+  name: redis
+type: Opaque
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: redis-ephemeral
+    template: redis-ephemeral-template
+  name: redis
+spec:
+  ports:
+  - name: tcp
+    port: 6379
+    protocol: TCP
+  selector:
+    name: redis

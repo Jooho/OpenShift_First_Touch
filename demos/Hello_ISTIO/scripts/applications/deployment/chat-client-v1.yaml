@@ -1,0 +1,31 @@
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: chat-client
+  name: chat-client
+spec:
+  ports:
+  - name: http
+    port: 4200
+  selector:
+    app: chat-client
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: chat-client-v1
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: chat-client
+        version: v1
+    spec:
+      containers:
+      - image: docker.io/ljhiyh/chat-client:v1
+        imagePullPolicy: Always
+        name: chat-client
+        ports:
+        - containerPort: 4200

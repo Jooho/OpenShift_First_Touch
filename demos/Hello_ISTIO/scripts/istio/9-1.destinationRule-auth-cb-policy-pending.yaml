@@ -1,0 +1,16 @@
+apiVersion: networking.istio.io/v1alpha3
+kind: DestinationRule
+metadata:
+  name: auth-cb-policy-max-connection
+spec:
+  host: auth
+  trafficPolicy:
+    connectionPool:
+      tcp:
+        maxConnections: 1
+        connectTimeout: 2ms
+      http:
+        http2MaxRequests: 1
+        maxRequestsPerConnection: 1
+        http1MaxPendingRequests: 20
+        maxRetries: 1

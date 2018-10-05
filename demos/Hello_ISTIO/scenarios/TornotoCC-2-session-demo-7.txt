@@ -1,0 +1,57 @@
+#7 Service resilience - Timeout
+oc scale -n chat deployment auth-v1 --replicas=1
+oc rsh $(oc get pod|grep auth|head -n 1|awk '{print $1}')  
+curl localhost:8080/misbehave/off
+
+time curl http://chat-server-example-chat.apps.toronto.openshiftworkshop.com/login?id=tst
+{"chat_members":["abc","tst"],"status":"OK"}
+real	0m0.225s
+user	0m0.007s
+sys	0m0.006s
+
+## Start Timeout
+oc rsh $(oc get pod|grep auth|head -n 1|awk '{print $1}')  
+curl http://localhost:8080/longtask
+
+
+time curl http://chat-server-example-chat.apps.toronto.openshiftworkshop.com/login?id=test
+{"chat_members":["abc","tst","test1"],"status":"OK"}
+real	0m5.293s
+user	0m0.006s
+sys	0m0.005s
+
+
+## Create timeout policy
+oc apply -n chat -f scripts/istio/7-0.vs-initial-auth-timeout.yaml
+
+for i in {10..100}; do time curl http://chat-server-example-chat.apps.toronto.openshiftworkshop.com/login?id=test${i}; done
+upstream request timeout
+real	0m1.211s
+user	0m0.006s
+sys	0m0.005s
+upstream request timeout
+real	0m1.223s
+user	0m0.003s
+sys	0m0.010s
+
+oc rsh $(oc get pod|grep auth|head -n 1|awk '{print $1}')  
+curl http://localhost:8080/longtask/off
+
+
+## Clean
+
+
+#8  Service resilience - Retry + Fault Inject
+
+http://chat-client.apps.toronto.openshiftworkshop.com/emulate
+oc apply -f  scripts/istio/8-0.vs-auth-fault-503.yaml
+
+oc delete virtualservice auth-fault
+oc apply -f  scripts/istio/8-1.vs-initial-server-retry.yaml
+oc apply -f  scripts/istio/8-0.vs-auth-fault-503.yaml
+
+
+
+## Clean
+oc delete virtualservice auth-fault auth-retry
+

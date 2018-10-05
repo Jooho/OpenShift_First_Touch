@@ -1,0 +1,18 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: chat-client-apple
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: chat-client
+        version: apple
+    spec:
+      containers:
+      - image: docker.io/ljhiyh/chat-client:apple
+        imagePullPolicy: Always
+        name: chat-client
+        ports:
+        - containerPort: 4200

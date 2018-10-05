@@ -1,0 +1,62 @@
+#2 Distribute users based on device agent 
+oc apply -f scripts/istio/2-0.destinationRule-chat-client-android-apple.yaml  
+oc apply -f scripts/istio/2-1.vs-client-apple-android.yaml 
+
+
+#3 Allow Egress
+oc apply -f scripts/istio/3-0.serviceEntry-egress.yaml  
+
+
+#4 Version 2- chat server application
+while true; do curl http://chat-server-example-chat.apps.toronto.openshiftworkshop.com/get_server_version;echo "";sleep 1 ; done
+
+oc apply -n chat -f <(istioctl kube-inject -f scripts/applications/deployment/chat-server-v2.yaml)
+oc apply -n chat -f scripts/istio/4-0.destinationRule-chat-server-v1-v2-roundrobin.yaml
+oc apply -n chat -f scripts/istio/4-1.vs-server-v1-v2-50-50.yaml
+oc apply -n chat -f scripts/istio/4-2.vs-server-v1-v2-10-90.yaml
+oc apply -n chat -f scripts/istio/4-3.vs-server-v1-v2-0-100.yaml
+
+
+#5 Service resilience - Load balancing
+
+oc get virtualservice chat-server -o yaml
+oc apply -f scripts/istio/5-0.vs-initial-server.yaml
+oc get virtualservice chat-server -o yaml
+oc scale -n chat deployment chat-server-v2 --replicas=3
+oc get pod -l app=chat-server,version=v2
+
+oc delete destinationrule chat-server
+while true; do curl http://chat-server-example-chat.apps.toronto.openshiftworkshop.com/get_server_version;echo "";sleep 1 ; done
+
+## change rule to RANDOM
+oc get destinationrule chat-server -o yaml
+
+oc apply -f  scripts/istio/5-1.destinationRule-chat-server-v1-v2-random.yaml
+while true; do curl http://chat-server-example-chat.apps.toronto.openshiftworkshop.com/get_server_version;echo "";sleep 1 ; done
+
+
+#6 Service resilience - Pool Ejection (Scale Out Api-server and misbehave)
+oc scale -n chat deployment chat-server-v2 --replicas=1
+oc apply -n chat -f scripts/istio/4-0.destinationRule-chat-server-v1-v2-roundrobin.yaml
+oc apply -n chat -f scripts/istio/4-3.vs-server-v1-v2-0-100.yaml
+
+
+http://chat-client.apps.toronto.openshiftworkshop.com/emulate
+oc scale -n chat deployment auth-v1 --replicas=2
+
+oc rsh $(oc get pod|grep auth|head -n 1|awk '{print $1}')  
+curl localhost:8080/misbehave
+
+http://chat-client.apps.toronto.openshiftworkshop.com/emulate
+oc apply -n chat -f scripts/istio/6-0.destinationRule-auth-cb-policy-pool-eject.yaml
+
+
+## Clean 
+oc get virtualservice auth -o yaml
+
+
+
+
+
+
+ 

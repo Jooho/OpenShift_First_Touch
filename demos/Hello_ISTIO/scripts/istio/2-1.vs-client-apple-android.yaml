@@ -1,0 +1,33 @@
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: chat-client
+  namespace: chat
+spec:
+  gateways:
+  - chat-gateway
+  hosts:
+  - chat-client.apps.toronto.openshiftworkshop.com
+  http:
+  - match:
+     - headers:
+         User-Agent:
+           regex: ".*Mac OS.*"
+    route:
+    - destination:
+        host: chat-client
+        subset: apple
+  - match:
+     - headers:
+         User-Agent:
+           regex: ".*Android.*"
+    route:
+    - destination:
+        host: chat-client
+        subset: android
+
+  - route:
+    - destination:
+        host: chat-client
+        subset: v1
+   

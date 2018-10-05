@@ -1,0 +1,284 @@
+***To Do List
+http://www.kiali.io/gettingstarted/#_getting_started_on_openshift
+
+
+
+
+# Begin~~!!!
+oc login https://master.toronto.openshiftworkshop.com:443 --token=oRiwy6MX6ICVmo6hajEwN5Fr3_e7VUz4TrbChhd2owE  
+
+##ISTIO
+curl -L https://github.com/istio/istio/releases/download/1.0.0/istio-1.0.0-linux.tar.gz | tar xz
+
+cd istio-1.0.0
+export ISTIO_HOME=`pwd`
+export PATH=$ISTIO_HOME/bin:$PATH
+
+oc apply -f install/kubernetes/helm/istio/templates/crds.yaml
+oc apply -f install/kubernetes/istio-demo.yaml
+oc project istio-system
+oc adm policy add-scc-to-group anyuid system:authenticated
+
+oc expose svc istio-ingressgateway
+oc expose svc servicegraph
+oc expose svc grafana
+oc expose svc prometheus
+oc expose svc tracing
+
+
+
+
+
+## Redis
+oc new-app --template=redis-ephemeral -p REDIS_PASSWORD=redis
+
+### Waiting for redis
+sleep 4
+
+## Client
+oc new-app docker.io/ljhiyh/chat-client:v1
+
+oc set probe dc/chat-client --readiness --get-url=http://:4200/ --initial-delay-seconds=10 --timeout-seconds=60
+oc scale dc chat-client --replicas=1
+oc expose svc chat-client
+
+
+## Server
+oc new-app docker.io/ljhiyh/chat-server:noredis
+
+oc set probe dc/chat-server --readiness --get-url=http://:8080/healthz --initial-delay-seconds=10 --timeout-seconds=60
+oc expose svc chat-server --hostname="chat-server-example-chat.apps.toronto.openshiftworkshop.com"
+
+
+## Auth
+oc new-app docker.io/ljhiyh/auth
+oc set probe dc/auth --readiness --get-url=http://:8080/hello --initial-delay-seconds=10 --timeout-seconds=60
+
+
+
+oc create service clusterip auth --tcp=8080:8080 
+oc patch svc auth -p '{"spec": {"selector": {"app": "auth-app"}}}'
+oc patch svc auth -p '{"spec": {"selector": {"deploymentconfig": "app-server"}}}'
+
+
+
+
+## Build전 바꿔야하는 것들
+### chat-client
+- environment url
+
+### chat-server
+- url 변경
+- list address
+
+## Build
+for docker in $(ls ./dockerfile/ |grep -v baseimage);
+do 
+  cp  ./dockerfile/$docker/Dockerfile .
+  docker build -t docker.io/ljhiyh/chat-client:$docker .
+  docker push docker.io/ljhiyh/chat-client:$docker
+;done
+
+
+
+## Server source update
+oc new-app https://github.com/Jooho/chat-server-example.git
+oc patch bc/chat-server-example  -p '{"spec":{"strategy": {"sourceStrategy": {"incremental": true}}}}'
+### git commit 
+
+oc start-build chat-server-example
+export tag=v2
+docker pull $(oc get is  chat-server-example -o jsonpath='{.status.dockerImageRepository}')
+docker tag $(oc get is  chat-server-example -o jsonpath='{.status.dockerImageRepository}') docker.io/ljhiyh/chat-server:$tag
+docker push docker.io/ljhiyh/chat-server:$tag
+
+oc import-image chat-server --all -n chat
+
+oc rollout latest dc/chat-server -n chat
+
+
+## Auth application source update
+oc new-app --template=openjdk18-web-basic-s2i -p SOURCE_REPOSITORY_URL=https://github.com/Jooho/spring-boot-demo -p CONTEXT_DIR=""
+oc patch bc/openjdk-app  -p '{"spec":{"strategy": {"sourceStrategy": {"incremental": true}}}}'
+
+### git commit 
+oc start-build openjdk-app
+docker pull $(oc get is  openjdk-app -o jsonpath='{.status.dockerImageRepository}')
+docker tag $(oc get is openjdk-app -o jsonpath='{.status.dockerImageRepository}') docker.io/ljhiyh/auth
+docker push docker.io/ljhiyh/auth
+oc import-image auth --all -n chat
+oc rollout latest dc/auth -n chat
+
+
+1. ISTIO 설치
+
+2. Scripts
+
+# client(etc) - server - auth
+cat ./scripts/1.deploy_base_applications.sh
+~~~
+## Client
+oc create -f scripts/applications/chat-client-v1.yaml
+oc create -f scripts/applications/chat-client-android.yaml
+oc create -f scripts/applications/chat-client-apple.yaml
+
+## Server
+oc create -f scripts/applications/chat-server-noredis.yaml
+oc create -f scripts/applications/chat-server-redis.yaml
+
+## Auth
+oc create -f scripts/applications/auth.yaml
+
+oc expose  svc istio-ingressgateway --name chat-client-ingress --hostname="chat-client-example-chat.apps.toronto.openshiftworkshop.com" -n istio-system
+oc expose  svc istio-ingressgateway --name chat-server-ingress --hostname="chat-server-example-chat.apps.toronto.openshiftworkshop.com" -n istio-system
+oc expose  svc istio-ingressgateway --name auth-ingress --hostname="auth.apps.toronto.openshiftworkshop.com" -n istio-system
+
+## Redis
+oc new-app --template=redis-ephemeral -p REDIS_PASSWORD=redis
+
+## old Server
+#oc new-app docker.io/ljhiyh/chat-server:noredis
+#oc set probe dc/chat-server --readiness --get-url=http://:8080/healthz --initial-delay-seconds=10 --timeout-seconds=60
+#oc expose svc chat-server --hostname="chat-server-example-chat.apps.toronto.openshiftworkshop.com"
+#Old Auth
+#oc new-app docker.io/ljhiyh/auth
+#oc set probe dc/auth --readiness --get-url=http://:8080/hello --initial-delay-seconds=10 --timeout-seconds=60
+~~~
+
+./scripts/1.deploy_base_applications.sh
+
+## Health Check
+chat-client-chat.apps.toronto.openshiftworkshop.com/
+chat-server-example-chat.apps.toronto.openshiftworkshop.com
+
+## Smart Canaries - Routing Based on Headers
+
+./scripts/2.deploy_redis_applications.sh
+
+
+#0 Demo project
+
+oc adm new-project chat --display-name="Toronto Convergency Event Test Project - Chatting" 
+oc project chat
+oc label namespace chat istio-injection=enabled
+oc delete limitrange all --all
+oc adm policy add-scc-to-user privileged -z default -n chat
+
+
+#1 Deploy Application 
+## Client
+oc apply -f <(istioctl kube-inject -f scripts/applications/chat-client-v1.yaml)
+oc apply -f <(istioctl kube-inject -f scripts/applications/chat-client-android.yaml)
+oc apply -f <(istioctl kube-inject -f scripts/applications/chat-client-apple.yaml)
+
+## Server
+oc apply -f <(istioctl kube-inject -f scripts/applications/chat-server-noredis.yaml)
+
+## Auth
+oc apply -f <(istioctl kube-inject -f scripts/applications/auth.yaml)
+
+## Ingress
+oc expose  svc istio-ingressgateway --name chat-client-ingress --hostname="chat-client.apps.toronto.openshiftworkshop.com" -n istio-system
+oc expose  svc istio-ingressgateway --name chat-server-ingress --hostname="chat-server-example-chat.apps.toronto.openshiftworkshop.com" -n istio-system
+
+## istio 
+### Access chat-client v1 only
+oc apply -f scripts/istio/1-0.chat-gateway.yaml 
+oc apply -f scripts/istio/1-1.vs-client-server.yaml  
+oc apply -f scripts/istio/1-2.destinationRule-chat-client.yaml 
+
+
+#2 Distribute users based on device agent 
+oc apply -f scripts/istio/2-0.destinationRule-chat-client-android-apple.yaml  
+oc apply -f scripts/istio/2-1.vs-client-apple-android.yaml 
+
+
+#3 Redis
+## Deploy Redis
+oc new-app --template=redis-ephemeral -p REDIS_PASSWORD=redis
+
+## Deploy new chat server application
+oc apply -f <(istioctl kube-inject -f scripts/applications/chat-server-redis.yaml) 
+
+## Create destination rule for redis/noredis chat-server application
+oc apply -f scripts/istio/3-0.destinationRule-chat-server.yaml 
+
+## Update virtual service for chat-server to check cookie
+oc apply -f scripts/istio/3-1.vs-logined-redis.yaml
+
+
+
+
+oc apply -f <(istioctl kube-inject -f ./chat-client-v1.yaml)
+
+
+
+#Clean
+
+## docker images on master
+for im in $(docker images|grep '\<none' |awk '{print $3}'); do docker rmi --force $im;done
+
+
+
+
+
+
+
+
+
+
+
+
+Reference
+https://www.katacoda.com/openshift/courses/servicemesh/istio-fasttrack
+https://github.com/Scalegrid/code-samples/blob/sg-redis-node-socket-chat/redis-node-socket-chat/index.js
+https://github.com/REPTILEHAUS/reptilehaus-ng2-socket.io-chat/blob/master/client/src/app/shared/chat.service.ts
+
+
+https://connect.redhat.com/
+https://medium.com/oril/spring-boot-websockets-angular-5-f2f4b1c14cee   <= springboot angularjs5
+https://www.baeldung.com/websockets-spring
+https://spring.io/guides/gs/messaging-stomp-websocket/
+
+
+https://github.com/spring-projects/spring-boot/tree/master/spring-boot-samples/spring-boot-sample-activemq
+
+
+
+--host 0.0.0.0 --disable-host-check
+
+
+ISTO
+
+## Service Graph
+https://istio.io/docs/tasks/traffic-management/ingress/#determining-the-ingress-ip-and-ports
+https://istio.io/docs/examples/bookinfo/
+
+
+export INGRESS_HOST=$(oc -n istio-system get service istio-ingressgateway -o jsonpath='{.status.loadBalancer.ingress[0].ip}')
+export INGRESS_PORT=$(oc -n istio-system get service istio-ingressgateway -o jsonpath='{.spec.ports[?(@.name=="http2")].port}')
+export SECURE_INGRESS_PORT=$(oc -n istio-system get service istio-ingressgateway -o jsonpath='{.spec.ports[?(@.name=="https")].port}')
+
+export GATEWAY_URL=$INGRESS_HOST:$INGRESS_PORT
+
+oc  -n istio-system port-forward $(kubectl -n istio-system get pod -l app=servicegraph -o jsonpath='{.items[0].metadata.name}') 8088:8088 
+http://localhost:8088/force/forcegraph.html
+~~~
+/force/forcegraph.html As explored above, this is an interactive D3.js visualization.
+
+/dotviz is a static Graphviz visualization.
+
+/dotgraph provides a DOT serialization.
+
+/d3graph provides a JSON serialization for D3 visualization.
+
+/graph provides a generic JSON serialization.
+
+~~~
+
+
+
+## Grapha
+kubectl -n istio-system port-forward $(kubectl -n istio-system get pod -l app=grafana -o jsonpath='{.items[0].metadata.name}') 3000:3000  
+http://localhost:3000/d/1/istio-mesh-dashboard?refresh=5s&orgId=1
+http://localhost:3000/d/LJ_uJAvmk/istio-service-dashboard?refresh=10s&orgId=1&var-service=unknown&var-srcns=All&var-srcwl=All&var-dstns=All&var-dstwl=All

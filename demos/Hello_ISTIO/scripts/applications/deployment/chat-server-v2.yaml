@@ -1,0 +1,22 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  labels:
+    app: chat-server
+    version: v2
+  name: chat-server-v2
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: chat-server
+        version: v2
+    spec:
+      containers:
+      - image: docker.io/ljhiyh/chat-server:v2
+        imagePullPolicy: Always
+        name: chat-server
+        ports:
+        - containerPort: 8080
+

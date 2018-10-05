@@ -1,0 +1,194 @@
+
+package - tree,jq,tmux
+
+
+oc new-project test --display-name="Toronto Convergency Event Test Project 1"
+
+
+oc new-app https://github.com/Jooho/smoke.git
+
+oc expose svc smoke
+
+curl smoke-test.cloudapps-37-0911.gsslab.rdu2.redhat.com 
+>>
+
+oc get is,istag
+ oc get is,istag
+NAME                 DOCKER REPO                      TAGS      UPDATED
+imagestreams/smoke   172.30.162.243:5000/test/smoke   latest    About a minute ago
+
+NAME                           DOCKER REF                                                                                               UPDATED              IMAGENAME
+imagestreamtags/smoke:latest   172.30.162.243:5000/test/smoke@sha256:130ba04dc475a77168ec324bd81b07b0004630329853e225521185f6a20c9f8a   About a minute ago   sha256:130ba04dc475a77168ec324bd81b07b0004630329853e225521185f6a20c9f8a
+
+
+## Change tag from latest to v2
+
+oc start-build smoke
+
+oc get is,istag
+NAME                 DOCKER REPO                      TAGS        UPDATED
+imagestreams/smoke   172.30.162.243:5000/test/smoke   v2,latest   About a minute ago
+
+NAME                           DOCKER REF                                                                                               UPDATED              IMAGENAME
+imagestreamtags/smoke:latest   172.30.162.243:5000/test/smoke@sha256:130ba04dc475a77168ec324bd81b07b0004630329853e225521185f6a20c9f8a   5 minutes ago        sha256:130ba04dc475a77168ec324bd81b07b0004630329853e225521185f6a20c9f8a
+imagestreamtags/smoke:v2       172.30.162.243:5000/test/smoke@sha256:52e1f314899107d8a1502d8fffe31fcc8f73c692ea8a043fb68f5fa03dcda5ca   About a minute ago   sha256:52e1f314899107d8a1502d8fffe31fcc8f73c692ea8a043fb68f5fa03dcda5ca
+
+
+
+oc get image sha256:52e1f314899107d8a1502d8fffe31fcc8f73c692ea8a043fb68f5fa03dcda5ca
+==> image 의 정보가 몽땅들어있다.
+
+
+
+
+oc exec -n default docker-registry -- ls -al /registry
+
+
+
+
+
+
+oc rsh docker-registry
+cd /registry
+
+## Links
+ tree -L 6 ./repositories/
+
+## Blobs
+tree -L 5 ./blobs/    
+
+##Show the relationship between ImageStream and blob
+oc describe is smoke
+
+## Choose latest tag
+in registry
+cat ./repositories/test/smoke/_manifests/revisions/sha256/${Latest_id}  eg) 130ba…..
+cat ./blobs/sha256/13/130ba….../data    ⇒ has layers information
+cat ./blobs/sha256/77/7734                    ⇒ image information (oc get is)
+
+# Dry run - prune
+
+oc adm prune images --keep-tag-revisions=1 --keep-younger-than=1m
+
+## Explain why those are listed
+
+
+## Deleted images
+oc adm prune images --keep-tag-revisions=1 --keep-younger-than=1m --confirm
+
+## Check registry storage
+du -sch /registry
+
+
+ Now we get some spare rooms for registry. I will call special api and see the metrics.
+As you can see this app suddenly consume a lot of memory.
+
+oc adm new-project java-test --display-name="Toronto Convergency Event Test Project 2" --node-selector=kubernetes.io/hostname=vm6.gsslab.rdu2.redhat.com
+
+#SMOKE
+ while true; do curl smoke-test.cloudapps-37-0911.gsslab.rdu2.redhat.com; echo \n;date; sleep 1; done
+
+oc new-app --template=openjdk18-web-basic-s2i -p SOURCE_REPOSITORY_URL=https://github.com/Jooho/spring-boot-demo -p CONTEXT_DIR=""
+
+## Add
+incremental: true
+
+
+Add environment value (JAVA_OPTIONS=-Xms1024m -Xmx10G) 
+- oc env dc openjdk-app -e "JAVA_OPTIONS=-Xms5G -Xmx6G"
+
+tail -f /var/log/messages|grep kernel
+
+oc logs $(oc get pod|grep -v deploy| grep Running|awk '{print $1'}) -f
+
+check node that the pod is running and go to the node. execute `top`
+
+
+
+Leak 을 2번 연속 치면 used 메모리가 7400까지 올라간다. 그때 login을 실시 하면 hang...
+
+  kube-reserved:
+    - "cpu=200m,memory=512Mi"
+  system-reserved:
+    - "cpu=200m,memory=512Mi"$(
+
+
+
+Quota / Limit
+
+oc env dc openjdk-app -e "JAVA_OPTIONS=-Xms1G -Xmx2G"
+
+echo 'apiVersion: v1
+kind: ResourceQuota
+metadata:
+  name: compute-resources
+spec:
+  hard:
+    pods: "2" 
+    requests.cpu: "1" 
+    requests.memory: 2Gi 
+    limits.cpu: "2" 
+    limits.memory: "4Gi" '|oc create -f -
+
+echo  'apiVersion: "v1"
+kind: "LimitRange"
+metadata:
+  name: "core-resource-limits" 
+spec:
+  limits:
+    - type: "Pod"
+      max:
+        cpu: "2" 
+        memory: "2Gi" 
+      min:
+        cpu: "200m" 
+        memory: "6Mi" 
+    - type: "Container"
+      max:
+        cpu: "1" 
+        memory: "2Gi" 
+      min:
+        cpu: "100m" 
+        memory: "4Mi" 
+      default:
+        cpu: "1" 
+        memory: "2Gi" 
+      defaultRequest:
+        cpu: "500m" 
+        memory: "1Gi" '|oc create -f -
+
+oc delete resourcequota compute-resources      
+
+echo 'apiVersion: v1
+kind: ResourceQuota
+metadata:
+  name: compute-resources
+spec:
+  hard:
+    pods: "2" 
+    requests.cpu: "1" 
+    requests.memory: 2Gi 
+    limits.cpu: "2" 
+    limits.memory: "4Gi" 
+  scopes:
+  - NotTerminating'|oc create -f -
+
+
+
+type: Rolling
+  rollingParams:
+    updatePeriodSeconds: 1 
+    intervalSeconds: 1 
+    timeoutSeconds: 120 
+    maxSurge: "20%" 
+    maxUnavailable: "10%" 
+
+
+
+최초 세팅
+oc get node -l role=master --no-headers  -o name     
+
+
+
+
+
