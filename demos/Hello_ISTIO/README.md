@@ -7,8 +7,7 @@ At a high level, Istio helps reduce the complexity of these deployments, and eas
 
 
 
-Agenda
-~~~~~~
+## Agenda
 
 - [Setup for DEMO](docs/0.setup.adoc)
 - [Install ISTIO](docs/1.install_istio.adoc)
