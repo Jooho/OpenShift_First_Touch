@@ -2,9 +2,10 @@ Distribute Users Based on Device Agent
 --------------------------------------
 
 *Description*
- This demo shows how istio can detect header *agent* and route packets to right client. 
- There are 3 clients for android,apple and v1 which is the default. By default, user can see apple,android and etc logo on the left top side from client application and it will be changed by round robin manner.
- However, if we apply istio policy(virtualService/destination), it will go to right client based on device agent.
+
+This demo shows how istio can detect header *agent* and route packets to right client. 
+There are 3 clients for android,apple and v1 which is the default. By default, user can see apple,android and etc logo on the left top side from client application and it will be changed by round robin manner.
+However, if we apply istio policy(virtualService/destination), it will go to right client based on device agent.
 
 
 ```
