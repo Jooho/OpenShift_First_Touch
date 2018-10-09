@@ -1,0 +1,28 @@
+Setup for Demo
+--------------
+
+In order to use demo script for istio, you need to downgrade security. There are 2 ways to make it.
+
+- Add anyuid to system:authenticated
+- Add anyuid to default/deployer in specific project
+
+With this demo, the first way will be used.
+
+```
+$ oc login
+$ oc adm policy add-scc-to-group anyuid system:authenticated
+```
+
+Update some parameter with setup file and export them as environment variables
+
+```
+$ vi setup
+..
+export CHAT_CLIENT_HOSTNAME="chat-client.apps.toronto.openshiftworkshop.com
+export CHAT_SERVER_HOSTNAME="chat-server-example-chat.apps.toronto.openshiftworkshop.com"
+..
+
+
+$ source setup
+```
+

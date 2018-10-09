@@ -1,8 +1,3 @@
-#0 Demo project
-oc new-project chat --display-name="Toronto Convergency Event Test Project - Chat Program" 
-oc adm policy add-scc-to-user privileged -z default,deployer -n chat
-oc delete limitrange --all
-
 # Demo 1 - Base deployment
 
 ## Redis
@@ -20,8 +15,8 @@ oc apply -n chat -f <(istioctl kube-inject -f scripts/applications/deployment/ch
 oc apply -n chat -f <(istioctl kube-inject -f scripts/applications/deployment/auth.yaml)
 
 ## Ingress
-oc expose  svc istio-ingressgateway --name chat-client-ingress --hostname="chat-client.apps.toronto.openshiftworkshop.com" -n istio-system
-oc expose  svc istio-ingressgateway --name chat-server-ingress --hostname="chat-server-example-chat.apps.toronto.openshiftworkshop.com" -n istio-system
+oc expose  svc istio-ingressgateway --name chat-client-ingress --hostname="${CHAT_CLIENT_HOSTNAME}" -n istio-system
+oc expose  svc istio-ingressgateway --name chat-server-ingress --hostname="${CHAT_SERVER_HOSTNAME}" -n istio-system
 
 ## istio 
 ### Access chat-client v1 only

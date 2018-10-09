@@ -7,7 +7,7 @@ spec:
   gateways:
   - chat-gateway
   hosts:
-  - chat-client.apps.toronto.openshiftworkshop.com
+  - %CHAT_CLIENT_HOSTNAME%
   http:
   - match:
      - headers:
