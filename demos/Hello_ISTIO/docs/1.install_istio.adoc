@@ -1,6 +1,8 @@
 Install ISTIO
 -------------
+
 *Description*
+
 This demo script will use upstream ISTIO release. However, you still have an option to install Red Hat Enterprise ISTIO on your OpenShift Container Platform. It is all your decision which version you will use.
 
 *Install ISTIO information*
