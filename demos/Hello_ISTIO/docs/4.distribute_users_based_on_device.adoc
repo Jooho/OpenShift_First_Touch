@@ -20,3 +20,7 @@ If you already change CHAT_CLIENT_HOSTNAME from scripts/istio/2-1.vs-client-appl
 ```
 oc apply -f  scripts/istio/2-1.vs-client-apple-android.yaml 
 ```
+
+## Result
+
+image::./images/demo2_routing_on_headers.png
