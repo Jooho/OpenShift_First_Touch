@@ -8,7 +8,7 @@ This demo show you how you change the way and how it is different from round_rob
 
 ### What We Want ###
 
-image::./images/demo5_load_balancing_architecture.png
+image::./images/demo5_load_balancing_architecture.png[]
 
 
 ### Clean Up Previous Demo ###
@@ -61,7 +61,7 @@ while true; do curl http://chat-server-example-chat.apps.toronto.openshiftworksh
 {"version":"v2"}
 {"version":"v2"}
 ```
-As you can see, it looks it has some order between v1 and v2 because the load balancing that we are using now is Round Robin.
+As you can see, it looks it has an order between v1 and v2 because the load balancing that we are using now is Round Robin.
 
 - Change the load balancing way from Round Robin to RANDOM
 ```
