@@ -1,0 +1,65 @@
+Pod Ejection 
+------------
+
+ISTIO has a feature to exclude one of pods that has some errors.
+
+This demo show it ejects problematic pod which return 503 error code from pool.
+
+
+
+### Situation Architecture ###
+
+image::./images/demo6_pod_ejection_architecture.png[]
+
+
+
+### Clean Up Previous Demo ###
+
+Scale down Chat Server v2 to 1 and make all requests to go to v2 only.
+```
+oc scale -n chat deployment chat-server-v2 --replicas=1
+oc apply -n chat -f scripts/istio/4-0.destinationRule-chat-server-v1-v2-roundrobin.yaml
+oc apply -n chat -f scripts/istio/4-3.vs-server-v1-v2-0-100.yaml
+```
+
+
+### Go to browser ###
+
+This emulate endpoint show full flow from client to server/auth/redis.
+```
+${CHAT_CLIENT_HOSTNAME}/emulate
+```
+
+image::./images/demo6_emulate_before_error.png[]
+
+### Script ###
+
+- Scale out Auth application from 1 to 2
+```
+oc scale -n chat deployment auth-v1 --replicas=2
+```
+
+- Make error happen from one of auth application pod
+```
+oc rsh $(oc get pod|grep auth|head -n 1|awk '{print $1}')  
+curl localhost:8080/misbehave
+```
+
+- Check browser "emulate" (Clieck blue button)
+image::./images/demo6_emulate_after_error.png[]
+Now you can see, sometimes, Auth application return 503 
+
+
+### Applying ISTIO Policy ###
+```
+oc apply -n chat -f scripts/istio/6-0.destinationRule-auth-cb-policy-pool-eject.yaml 
+```
+
+- Check browser "emulate" (Clieck blue button)
+image::./images/demo6_emulate_after_error_and_pod_ejected.png[]
+
+Now you can see, when Auth application return 503, the pod is excluded from service. After 20secs, ISTIO include the problematic pod then get error code again. Therefore, ISTIO exclude the pod again then we don't see error for 20secs.
+
+
+
+
