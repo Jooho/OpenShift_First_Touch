@@ -22,4 +22,4 @@ $ ./2.deploy_base_application.sh
 
 ## Result ##
 
-image::./images/demo1_deploy_base_applications.png[]
+image::./images/demo1_deploy_base_applications.png[500,350]
