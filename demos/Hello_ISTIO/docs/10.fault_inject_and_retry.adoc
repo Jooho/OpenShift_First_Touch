@@ -1,0 +1,44 @@
+Fault Inject && Retry 
+--------------------
+
+ISTIO provide the ways to inject fault to service and also make a retry when it failed.
+
+This show how to inject fault to service and it applies retry ISTIO policy. Then, the fault will be gone because it will retry to connect.
+
+
+### Situation Architecture ###
+image::./images/demo8_fault_inject_and_retry_architecture.png[]
+
+### Clean Up Previous Demo ###
+
+```
+oc delete virtualservice auth
+
+oc rsh $(oc get pod|grep auth|head -n 1|awk '{print $1}')  
+curl http://localhost:8080/longtask/off
+```
+
+### Script ###
+- Inject Error to service
+```
+oc apply -f  scripts/istio/8-0.vs-auth-fault-503.yaml
+```
+
+- Check browser
+```
+${CHAT_CLIENT_HOSTNAME}/emulate
+```
+
+image::./images/demo8_fault_eject.png[]
+
+- Apply Retry ISITO Policy
+```
+oc delete virtualservice auth-fault
+
+## It may have some bugs because if I don't change the creation order, the fault-inject keep happneing.
+oc apply -f  scripts/istio/8-1.vs-initial-server-retry.yaml
+oc apply -f  scripts/istio/8-0.vs-auth-fault-503.yaml
+```
+
+### Result ###
+image::./images/demo8_retry.png[]

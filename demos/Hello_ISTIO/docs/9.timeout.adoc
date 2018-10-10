@@ -17,6 +17,8 @@ Scale down Auth application to 1 and recover the misbehave of Auth application.
 oc scale -n chat deployment auth-v1 --replicas=1
 oc rsh $(oc get pod|grep auth|head -n 1|awk '{print $1}')  
 curl localhost:8080/misbehave/off
+
+oc delete destinationrule auth-cb-policy
 ```
 
 
