@@ -1,7 +1,7 @@
 Allow Egress
 ------------
 
-## Description ##
+### Description ###
 
 By default, ISTIO block all egress access from OpenShift. If you want to access any sites out of OpenShift, you need to allow it.
 
@@ -10,14 +10,18 @@ This demo has CDN server(common.redhat.com), which is not actually real CDN. Fro
 That's why you can see "INTERNET ACCESS FAIL" logo after you login. However, after you allow the egress, you can see Red Hat logo properly.
 
 
-## What We Want ##
+### What We Want ###
 
 image::./images/demo3_allow_egress_architecture.png[]
 
-## Script ##
+
+### Before applying ISTIO Policy ###
+image::./images/demo3_allow_egress_fail.png[600,400]
+
+### Applying ISTIO Policy ###
 ```
 oc apply -f scripts/istio/3-0.serviceEntry-egress.yaml  
 ```
 
-## Result ##
-image::./images/demo3_allow_egress.png[]
+### Result ###
+image::./images/demo3_allow_egress_ok.png[600,400]
