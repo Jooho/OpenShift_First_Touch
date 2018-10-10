@@ -1,26 +1,26 @@
 Distribute Users Based on Device Agent
 --------------------------------------
 
-## Description ##
+### Description ###
 
 This demo shows how istio can detect header *agent* and route packets to right client. 
 There are 3 clients for android,apple and v1 which is the default. By default, user can see apple,android and etc logo on the left top side from client application and it will be changed by round robin manner.
 However, if we apply istio policy(virtualService/destination), it will go to right client based on device agent.
 
-## What We Want ##
+### What We Want ###
 
 image::./images/demo2_routing_on_headers_architecture.png[]
 
 
-## Before applying ISTIO policy ##
+### Before applying ISTIO policy ###
 You can see apple/android/etc logo on left top in round robin manner.
 
-image::./images/demo2_apply.png[]
-image::./images/demo2_android.png[]
-image::./images/demo2_etc.png[]
+image::./images/demo2_apple.png[200,100] 
+image::./images/demo2_android.png[200,100] 
+image::./images/demo2_etc.png[200,100]
 
 
-## Applying ISTIO Policy ##
+### Applying ISTIO Policy ###
 ```
 # Add 3 differnt clients
 oc apply -f scripts/istio/2-0.destinationRule-chat-client-android-apple.yaml  
@@ -37,9 +37,9 @@ If you already change CHAT_CLIENT_HOSTNAME from scripts/istio/2-1.vs-client-appl
 oc apply -f  scripts/istio/2-1.vs-client-apple-android.yaml 
 ```
 
-## Result ##
+### Result ###
 Refresh your browser then you only can see specific logo depending on your device agent.
 
-image::./images/demo2_etc.png[]
+image::./images/demo2_etc.png[400,250]
 
 
