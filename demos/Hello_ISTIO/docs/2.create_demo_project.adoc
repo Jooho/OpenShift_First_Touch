@@ -1,9 +1,12 @@
 Create Demo Project
 -------------------
 
-*Description*
+## Description ##
 
 Create a demo project and add privileged permission to the default/deployer on the demo project for ISTIO.
+
+
+## Script ##
 
 ```
 oc new-project chat --display-name="Toronto Convergency Event Test Project - Chat Program" 
