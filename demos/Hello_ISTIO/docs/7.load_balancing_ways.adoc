@@ -1,0 +1,90 @@
+Load Balancing Ways
+-------------------
+
+ISTIO provide several load balancing ways(round_robin/random/least_conn).
+
+This demo show you how you change the way and how it is different from round_robin and random
+
+
+### What We Want ###
+
+image::./images/demo5_load_balancing_architecture.png
+
+
+### Clean Up Previous Demo ###
+
+This policy allow the requests to go one of containers (v1,v2)
+```
+oc apply -f scripts/istio/5-0.vs-chat-server-all.yaml
+oc apply -f scripts/istio/5-1.destinationRule-chat-server-v1-v2-round_robin.yaml
+```
+
+
+### Before Applying ISTIO Policy ###
+
+- Check the ratio of chat server version
+```
+while true; do curl http://chat-server-example-chat.apps.toronto.openshiftworkshop.com/get_server_version;echo "";sleep 1 ; done
+{"version":"v2"}
+{"version":"v1"}
+{"version":"v2"}
+{"version":"v2"}
+{"version":"v1"}
+{"version":"v2"}
+
+```
+
+### After Applying ISTIO Policy ###
+- Scale out Chat Server application v2 from 1 to 3.
+```
+oc scale -n chat deployment chat-server-v2 --replicas=3
+
+oc get pod -l app=chat-server,version=v2
+```
+
+- Check the ratio of chat server version
+```
+while true; do curl http://chat-server-example-chat.apps.toronto.openshiftworkshop.com/get_server_version;echo "";sleep 1 ; done
+{"version":"v1"}
+{"version":"v2"}
+{"version":"v2"}
+{"version":"v2"}
+{"version":"v2"}
+{"version":"v2"}
+{"version":"v1"}
+{"version":"v2"}
+{"version":"v2"}
+{"version":"v1"}
+{"version":"v2"}
+{"version":"v2"}
+{"version":"v2"}
+{"version":"v2"}
+{"version":"v2"}
+```
+As you can see, it looks it has some order between v1 and v2 because the load balancing that we are using now is Round Robin.
+
+- Change the load balancing way from Round Robin to RANDOM
+```
+oc apply -f scripts/istio/5-2.destinationRule-chat-server-v1-v2-random.yaml
+```
+
+- Check the ratio of chat server version
+```
+while true; do curl http://chat-server-example-chat.apps.toronto.openshiftworkshop.com/get_server_version;echo "";sleep 1 ; done
+{"version":"v2"}
+{"version":"v1"}
+{"version":"v2"}
+{"version":"v2"}
+{"version":"v2"}
+{"version":"v1"}
+{"version":"v1"}
+{"version":"v1"}
+{"version":"v2"}
+{"version":"v2"}
+{"version":"v1"}
+{"version":"v2"}
+```
+Now, we can not see any order from output. It is just like random
+
+
+
