@@ -7,14 +7,13 @@ At a high level, Istio helps reduce the complexity of these deployments, and eas
 
 
 
-Agenda
-~~~~~~
+## Agenda
 
 - [Setup for DEMO](docs/0.setup.adoc)
 - [Install ISTIO](docs/1.install_istio.adoc)
 - [Create Demo Project](docs/2.create_demo_project.adoc)
-- [Deploy base applications](docs/3.distribute_users_based_on_device.adoc)
-- [Distribute users based on device agent](docs/3.distribute_users_based_on_device.adoc)
+- [Deploy base applications](docs/3.deploy_base_applications.adoc)
+- [Distribute users based on device agent](docs/4.distribute_users_based_on_device.adoc)
 - [Allow Egress]()
 - [Deploy Chat server v2 application]()
 - [Load balancing strategy(Round Robin/RAMDON)]()
