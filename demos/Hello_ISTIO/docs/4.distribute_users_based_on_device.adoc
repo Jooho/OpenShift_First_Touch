@@ -15,9 +15,9 @@ image::./images/demo2_routing_on_headers_architecture.png[]
 ### Before applying ISTIO policy ###
 You can see apple/android/etc logo on left top in round robin manner.
 
-image::./images/demo2_apple.png[180,90]
-image::./images/demo2_android.png[180,90]
-image::./images/demo2_etc.png[180,90]
+image::./images/demo2_apple.png[200,100] 
+image::./images/demo2_android.png[200,100] 
+image::./images/demo2_etc.png[200,100]
 
 
 ### Applying ISTIO Policy ###
