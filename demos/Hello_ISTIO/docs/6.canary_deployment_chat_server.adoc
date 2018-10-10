@@ -1,0 +1,90 @@
+Canary Deployment of Chat Server v2
+-----------------------------------
+
+ISTIO can define weigh of requests easily and it can be useful for new version deployment.
+
+This demo deploy v2 of chat server application and try to handle the portion of requests 50:50 to v1:v2 first. Then we will go to 10:90 and 0:100.
+
+## What We Want
+image::./images/demo4_canary_deployment_architecture.png[]
+
+## Deploy Chat Server v2
+```
+oc apply -n chat -f <(istioctl kube-inject -f scripts/applications/deployment/chat-server-v2.yaml)
+```
+
+## Before Applying ISTIO Policy
+
+Even though you deployed V2 chat server, it goes to only v1 because ISTIO policy set weight 100 to v1:
+```
+while true; do curl http://${CHAT_SERVER_HOSTNAME}/get_server_version;echo "";sleep 1 ; done
+{"version":"v1"}
+{"version":"v1"}
+{"version":"v1"}
+{"version":"v1"}
+{"version":"v1"}
+{"version":"v1"}
+```
+
+## Applying ISTIO Policy
+1. Apply new subset for Chat Server v2
+```
+oc apply -n chat -f scripts/istio/4-0.destinationRule-chat-server-v1-v2-roundrobin.yaml
+```
+
+2. Make 50:50 distribution of requests to v1:v2
+```
+oc apply -n chat -f scripts/istio/4-1.vs-server-v1-v2-50-50.yaml
+```
+
+3. Check 50:50
+```
+while true; do curl http://${CHAT_SERVER_HOSTNAME}/get_server_version;echo "";sleep 1 ; done
+{"version":"v1"}
+{"version":"v1"}
+{"version":"v2"}
+{"version":"v2"}
+{"version":"v1"}
+{"version":"v2"}
+{"version":"v2"}
+{"version":"v1"}
+{"version":"v2"}
+```
+4. Make 10:90 distribution of requests to v1:v2
+```
+oc apply -n chat -f scripts/istio/4-2.vs-server-v1-v2-10-90.yaml
+```
+
+5. Check 10:90
+```
+while true; do curl http://${CHAT_SERVER_HOSTNAME}/get_server_version;echo "";sleep 1 ; done
+{"version":"v2"}
+{"version":"v2"}
+{"version":"v2"}
+{"version":"v2"}
+{"version":"v2"}
+{"version":"v1"}
+{"version":"v2"}
+{"version":"v2"}
+{"version":"v2"}
+{"version":"v2"}
+{"version":"v2"}
+{"version":"v2"}
+```
+
+6. Make 0:100 distribution of requests to v1:v2
+```
+while true; do curl http://${CHAT_SERVER_HOSTNAME}/get_server_version;echo "";sleep 1 ; done
+{"version":"v2"}
+{"version":"v2"}
+{"version":"v2"}
+{"version":"v2"}
+{"version":"v2"}
+{"version":"v2"}
+{"version":"v2"}
+{"version":"v2"}
+{"version":"v2"}
+{"version":"v2"}
+```
+
+
