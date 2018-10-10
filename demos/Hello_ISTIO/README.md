@@ -16,7 +16,7 @@ At a high level, Istio helps reduce the complexity of these deployments, and eas
 - [Distribute users based on device agent](docs/4.distribute_users_based_on_device.adoc)
 - [Allow Egress](docs/5.allow_egress.adoc)
 - [Deploy Chat server v2 application](docs/6.canary_deployment_chat_server.adoc)
-- [Load balancing strategy(Round Robin/RAMDON)]()
+- [Load balancing strategy(Round Robin/RAMDON)](docs/7.load_balancing_ways.adoc)
 - [Pod Ejection]()
 - [Cut requests that takes over 1 second (Timeout)]()
 - [Fault Inject and Retry]()
