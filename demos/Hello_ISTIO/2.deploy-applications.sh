@@ -4,6 +4,7 @@
 oc apply -f <(istioctl kube-inject -f scripts/applications/deployment/redis.yaml )
 
 ## Client
+cat scripts/applications/deployment/chat-client-configmap.yaml |sed "s/%CHAT_SERVER_HOSTNAME%/${CHAT_SERVER_HOSTNAME}/g" | oc apply -f -
 oc apply -n chat -f <(istioctl kube-inject -f scripts/applications/deployment/chat-client-v1.yaml)
 oc apply -n chat -f <(istioctl kube-inject -f scripts/applications/deployment/chat-client-android.yaml)
 oc apply -n chat -f <(istioctl kube-inject -f scripts/applications/deployment/chat-client-apple.yaml)

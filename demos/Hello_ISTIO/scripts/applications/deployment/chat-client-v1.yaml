@@ -29,9 +29,9 @@ spec:
         name: chat-client
         ports:
         - containerPort: 4200
-      volumeMounts:
-        - name: chat-client-env
-          mountPath: /home/node/chat-client/src/environments/environment.ts
+        volumeMounts:
+          - name: chat-client-env
+            mountPath: /home/external
       volumes:
         - name: chat-client-env
           configMap:

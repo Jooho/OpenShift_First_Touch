@@ -1,2 +1,2 @@
-export CHAT_CLIENT_HOSTNAME="chat-client.apps.toronto.openshiftworkshop.com
+export CHAT_CLIENT_HOSTNAME="chat-client.apps.toronto.openshiftworkshop.com"
 export CHAT_SERVER_HOSTNAME="chat-server-example-chat.apps.toronto.openshiftworkshop.com"
