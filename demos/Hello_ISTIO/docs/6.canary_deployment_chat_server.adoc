@@ -74,6 +74,10 @@ while true; do curl http://${CHAT_SERVER_HOSTNAME}/get_server_version;echo "";sl
 
 - Make 0:100 distribution of requests to v1:v2
 ```
+cat scripts/istio/4-3.vs-server-v1-v2-0-100.yaml | sed "s/%CHAT_SERVER_HOSTNAME%/${CHAT_SERVER_HOSTNAME}/g" | oc apply -f -
+```
+- Check 0:100
+```
 while true; do curl http://${CHAT_SERVER_HOSTNAME}/get_server_version;echo "";sleep 1 ; done
 {"version":"v2"}
 {"version":"v2"}
@@ -87,3 +91,4 @@ while true; do curl http://${CHAT_SERVER_HOSTNAME}/get_server_version;echo "";sl
 {"version":"v2"}
 ```
 
+Next - link:./7.load_balancing_ways.adoc[Demo 5 - Load balancing strategy(Round Robin/Random)]
