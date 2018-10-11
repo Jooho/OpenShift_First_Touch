@@ -17,9 +17,11 @@ image:./images/demo1_base_applications_architecture.png[]
 ### Script ###
 
 ```
-$ ./2.deploy_base_application.sh
+$ ./2.deploy-applications.sh
 ``` 
 
 ### Result ###
 
 image::./images/demo1_deploy_base_applications.png[500,350]
+
+Next - link:./4.distribute_users_based_on_device.adoc[Demo 2 - Distribute users based on device agent]
