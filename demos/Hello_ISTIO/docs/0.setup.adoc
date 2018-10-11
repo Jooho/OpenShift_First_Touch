@@ -26,3 +26,4 @@ export CHAT_SERVER_HOSTNAME="chat-server-example-chat.apps.toronto.openshiftwork
 $ source setup
 ```
 
+Next - link:./1.install_istio.adoc[Install ISTIO]
