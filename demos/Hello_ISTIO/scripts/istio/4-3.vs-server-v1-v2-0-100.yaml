@@ -6,7 +6,7 @@ spec:
   gateways:
   - chat-gateway
   hosts:
-  - chat-server-example-chat.apps.toronto.openshiftworkshop.com
+  - %CHAT_SERVER_HOSTNAME%
   http:
   - route:
     - destination:

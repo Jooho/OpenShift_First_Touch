@@ -15,9 +15,10 @@ image::./images/demo5_load_balancing_architecture.png[]
 
 This policy allow the requests to go one of containers (v1,v2)
 ```
-oc apply -f scripts/istio/5-0.vs-chat-server-all.yaml
+cat scripts/istio/5-0.vs-chat-server-all.yaml | sed "s/%CHAT_SERVER_HOSTNAME%/${CHAT_SERVER_HOSTNAME}/g" | oc apply -f -
 oc apply -f scripts/istio/5-1.destinationRule-chat-server-v1-v2-round_robin.yaml
 ```
+
 
 
 ### Before Applying ISTIO Policy ###

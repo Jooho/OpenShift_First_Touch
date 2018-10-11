@@ -29,12 +29,12 @@ while true; do curl http://${CHAT_SERVER_HOSTNAME}/get_server_version;echo "";sl
 ### Applying ISTIO Policy ###
 - Apply new subset for Chat Server v2
 ```
-oc apply -n chat -f scripts/istio/4-0.destinationRule-chat-server-v1-v2-roundrobin.yaml
+cat scripts/istio/4-0.destinationRule-chat-server-v1-v2-roundrobin.yaml | sed "s/%CHAT_SERVER_HOSTNAME%/${CHAT_SERVER_HOSTNAME}/g" | oc apply -f -
 ```
 
 - Make 50:50 distribution of requests to v1:v2
 ```
-oc apply -n chat -f scripts/istio/4-1.vs-server-v1-v2-50-50.yaml
+cat scripts/istio/4-1.vs-server-v1-v2-50-50.yaml | sed "s/%CHAT_SERVER_HOSTNAME%/${CHAT_SERVER_HOSTNAME}/g" | oc apply -f -
 ```
 
 - Check 50:50
@@ -52,7 +52,7 @@ while true; do curl http://${CHAT_SERVER_HOSTNAME}/get_server_version;echo "";sl
 ```
 - Make 10:90 distribution of requests to v1:v2
 ```
-oc apply -n chat -f scripts/istio/4-2.vs-server-v1-v2-10-90.yaml
+cat scripts/istio/4-2.vs-server-v1-v2-10-90.yaml | sed "s/%CHAT_SERVER_HOSTNAME%/${CHAT_SERVER_HOSTNAME}/g" | oc apply -f -
 ```
 
 - Check 10:90
@@ -86,5 +86,4 @@ while true; do curl http://${CHAT_SERVER_HOSTNAME}/get_server_version;echo "";sl
 {"version":"v2"}
 {"version":"v2"}
 ```
-
 

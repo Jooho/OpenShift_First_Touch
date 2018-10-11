@@ -21,10 +21,9 @@ oc expose  svc istio-ingressgateway --name chat-server-ingress --hostname="${CHA
 ## istio 
 ### Access chat-client v1 only
 oc apply -n chat -f scripts/istio/1-0.chat-gateway.yaml 
-oc apply -n chat -f scripts/istio/1-1.vs-client-server.yaml  
-oc apply -n chat -f scripts/istio/1-2.destinationRule-chat-client.yaml 
-oc apply -n chat -f scripts/istio/1-3.destinationRule-chat-server.yaml 
-
+cat scripts/istio/1-1.vs-client-server.yaml | sed "s/%CHAT_CLIENT_HOSTNAME%/${CHAT_CLIENT_HOSTNAME}/g" | sed "s/%CHAT_SERVER_HOSTNAME%/${CHAT_SERVER_HOSTNAME}/g" | oc apply -f -
+cat scripts/istio/1-2.destinationRule-chat-client.yaml | sed "s/%CHAT_CLIENT_HOSTNAME%/${CHAT_CLIENT_HOSTNAME}/g" | oc apply -f -
+cat scripts/istio/1-3.destinationRule-chat-server.yaml | sed "s/%CHAT_SERVER_HOSTNAME%/${CHAT_SERVER_HOSTNAME}/g" | oc apply -f -
 
 clear
 

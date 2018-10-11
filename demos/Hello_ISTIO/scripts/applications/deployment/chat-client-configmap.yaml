@@ -1,0 +1,9 @@
+apiVersion: v1
+data:
+  environments.ts: |
+    export const environment = {
+      production: false,
+      nodeJsUrl: ''
+    };
+kind: ConfigMap
+
