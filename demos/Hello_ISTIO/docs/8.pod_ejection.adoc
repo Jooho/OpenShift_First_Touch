@@ -45,8 +45,10 @@ oc rsh $(oc get pod|grep auth|head -n 1|awk '{print $1}')
 curl localhost:8080/misbehave
 ```
 
-- Check browser "emulate" (Clieck blue button)
+- Check browser "emulate" (Click blue button)
+
 image::./images/demo6_emulate_after_error.png[]
+
 Now you can see, sometimes, Auth application return 503 
 
 
@@ -55,7 +57,8 @@ Now you can see, sometimes, Auth application return 503
 oc apply -n chat -f scripts/istio/6-0.destinationRule-auth-cb-policy-pool-eject.yaml 
 ```
 
-- Check browser "emulate" (Clieck blue button)
+- Check browser "emulate" (Click blue button)
+
 image::./images/demo6_emulate_after_error_and_pod_ejected.png[]
 
 Now you can see, when Auth application return 503, the pod is excluded from service. After 20secs, ISTIO include the problematic pod then get error code again. Therefore, ISTIO exclude the pod again then we don't see error for 20secs.
