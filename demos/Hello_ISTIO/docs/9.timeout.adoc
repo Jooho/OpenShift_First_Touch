@@ -1,7 +1,7 @@
 ISTIO TIMEOUT
 -------------
 
-ISTIO has a feature to cut out requests that takes more than what we expected.
+ISTIO has a feature to cut off requests that takes more than what we expected.
 
 This demo show that all requests that take more than 1 sec will be cut by ISTIO.
 
@@ -48,7 +48,7 @@ real	0m5.293s
 user	0m0.006s
 sys	0m0.005s
 ```
-Now, it takes more than 5 secs. It is not good for service application so we want to cut it down when the requests takes more than 1secs.
+Now, it takes more than 5 secs. It is not good for service application so we want to cut it off when the requests takes more than 1secs.
 
 
 ### After Applying ISTIO Policy ###
@@ -56,7 +56,7 @@ Now, it takes more than 5 secs. It is not good for service application so we wan
 oc apply -n chat -f scripts/istio/7-0.vs-initial-server-timeout.yaml
 ```
 
-- Check how long it takes and what http code return.
+- Check how long it takes and what ISTIO do and what http code return.
 ```
 for i in {10..100}; do time curl http://chat-server-example-chat.apps.toronto.openshiftworkshop.com/login?id=test${i}; done
 upstream request timeout
@@ -68,7 +68,7 @@ real	0m1.223s
 user	0m0.003s
 sys	0m0.010s
 ```
-As you can see, it cuts them out because it takes more than 1 sec.
+As you can see, it cuts them off by ISTIO and retrun 504 error code(`GATEWAY TIMEOUT`)because it takes more than 1 sec.
 
 
 
