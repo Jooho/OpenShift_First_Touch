@@ -19,7 +19,7 @@ Scale down Chat Server v2 to 1 and make all requests to go to v2 only.
 ```
 oc scale -n chat deployment chat-server-v2 --replicas=1
 oc apply -n chat -f scripts/istio/4-0.destinationRule-chat-server-v1-v2-roundrobin.yaml
-oc apply -n chat -f scripts/istio/4-3.vs-server-v1-v2-0-100.yaml
+cat scripts/istio/4-3.vs-server-v1-v2-0-100.yaml | sed "s/%CHAT_SERVER_HOSTNAME%/${CHAT_SERVER_HOSTNAME}/g" | oc apply -f -
 ```
 
 
@@ -64,5 +64,5 @@ image::./images/demo6_emulate_after_error_and_pod_ejected.png[]
 Now you can see, when Auth application return 503, the pod is excluded from service. After 20secs, ISTIO include the problematic pod then get error code again. Therefore, ISTIO exclude the pod again then we don't see error for 20secs.
 
 
-
+Next - link:./9.timeout.adoc[Demo 7 - Timeout]
 
