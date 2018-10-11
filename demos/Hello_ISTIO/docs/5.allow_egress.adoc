@@ -25,3 +25,5 @@ oc apply -f scripts/istio/3-0.serviceEntry-egress.yaml
 
 ### Result ###
 image::./images/demo3_allow_egress_ok.png[600,400]
+
+Next - link:./6.canary_deployment_chat_server.adoc[Demo 4 - Canary Deployment]
