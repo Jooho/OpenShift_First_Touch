@@ -3,7 +3,7 @@ Circuit Breaker
 
 One of strong ISTIO features is Circuit Breaker that is famous because of NetflixOSS. NetflixOSS support Circuit Breaker for Java applications but ISTIO support all languages without changing codes.
 
-This demo show that if there are many requests to Auth application more than what this application can handle, ISTIO will cut it off to prevent more problems.
+This demo show that if there are many requests to Auth application more than what this application can handle, ISTIO will cut it off to prevent more serious problems.
 
 
 ### Situation Architecture ###
@@ -27,7 +27,7 @@ HTTP/1.1 202     0.07 secs:     276 bytes ==> GET  /emulate?id=abc
 HTTP/1.1 202     0.07 secs:     276 bytes ==> GET  /emulate?id=abc
 HTTP/1.1 202     0.07 secs:     276 bytes ==> GET  /emulate?id=abc
 HTTP/1.1 202     0.07 secs:     276 bytes ==> GET  /emulate?id=abc
-,,,,,
+...
 
 Transactions:		          40 hits
 Availability:		      100.00 %
@@ -43,10 +43,12 @@ Longest transaction:	        0.08
 Shortest transaction:	        0.04
 
 ```
-Every requests are finished in 0.07 secs because it returns immediately due to duplicated userId "abc"
+Every requests are finished in 0.07 secs without errors because it returns immediately due to duplicated userId "abc"
 
 
 - Apply Circuit Breaker ISTIO Policy
+This ISTIO Policy cut requests when there are more than 1 request concurrently.
+
 ```
 oc apply -f scripts/istio/9-0.destinationRule-auth-cb-policy-max-connection.yaml
 ```
@@ -87,7 +89,7 @@ Shortest transaction:	        0.02
 Almost half of requests return 503 because of ISTIO Policy.
 
 
-- Increase Pending from 1 to 20.
+- Increase http1MaxPendingRequests from 1 to 20.
 ```
 oc apply -f scripts/istio/9-1.destinationRule-auth-cb-policy-pending.yaml
 ```
