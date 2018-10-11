@@ -1,12 +1,12 @@
 Create Demo Project
 -------------------
 
-## Description ##
+### Description ###
 
 Create a demo project and add privileged permission to the default/deployer on the demo project for ISTIO.
 
 
-## Script ##
+### Script ###
 
 ```
 oc new-project chat --display-name="Toronto Convergency Event Test Project - Chat Program" 
@@ -16,3 +16,5 @@ oc delete limitrange --all
 
 *Tip.*
 This whole demo script was developed for 2018 Toronto Convergence Event so project name is like following. However, you can override it.
+
+Next - link:./3.deploy_base_applications.adoc[Demo 1 - Deploy base applications]
