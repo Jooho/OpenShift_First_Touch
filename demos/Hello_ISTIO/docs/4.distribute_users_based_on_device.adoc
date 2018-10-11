@@ -42,4 +42,5 @@ Refresh your browser then you only can see specific logo depending on your devic
 
 image::./images/demo2_etc.png[400,250]
 
+Next - link:./5.allow_egress.adoc[Demo 3 - Allow Egress]
 
