@@ -3,7 +3,7 @@ Load Balancing Ways
 
 ISTIO provide several load balancing ways(round_robin/random/least_conn).
 
-This demo show you how you change the way and how it is different from round_robin and random
+This demo show how you change the way and how it is different from round_robin and random
 
 
 ### What We Want ###
