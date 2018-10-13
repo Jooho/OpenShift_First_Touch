@@ -32,7 +32,7 @@ oc get pod -l app=chat-server,version=v2
 
 - Check the ratio of chat server version (It is using Round Robin)
 ```
-while true; do curl http://chat-server-example-chat.apps.toronto.openshiftworkshop.com/get_server_version;echo "";sleep 1 ; done
+while true; do curl http://${CHAT_SERVER_HOSTNAME}/get_server_version;echo "";sleep 1 ; done
 {"version":"v2"}
 {"version":"v1"}
 {"version":"v2"}
@@ -52,7 +52,7 @@ oc apply -f scripts/istio/5-2.destinationRule-chat-server-v1-v2-random.yaml
 
 - Check the ratio of chat server version
 ```
-while true; do curl http://chat-server-example-chat.apps.toronto.openshiftworkshop.com/get_server_version;echo "";sleep 1 ; done
+while true; do curl http://${CHAT_SERVER_HOSTNAME}/get_server_version;echo "";sleep 1 ; done
 {"version":"v2"}
 {"version":"v1"}
 {"version":"v2"}
