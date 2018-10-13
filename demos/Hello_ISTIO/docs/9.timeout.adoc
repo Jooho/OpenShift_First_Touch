@@ -71,5 +71,5 @@ sys	0m0.010s
 ```
 As you can see, it cuts them off by ISTIO and retrun 504 error code(`GATEWAY TIMEOUT`)because it takes more than 1 sec.
 
-
+Next - link:./10.fault_inject_and_retry.adoc[Fault Inject && Retry]
 
