@@ -17,7 +17,7 @@ Scale down Auth application to 1 and recover the misbehave of Auth application.
 oc scale -n chat deployment auth-v1 --replicas=1
 oc rsh $(oc get pod|grep auth|head -n 1|awk '{print $1}')  
 curl localhost:8080/misbehave/off
-
+exit
 oc delete destinationrule auth-cb-policy
 ```
 
@@ -39,6 +39,7 @@ It is pretty fast under 0.3 secs.
 ```
 oc rsh $(oc get pod|grep auth|head -n 1|awk '{print $1}')  
 curl http://localhost:8080/longtask
+exit
 ```
 - Check how much slower then before
 ```
@@ -53,12 +54,12 @@ Now, it takes more than 5 secs. It is not good for service application so we wan
 
 ### After Applying ISTIO Policy ###
 ```
-oc apply -n chat -f scripts/istio/7-0.vs-initial-server-timeout.yaml
+oc apply -n chat -f scripts/istio/7-0.vs-initial-auth-timeout.yaml
 ```
 
 - Check how long it takes and what ISTIO do and what http code return.
 ```
-for i in {10..100}; do time curl http://chat-server-example-chat.apps.toronto.openshiftworkshop.com/login?id=test${i}; done
+for i in {10..100}; do time curl http://${CHAT_SERVER_HOSTNAME}/login?id=test${i}; done
 upstream request timeout
 real	0m1.211s
 user	0m0.006s
