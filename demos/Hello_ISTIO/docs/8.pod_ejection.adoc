@@ -43,6 +43,7 @@ oc scale -n chat deployment auth-v1 --replicas=2
 ```
 oc rsh $(oc get pod|grep auth|head -n 1|awk '{print $1}')  
 curl localhost:8080/misbehave
+exit
 ```
 
 - Check browser "emulate" (Click blue button)
