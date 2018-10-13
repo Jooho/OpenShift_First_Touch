@@ -19,3 +19,4 @@ oc expose svc grafana
 oc expose svc prometheus
 oc expose svc tracing
 
+exec $SHELL -i
