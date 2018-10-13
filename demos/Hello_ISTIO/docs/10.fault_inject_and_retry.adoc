@@ -16,6 +16,7 @@ oc delete virtualservice auth
 
 oc rsh $(oc get pod|grep auth|head -n 1|awk '{print $1}')  
 curl http://localhost:8080/longtask/off
+exit
 ```
 
 ### Script ###
