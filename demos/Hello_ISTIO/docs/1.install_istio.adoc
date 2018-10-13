@@ -22,7 +22,7 @@ oc login
 *Install ISTIO*
 
 ```
-./scripts/0.install_istio.sh
+./0.install_istio.sh
 ```  
 
 Next - link:./2.create_demo_project.adoc[Create Demo Project]
