@@ -43,3 +43,5 @@ oc apply -f  scripts/istio/8-0.vs-auth-fault-503.yaml
 
 ### Result ###
 image::./images/demo8_retry.png[]
+
+Next - link:./11.circuit_breaker.adoc[Circuit Breaker]
