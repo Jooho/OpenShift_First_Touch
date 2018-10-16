@@ -15,6 +15,10 @@ image::./images/demo9_circuit_breaker_architecture.png[]
 oc delete virtualservice auth-fault auth-retry
 ```
 
+### Install Siege ###
+./install_siege.adoc
+
+
 ### Script ###
 - Put load with siege program
 ```
