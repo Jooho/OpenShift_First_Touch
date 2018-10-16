@@ -1,0 +1,16 @@
+Install Siege
+--------------
+
+Siege is load tester application. This help you to compile siege command.
+
+```
+yum install gcc* make automake openssl openssl-devel zlib zlib-devel  -y
+
+wget https://github.com/JoeDog/siege/archive/v4.0.0.tar.gz -O - |tar -xz
+mv siege-4.0.0 siege
+cd siege
+sudo ./configure
+sudo make install
+sudo make
+mv src/siege /usr/bin/.
+```
