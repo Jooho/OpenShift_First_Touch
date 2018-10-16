@@ -20,3 +20,4 @@ oc expose svc prometheus
 oc expose svc tracing
 
 exec $SHELL -i
+cd ../
