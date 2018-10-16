@@ -9,9 +9,7 @@ Create a demo project and add privileged permission to the default/deployer on t
 ### Script ###
 
 ```
-oc new-project chat --display-name="Toronto Convergency Event Test Project - Chat Program" 
-oc adm policy add-scc-to-user privileged -z default,deployer -n chat
-oc delete limitrange --all
+./1.create-demo-project.sh
 ```
 
 *Tip.*
