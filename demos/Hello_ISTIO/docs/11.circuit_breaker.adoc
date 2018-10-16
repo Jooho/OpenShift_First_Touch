@@ -16,7 +16,7 @@ oc delete virtualservice auth-fault auth-retry
 ```
 
 ### Install Siege ###
-./install_siege.adoc
+link:./install_siege.adoc[Siege Compile Steps]
 
 
 ### Script ###
