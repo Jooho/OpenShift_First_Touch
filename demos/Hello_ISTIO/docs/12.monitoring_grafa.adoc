@@ -1,0 +1,47 @@
+Monitoring - Grafa, Prometheus, Tracing, ServiceGraph
+------------------
+
+ISTIO provide several monitoring tool
+- Grafa
+  - Dashboard [Istio Mesh/Galley/Service/Workload/Mixer/Pilot]
+- Prometheus
+
+
+### Grafa ###
+
+Play with Grafa
+
+```
+oc get route -n istio-system|grep grafa|awk '{print $2}'
+grafana-istio-system.apps.milton.openshiftworkshop.com
+```
+### Prometheus ###
+```
+oc get route -n istio-system|grep prometheus|awk '{print $2}'
+prometheus-istio-system.apps.milton.openshiftworkshop.com
+```
+
+### Tracing ###
+```
+oc get route -n istio-system|grep tracing|awk '{print $2}'
+tracing-istio-system.apps.milton.openshiftworkshop.com
+```
+
+### Service Graph ###
+```
+oc get route -n istio-system|grep servicegraph|awk '{print $2}'
+servicegraph-istio-system.apps.milton.openshiftworkshop.com
+```
+
+Useful Endpoint
+```
+/force/forcegraph.html As explored above, this is an interactive D3.js visualization.
+
+/dotviz is a static Graphviz visualization.
+
+/dotgraph provides a DOT serialization.
+
+/d3graph provides a JSON serialization for D3 visualization.
+
+/graph provides a generic JSON serialization.
+```
