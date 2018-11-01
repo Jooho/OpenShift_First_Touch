@@ -45,15 +45,17 @@ oc new-project rh-sso
 ```
 
 Tip. If you want to use random value for SECRETS_KEYSTORE_PASSWORD
-``
+```
 export SECRETS_KEYSTORE_PASSWORD=$(openssl rand -base64 512 | tr -dc A-Z-a-z-0-9 | head -c 17)
 ```
 
-## Deploy 
+## Steps 
 
 - [Generate Certs and Create Secret.](./generate-certs.md)
 
 - [Deploy RH-SSO](./deploy-sso.md)
+
+- [Integrate RH SSO with OpenShift](./ocp-integration.md)
 
 ## Referecne
 
