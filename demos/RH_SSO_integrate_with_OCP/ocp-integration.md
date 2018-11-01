@@ -11,23 +11,6 @@ Access to SSO Admin Console "https://sso.${subdomain}"
 - Type `OpenShift` on name field
 - Click `Create`
 
-
-### New User 
-
-- Create a user
-  - Click `Users` on left menu
-  - Click `Add user` on table
-  - Type `jhouse` on Username field
-  - Click `Save`
-
-- Set password of the user
-  - Click `Credentials` tab
-  - Type `redhat` on "New password" and "Password Confirmation" field.
-  - Disable `Temporary` slide
-  - Click `Reset Password`
-  - Click `Change password`
-
-
 ### Create a new Client
 
 - Click `Clients` on left menu
@@ -52,19 +35,35 @@ export sso_secret_text=$test
 - Copy `auth-server-url`
 - Export the url 
 ```
-export auth-server-url=$test
+export auth_server_url=$test
 
 (ex)
-export auth-server-url='https://sso.cloudapps-37-0911.gsslab.rdu2.redhat.com/auth'
+export auth_server_url='https://sso.cloudapps-37-0911.gsslab.rdu2.redhat.com/auth'
 ```
+
+### New User 
+
+- Create a user
+  - Click `Users` on left menu
+  - Click `Add user` on table
+  - Type `jhouse` on Username field
+  - Click `Save`
+
+- Set password of the user
+  - Click `Credentials` tab
+  - Type `redhat` on "New password" and "Password Confirmation" field.
+  - Disable `Temporary` slide
+  - Click `Reset Password`
+  - Click `Change password`
+  - Disable `Temporary` slide again  <== Seems like a bug
+
 
 ### Get information
 ```
-curl -k  https://sso.cloudapps-37-0911.gsslab.rdu2.redhat.com/auth/realms/OpenShift/.well-known/openid-configuration | python -m json.tool
-
-
 curl -k  https://sso.cloudapps-37-0911.gsslab.rdu2.redhat.com/auth/realms/$REALM_NAME/.well-known/openid-configuration | python -m json.tool
 
+(ex)
+curl -k  https://sso.cloudapps-37-0911.gsslab.rdu2.redhat.com/auth/realms/OpenShift/.well-known/openid-configuration | python -m json.tool
 ```
 
 ## Master Server
@@ -158,7 +157,7 @@ Update master-config ConfigMap
 ## Test
 
 - Go to Master API Server on browser
-- Login with `rh-sso`
+- Login with `rh-sso` identityProvider using `jhouse/redhat`
 
 
 
