@@ -60,7 +60,7 @@ oc new-app  --template=sso72-mysql-persistent \
   -p IMAGE_STREAM_NAMESPACE=openshift \
   -p SSO_ADMIN_USERNAME=ssoadmin \
   -p SSO_ADMIN_PASSWORD=redhat \
-  -p SSO_REALM=OpenShift \
+  -p SSO_REALM=testRealm \
   -p SSO_SERVICE_USERNAME=testUser \
   -p SSO_SERVICE_PASSWORD=testPw \
   -p SSO_TRUSTSTORE_PASSWORD=${SECRETS_KEYSTORE_PASSWORD} \
@@ -71,10 +71,14 @@ oc new-app  --template=sso72-mysql-persistent \
   --name=sso
 ```
 
+## Issues
+- sso application will be restarted because database connection sometimes at deploying stage.
+  So wait for the sso deploying properly.
+ 
 ## Test
 
 - Login SSO Admin Console
-  - Go to "sso.${subdomain} on browser
+  - Go to "https://sso.${subdomain} on browser
   - Click "Administration Console"
   - Login with "ssoadmin/redhat"
 
