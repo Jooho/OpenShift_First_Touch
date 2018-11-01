@@ -71,10 +71,14 @@ oc new-app  --template=sso72-mysql-persistent \
   --name=sso
 ```
 
+## Issues
+- sso application will be restarted because database connection sometimes at deploying stage.
+  So wait for the sso deploying properly.
+ 
 ## Test
 
 - Login SSO Admin Console
-  - Go to "sso.${subdomain} on browser
+  - Go to "https://sso.${subdomain} on browser
   - Click "Administration Console"
   - Login with "ssoadmin/redhat"
 
