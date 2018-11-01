@@ -68,6 +68,38 @@ ipcs -m
 ipcs -s -t
 ```
 
+## [EAP]
+
+- Generate JDR
+```
+export POD=%POD_NAME
+
+oc rsync $POD:$(oc exec $POD /opt/eap/bin/jdr.sh | grep "JDR location" | awk '{print $3}') .
+
+or 
+
+xdiag.sh -p $POD -j -o ./
+```
+
+- Heap Dump
+```
+export POD=%POD_NAME
+
+oc exec $POD -- /usr/lib/jvm/java-1.8.0-openjdk/bin/jmap -J-d64 -dump:format=b,file='/opt/eap/standalone/tmp/heap.hprof' $(oc exec $POD ps aux | grep java | awk '{print $2}'); oc rsync $POD:/opt/eap/standalone/tmp/heap.hprof .
+
+or
+
+xdiag.sh -p $POD -m -o ./
+```
+
+- Thread Dump
+```
+export POD=%POD_NAME
+
+PID=$(oc exec $POD ps aux | grep java | awk '{print $2}'); oc exec $POD -- bash -c "for x in {1..10}; do jstack -l $PID >> /opt/eap/standalone/tmp/jstack.out; sleep 2; done"; oc rsync $POD:/opt/eap/standalone/tmp/jstack.out .
+```
+
+
 
 ## [Common]
 - Image Version Check
@@ -79,3 +111,6 @@ ipcs -s -t
   ```
   oc get po -n openshift-infra -o 'go-template={{range $pod := .items}}{{if eq $pod.status.phase "Running"}}{{range $container := $pod.spec.containers}}oc exec {{$pod.metadata.name}} -n openshift-infra -- find /root/buildinfo -name Dockerfile-openshift* | grep -o metrics.* {{"\n"}}{{end}}{{end}}{{end}}' | bash -
   ```
+
+
+

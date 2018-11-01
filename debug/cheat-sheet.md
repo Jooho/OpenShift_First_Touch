@@ -25,3 +25,12 @@ oc get pod --all-namespaces --template='{{ range $pod := .items}} {{if ne $pod.s
 ```
 for im in $(docker images|grep '\<none' |awk '{print $3}'); do docker rmi --force $im;done
 ```
+
+
+
+### [Tips] 
+
+- Change Terminal Text Color to Normal
+```
+tput sgr0
+```
