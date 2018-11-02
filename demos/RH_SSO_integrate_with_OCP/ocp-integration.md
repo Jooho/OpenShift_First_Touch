@@ -79,7 +79,7 @@ cat <<EOF> ./openid.txt
       apiVersion: v1
       kind: OpenIDIdentityProvider
       clientID: ocp-auth
-      clientSecret: "${sso_secret_text}"
+      clientSecret: ${sso_secret_text}
       ca: xpaas.crt
       urls:
         authorize: ${auth_server_url}/realms/Openshift/protocol/openid-connect/auth
