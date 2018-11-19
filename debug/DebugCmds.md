@@ -101,6 +101,45 @@
   PID=$(oc exec $POD ps aux | grep java | awk '{print $2}'); oc exec $POD -- bash -c "for x in {1..10}; do jstack -l $PID >> /opt/eap/standalone/tmp/jstack.out; sleep 2; done"; oc rsync $POD:/opt/eap/standalone/tmp/jstack.out .
   ```
 
+## [ETCD]
+- Backup
+  - Snapshot
+    ```
+    export ETCDCTL_API=3
+    source /etc/etcd/etcd.conf
+    etcdctl --cert=$ETCD_PEER_CERT_FILE --key=$ETCD_PEER_KEY_FILE --cacert=$ETCD_TRUSTED_CA_FILE --endpoints=$ETCD_LISTEN_CLIENT_URLS snapshot save  /backup/etcd-config-$(date +%Y%m%d)/backup.db  
+    ```
+  - Check Snapshot
+    ```
+    etcdctl --write-out=table snapshot status  /backup/etcd-config-$(date +%Y%m%d)/backup.db
+    ```
+  - [Restore](https://docs.openshift.com/container-platform/3.11/admin_guide/assembly_restore-etcd-quorum.html#backing-up-etcd_restore-etcd-quorum)
+
+  - [Space Quota](https://github.com/etcd-io/etcd/blob/master/Documentation/op-guide/maintenance.md#space-quota)
+
+- Unit is masked
+  ```
+  ex)
+  /etc/systemd/system/firewalld.service -> /dev/null
+  
+  rm -rf /etc/systemd/system/firewalld.service
+  systemctl daemon-reload
+  ```
+  
+- etcd wal file is not loaded due to `permission denied`
+  ```
+  chown -R etcd.etcd /var/lib/etcd/
+
+  restorecon -Rv /var/lib/etcd
+
+  netstat -tunlp|grep 2380
+  tcp        0      0 10.10.181.87:2380       0.0.0.0:*               LISTEN      40090/etcd          
+  tcp        0      0 10.10.181.87:2380       0.0.0.0:*               LISTEN      40090/etcd          
+
+  kill -9 40090
+
+  systemctl start etcd
+  ```
 
 
 ## [Common]
