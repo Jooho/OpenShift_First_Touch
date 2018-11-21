@@ -148,8 +148,30 @@
 
   openssl verify -CAfile /etc/origin/master/ca-bundle.crt /etc/origin/master/master.server.crt
   ```
+- Compare certificate-authority-data
+  ```
+  grep certificate-authority-data /etc/origin/master/admin.kubeconfig | awk '{ print $2 }' | base64 -d | md5sum
+  grep certificate-authority-data /root/.kube/config | awk '{ print $2 }' | base64 -d | md5sum
+  md5sum /etc/origin/master/ca-bundle.crt
+  ```
+- Login with openssl
+  ```
+  openssl s_client -CAfile /etc/origin/master/ca-bundle.crt -connect oc-master.domain.com:8443
+  ```
+  
+- Execute oc cmd with admin.kubeconfig
+  ```
+  oc status --config=/etc/origin/master/admin.kubeconfig
+  ```
 
+- Check issuer on all masters
+  ```
+  openssl x509 -noout -issuer -in /etc/origin/master/ca.crt
+  md5sum /etc/origin/master/ca.crt 
+  ```
 
+- Reference
+  - https://github.com/openshift/openshift-ansible/issues/3784
 
 ## [Common]
 - Image Version Check
