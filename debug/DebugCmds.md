@@ -141,6 +141,15 @@
   systemctl start etcd
   ```
 
+## [Certs]
+- Verify certificate by ca cert
+  ```
+  openssl verify -CAfile /etc/origin/master/ca.crt /etc/origin/master/master.server.crt
+
+  openssl verify -CAfile /etc/origin/master/ca-bundle.crt /etc/origin/master/master.server.crt
+  ```
+
+
 
 ## [Common]
 - Image Version Check
