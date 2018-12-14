@@ -1,0 +1,119 @@
+# For who don't have golang
+sudo yum install golang-bin gcc-c++ libvirt-devel
+
+# For who already have golang
+sudo yum install gcc-c++ libvirt-devel
+
+# GOPATH Directory
+mkdir /home/jooho/dev/git/go
+cd /home/jooho/dev/git/go
+mkdir src pkg bin
+
+# Update GO Environment variables
+
+go env
+export GOPATH=/home/jooho/dev/git/go
+export GOBIN=${GOPATH}/bin
+
+go get github.com/openshift/installer
+
+cd src/github.com/openshift/installer
+
+# Download dependencies
+dep ensure
+
+# Source Updates
+
+## hostname/memory
+vi ./data/data/libvirt/main.tf
+
+## hostname/memory
+vi data/data/libvirt/bootstrap/main.tf
+
+## memory
+vi data/data/libvirt/variables-libvirt.tf
+
+
+# Go build
+TAGS=libvirt_destroy hack/build.sh
+
+# Create working directory for ocp4 installation
+mkdir okd
+cp bin/openshift-install ./okd
+
+
+# Prerequisite
+# Refer official document: https://github.com/openshift/installer/blob/master/docs/dev/libvirt-howto.md
+
+
+# Install KVM
+sudo yum install libvirt  libvirt-client libvirt-devel libvirt-daemon-kvm qemu-kvm
+sudo systemctl enable --now libvirtd
+
+# Give permission for users who are in libvirt group
+cat <<EOF >> /etc/polkit-1/rules.d/80-libvirt.rules
+polkit.addRule(function(action, subject) {
+  if (action.id == "org.libvirt.unix.manage" && subject.local && subject.active && subject.isInGroup("libvirt")) {
+      return polkit.Result.YES;
+  }
+});
+EOF
+
+groupadd libvirt
+usermod -aG libvirt jooho
+
+# kernel parameters
+sysctl net.ipv4.ip_forward=1
+
+# Update the parameters permanently
+echo "net.ipv4.ip_forward = 1" | sudo tee /etc/sysctl.d/99-ipforward.conf
+sudo sysctl -p /etc/sysctl.d/99-ipforward.conf
+
+# To set no-ssl and port
+vi /etc/libvirt/libvirtd.conf
+listen_tls = 0
+listen_tcp = 1
+auth_tcp="none"
+tcp_port = "16509"
+
+# To Listen port
+vi /etc/sysconfig/libvirtd 
+LIBVIRTD_ARGS="--listen"
+
+# Firewalld
+sudo firewall-cmd --get-active-zones
+sudo firewall-cmd --zone=FedoraWorkstation --add-source=192.168.126.0/24
+sudo firewall-cmd --zone=FedoraWorkstation --add-port=16509/tcp
+
+# NetworkManager
+vi /etc/NetworkManager/NetworkManager.conf 
+[main]
+dns=dnsmasq
+
+# DNS
+echo server=/tt.testing/192.168.126.1 | sudo tee /etc/NetworkManager/dnsmasq.d/openshift.conf
+
+# Download terraform libvirt plugins
+GOBIN=~/.terraform.d/plugins go get -u github.com/dmacvicar/terraform-provider-libvirt
+
+# terraform cache setting
+cat <<EOF > $HOME/.terraformrc
+plugin_cache_dir = "$HOME/.terraform.d/plugin-cache"
+EOF
+
+
+# Install
+./openshift-install create cluster --log-level=debug --dir=initial
+
+# Clean commands
+virsh net-undefine okd
+rm -rf  /var/lib/libvirt/images/default/okd*
+./openshift-install destroy cluster --log-level=debug --dir=initial
+rm -rf ./initial
+
+
+# Credential Sample
+INFO Run 'export KUBECONFIG=/home/jooho/dev/git/go/src/github.com/openshift/installer/okd/initial/auth/kubeconfig' to manage the cluster with 'oc', the OpenShift CLI.
+INFO The cluster is ready when 'oc login -u kubeadmin -p QNkMo-Qjhqi-wq8XV-CzWBe' succeeds (wait a few minutes).
+INFO Access the OpenShift web-console here: https://console-openshift-console.apps.okd.tt.testing
+INFO Login to the console with user: kubeadmin, password: QNkMo-Qjhqi-wq8XV-CzWBe
