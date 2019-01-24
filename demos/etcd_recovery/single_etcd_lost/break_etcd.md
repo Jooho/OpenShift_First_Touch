@@ -36,4 +36,4 @@ etcdctl3 --endpoints $etcd_members endpoint health
 etcdctl3 --endpoints $etcd_members endpoint status -w table
 ```
 
-## [Next]((./recover_etcd.md)
+## [Next](./recover_etcd.md)
