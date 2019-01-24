@@ -31,6 +31,16 @@ chown -R etcd:etcd $ETCD_DATA_PATH
 restorecon -Rv $ETCD_DATA_PATH
 ```
 
+## Update etcd.conf like new etcd ##
+
+```
+vi /etc/etcd/etcd.conf
+
+ETCD_INITIAL_CLUSTER="pvm-fusesource-patches.gsslab.rdu2.redhat.com=https://10.10.178.126:2380"
+# change existing to new
+ETCD_INITIAL_CLUSTER_STATE=new
+```
+
 ## Add force new cluster option to systemd file ##
 ```
 sed -i '/ExecStart/s/"$/  --force-new-cluster"/' /usr/lib/systemd/system/etcd.service
@@ -48,20 +58,6 @@ systemctl status etcd
 sed -i '/ExecStart/s/ --force-new-cluster//' /usr/lib/systemd/system/etcd.service
 systemctl show etcd.service --property ExecStart --no-pager
 systemctl daemon-reload
-```
-
-## Update etcd.conf like new etcd ##
-
-```
-vi /etc/etcd/etcd.conf
-
-ETCD_INITIAL_CLUSTER="pvm-fusesource-patches.gsslab.rdu2.redhat.com=https://10.10.178.126:2380"
-# change existing to new
-ETCD_INITIAL_CLUSTER_STATE=new
-```
-
-## Restart ETCD ##
-```
 systemctl restart etcd
 ```
 
@@ -93,12 +89,6 @@ etcdctl -C https://${ETCD_CA_HOST}:2379 \
 **NOTE: You must execute this command on a recovered ETCD node!!**
 Go back to `pvm-fusesource-patches.gsslab.rdu2.redhat.com` 
 
-## Delete member data & change owner for /var/lib/etcd ##
-```
-rm -rf /var/lib/etcd/member
-chown -R etcd:etcd /var/lib/etcd
-```
-
 ## Update etcd.conf with output after adding the recovered ETCD member to the cluster ##
 ### Specify all etcd nodes ###
 ```
@@ -109,7 +99,13 @@ ETCD_INITIAL_CLUSTER="dhcp182-77.gsslab.rdu2.redhat.com=https://10.10.182.77:238
 ETCD_INITIAL_CLUSTER_STATE="existing"
 ```
 
-##Start ETCD and join to the cluster##
+## Delete member data & change owner for /var/lib/etcd ##
+```
+rm -rf /var/lib/etcd/member
+chown -R etcd:etcd /var/lib/etcd
+```
+
+## Start ETCD and join to the cluster##
 ```
 systemctl start etcd
 ```
