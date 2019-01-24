@@ -9,6 +9,7 @@
 - [Hello ISTIO](./demos/Hello_ISTIO/README.md)
 - [RH SSO with OpenShift](./demos/RH_SSO_integrate_with_OCP/README.md)
 - [Understanding of Resouce Limit in OpenShift](./demos/understanding-resouce-limit-in-OCP/understanding-OCP-LimitRange-by-cgroups.adoc)
+- [ETCD Recovery](./demos/etcd_recovery/README.md)
 
 ## Docs
 
