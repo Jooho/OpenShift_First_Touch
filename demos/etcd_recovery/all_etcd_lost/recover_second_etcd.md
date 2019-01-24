@@ -19,6 +19,11 @@ The way to recover the second ETCD member is similar to single ETCD lost situati
 export target_etcd=pvm-fusesource-patches.gsslab.rdu2.redhat.com
 ```
 
+## Install ETCD
+```
+yum install -y etcd
+```
+
 ## Restore Data ##
 ### Restore /etc/etcd ###
 ```
@@ -89,7 +94,7 @@ systemctl restart etcd
 ```
 systemctl status etcd
 ```
-##Stop etcd for joining to existing cluster##
+## Stop etcd for joining to existing cluster ##
 ```
 systemctl stop etcd
 ```
@@ -112,11 +117,6 @@ etcdctl -C https://${ETCD_CA_HOST}:2379 \
 **NOTE: You must execute this command on a recovered ETCD node!!**
 Go back to `pvm-fusesource-patches.gsslab.rdu2.redhat.com`
 
-## Delete member data & change owner for /var/lib/etcd to rejoin to the cluster ##
-```
-rm -rf /var/lib/etcd/member
-chown -R etcd:etcd /var/lib/etcd
-```
 
 ## Update etcd.conf with output after adding the recovered ETCD member to the cluster ##
 ### Specify only running etcd members ###
@@ -125,6 +125,13 @@ ETCD_INITIAL_CLUSTER="vm125.gsslab.rdu2.redhat.com=https://10.10.178.125:2380,pv
 ## from new to existing
 ETCD_INITIAL_CLUSTER_STATE="existing"
 ```
+
+## Delete member data & change owner for /var/lib/etcd to rejoin to the cluster ##
+```
+rm -rf /var/lib/etcd/member
+chown -R etcd:etcd /var/lib/etcd
+```
+
 
 ## Start ETCD and join to the cluster ###
 ```
