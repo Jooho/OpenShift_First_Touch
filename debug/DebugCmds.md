@@ -140,7 +140,19 @@
 
   systemctl start etcd
   ```
+- etcd member list & add
+  ```
+  # etcd server (https:// :2379,)
+  export etcd_members=https://10.10.182.77:2379,https://10.10.178.126:2379,https://10.10.178.125:2379
 
+  # ETCD v2:
+  etcdctl --cert-file=/etc/etcd/peer.crt   --key-file=/etc/etcd/peer.key  --ca-file=/etc/etcd/ca.crt  --peers $etcd_members member list
+  etcdctl --cert-file=/etc/etcd/peer.crt   --key-file=/etc/etcd/peer.key  --ca-file=/etc/etcd/ca.crt  --peers $etcd_members member add  $(hostname) https://10.10.182.77:2380 
+
+  # ETCD v3:
+  etcdctl3 --endpoints $etcd_members member list
+  etcdctl3 member add  dhcp182-77.gsslab.rdu2.redhat.com  --peer-urls="https://10.10.182.77:2380"
+  ```
 ## [Certs]
 - Verify certificate by ca cert
   ```
