@@ -24,7 +24,7 @@ etcdctl3 --endpoints $etcd_members endpoint status -w table
 ```
 
 ## Backup Data (One by One) 
-All etcd member should be backuped repectively
+**Note: All etcd member should be backuped repectively**
 ```
 # Remove temp backup directory for new backup
 rm -rf  ${ETCD_DATA_PATH}_bak 
@@ -53,7 +53,7 @@ c.example.com
 ```
 Backup
 ```
-cp /etc/origin/master ${MYBACKUPDIR}/etc/.
+cp -R /etc/origin/master ${MYBACKUPDIR}/etc/.
 ```
 
 
