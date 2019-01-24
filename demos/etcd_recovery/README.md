@@ -7,12 +7,12 @@ There are many documentations and blogs regarding this. This doc try to show you
 
 During demonstration, it uses v2 or v3 cli version. It does not matter if you are using one specific version way. I just want to show you each version cli is working fine.
 
-##Test Environment##
+## Test Environment ##
 - OpenShift 3.6
 - ETCD 3.2.22 with scheme v2/v3 data (No snapshot)
 - 3 ETCD Nodes
 
-###Diagram###
+### Diagram ###
 ```
 +-------------------------------------------------------------+  +---------------------------------------------------+ + ---------------------------------------------+
 |                          ETCD1                              |  |                      ETCD2                        | |                   ETCD3                      |
@@ -21,20 +21,20 @@ During demonstration, it uses v2 or v3 cli version. It does not matter if you ar
 ```
 
 
-##Pre-tasks##
+## Pre-tasks ##
 - [Backup ETCD Data](./backup_v2.md)
 
-##Demo Scenarios##
+## Demo Scenarios ##
 - **Single ETCD member lost**
   - [Break one ETCD member](./single_etcd_lost/break_etcd.md)
   - [Recover the ETCD member & Synchronizing data from other running ETCD member](./single_etcd_lost/recover_etcd.md)
 - **All ETCD nodes lost**
   - [Remove ETCD package on all master nodes](./all_etcd_lost/break_etcd.md)
-  - [Recover first ETCD member & Restore data from backup](./all_etcd_lost/recover_first_etcd.md)
-  - [Recover second ETCD member & Synchronizing data from the first ETCD member](./all_etcd_lost/recover_second_etcd.md)
-  - [Recover third ETCD daemon & Synchronizing data from other running ETCD member](./all_etcd_lost/recover_third_etcd.md)
+  - [Recover the first ETCD member & Restore data from backup](./all_etcd_lost/recover_first_etcd.md)
+  - [Recover the second ETCD member & Synchronizing data from the first ETCD member](./all_etcd_lost/recover_second_etcd.md)
+  - [Recover the third ETCD member & Synchronizing data from other running ETCD member](./all_etcd_lost/recover_third_etcd.md)
 
 
 *Tip*
-- [Creating ETCD certificate manually](./create_etcd_certs_manally.md]
-- [Excute ETCD using cli](./execute_etcd_using_cli.md)
+- [Creating ETCD certificates manually](./create_etcd_certs_manally.md)
+- [Execute ETCD using cli](./execute_etcd_using_cli.md)
