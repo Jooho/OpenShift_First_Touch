@@ -7,20 +7,20 @@ However, you can also generate the certs manually.
 
 This doc show you how to generate ETCD cert with specific scenario.
 
-##TEST Environment##
+## TEST Environment ##
 
-###The ETCD node that will generate certificate for target ETCD member###
+### The ETCD node that will generate certificate for target ETCD member ###
 - vm125.gsslab.rdu2.redhat.com
 
-###Target ETCD member###
+### Target ETCD member ###
 - dhcp182-77.gsslab.rdu2.redhat.com(10.10.182.77)
 
-###Export target ETCD member hostname###
+### Export target ETCD member hostname ###
 ```
 export target_etcd=dhcp182-77.gsslab.rdu2.redhat.com
 ```
 
-##Check CA folder##
+## Check CA folder ##
 **`/etc/etcd/ca` folder must have certs (these files should be on the first master node)**
 
 ```
