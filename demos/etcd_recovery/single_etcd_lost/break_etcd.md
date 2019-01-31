@@ -4,6 +4,10 @@ Break one of etcd members for demo
 For demonstration purpose, one of etcd members need to be broken.
 This explain how to break it down.
 
+## Video
+[![ETCD Recovery Single Member](http://img.youtube.com/vi/yx3Pjpkasl4/0.jpg)](https://www.youtube.com/embed/yx3Pjpkasl4)
+
+
 *Every command should be executed on the target ETCD member node.*
 
 [Variable information](./backup_v2.md)
