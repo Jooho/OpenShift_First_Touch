@@ -3,6 +3,11 @@ Back up ETCD v2 schema data
 
 This doc explains how to back up etcd v2 schema data. For schema v3 data, you can use snapshot (refer - TBD)
 
+
+## Video
+[![ETCD Data Backup](http://img.youtube.com/vi/TkkT92Y4nho/0.jpg)](https://www.youtube.com/embed/TkkT92Y4nho)
+
+
 ## Create Backup Folders & export variables
 ```
 export ETCD_DATA_PATH=/var/lib/etcd
