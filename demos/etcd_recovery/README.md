@@ -21,7 +21,7 @@ During demonstration, it uses v2 or v3 cli version. It does not matter if you ar
 ```
 
 ## Video
-[![ETCD Recovery Overview](http://img.youtube.com/vi/JA0vJ5M4I60/0.jpg)](https://www.youtube.com/embed/JA0vJ5M4I60")
+[![ETCD Recovery Overview](http://img.youtube.com/vi/JA0vJ5M4I60/0.jpg)](https://www.youtube.com/embed/JA0vJ5M4I60)
 
 ## Pre-tasks ##
 - [Backup ETCD Data](./backup_v2.md)
