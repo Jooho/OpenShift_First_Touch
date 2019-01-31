@@ -51,8 +51,8 @@ ETCD_INITIAL_CLUSTER_STATE=new
 
 ```
 sed -i '/ExecStart/s/"$/  --force-new-cluster"/' /usr/lib/systemd/system/etcd.service
-systemctl show etcd.service --property ExecStart --no-pager
 systemctl daemon-reload
+systemctl show etcd.service --property ExecStart --no-pager
 systemctl restart etcd
 ```
 
@@ -82,8 +82,8 @@ etcdctl --cert-file=/etc/etcd/peer.crt   --key-file=/etc/etcd/peer.key  --ca-fil
 ## Remove force new cluster option from systemd file ##
 ```
 sed -i '/ExecStart/s/ --force-new-cluster//' /usr/lib/systemd/system/etcd.service
-systemctl show etcd.service --property ExecStart --no-pager
 systemctl daemon-reload
+systemctl show etcd.service --property ExecStart --no-pager
 systemctl restart etcd
 ```
 ## Check if a new etcd start up ##
