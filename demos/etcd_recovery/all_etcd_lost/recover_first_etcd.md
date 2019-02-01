@@ -7,7 +7,7 @@ The first ETCD will restore data from backup data and this task is the first thi
 
 *Every command should be executed on the target ETCD member node unless there is not NOTICE for node change*
 
-[Variable information](./backup_v2.md)
+[Variable information](../backup_v2.md)
 
 ## Target ETCD member ##
 - vm125.gsslab.rdu2.redhat.com(10.10.178.125)
