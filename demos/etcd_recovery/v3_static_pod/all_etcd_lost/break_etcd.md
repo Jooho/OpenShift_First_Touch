@@ -7,7 +7,6 @@ This is the most critical situation. With this issue, OpenShift will be out of s
 
 ## Remove all files under /var/lib/etcd on all ETCD nodes
 ```
-mv /etc/origin/node/pods/etcd.yaml /etc/origin/node/pods-stopped/
 rm -rf /var/lib/etcd/*
 ```
 
