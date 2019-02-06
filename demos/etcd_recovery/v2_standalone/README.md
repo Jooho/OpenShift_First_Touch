@@ -1,5 +1,5 @@
-ETCD Recovery 
--------------
+Standalone ETCD with Data Schema Version v2/v3 
+---------------------------------------------
 
 This is tutorial for standalone ETCD with data schema v2/v3 on OpenShift.
 
