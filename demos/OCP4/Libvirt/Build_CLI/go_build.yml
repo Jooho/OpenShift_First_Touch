@@ -1,0 +1,85 @@
+- hosts: localhost
+  vars:
+    build_packages:
+      - 'gcc-c++'
+      - 'libvirt-devel'
+    work_dir: '/tmp'
+    GOBIN: "{{ work_dir }}/go/bin"
+    GOPATH: "{{ work_dir }}/go"
+
+  environment:
+    GOBIN: "{{ GOBIN }}"
+    GOPATH: "{{ GOPATH }}"
+    PATH: "{{ GOBIN }}:{{ ansible_env.PATH }}"
+
+  pre_tasks:
+    - block:
+        - name: Check if GOLANG installed 
+          command: go version
+          register: go_ver
+          ignore_errors: yes
+
+        - name: Check the Go Lang verion
+          fail: 
+            msg="GO Lang Verion {{go_ver.stdout|regex_search('(\d).(\d*).(\d*)')}} but it should be higher than 1.10.3"
+          when: go_ver is succeeded and go_ver.stdout|regex_search('(\d).(\d*).(\d*)')|int is version('1.10.3', '>=') 
+  
+  tasks:
+    - block:
+        - name: Install build packages
+          package:
+            name: "{{ build_packages }}"
+          become: yes
+
+        - name: GoLang install
+          package:
+            name: "golang-bin"
+          when: go_ver is failed
+          become: yes
+
+        - name: Download Dep Install file 
+          get_url:
+            url: https://raw.githubusercontent.com/golang/dep/master/install.sh
+            dest: "{{ work_dir }}/install.sh"
+            mode: 0777
+ 
+        - shell: echo $PATH
+        - name: Install Dep
+          shell: "{{ work_dir }}/install.sh"
+
+    - block:
+      - name: Create go directory
+        file: 
+          state: directory
+          path: "{{ work_dir }}/go/{{ item }}"
+        with_items:
+        - src
+        - pkg
+        - bin
+
+      - name: Add GO environment to ~/.bashrc
+        lineinfile: 
+          path: "~/.bashrc"
+          line: "{{ item }}"
+        with_items:
+        - "export GOBIN={{ work_dir }}/go/bin"
+        - "export GOPATH={{ work_dir }}/go"
+        - "export PATH=${GOBIN}:${PATH}"
+      
+      - shell: "go env"
+      - name: Download Installer Repository
+        git:
+          repo: https://github.com/openshift/installer.git
+          dest: "{{ work_dir }}/go/src/github.com/openshift/installer"
+
+      - name: Download dependencies
+        shell: "dep ensure"
+        args:
+          chdir: "{{ work_dir }}/go/src/github.com/openshift/installer"
+
+
+      - name: Build
+        shell: "TAG=libvirt hack/build.sh"
+        args:
+          chdir: "{{ work_dir }}/go/src/github.com/openshift/installer"
+
