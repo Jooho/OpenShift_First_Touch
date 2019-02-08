@@ -26,28 +26,6 @@
   
   tasks:
     - block:
-        - name: Install build packages
-          package:
-            name: "{{ build_packages }}"
-          become: yes
-
-        - name: GoLang install
-          package:
-            name: "golang-bin"
-          when: go_ver is failed
-          become: yes
-
-        - name: Download Dep Install file 
-          get_url:
-            url: https://raw.githubusercontent.com/golang/dep/master/install.sh
-            dest: "{{ work_dir }}/install.sh"
-            mode: 0777
- 
-        - shell: echo $PATH
-        - name: Install Dep
-          shell: "{{ work_dir }}/install.sh"
-
-    - block:
       - name: Create go directory
         file: 
           state: directory
@@ -66,7 +44,28 @@
         - "export GOPATH={{ work_dir }}/go"
         - "export PATH=${GOBIN}:${PATH}"
       
-      - shell: "go env"
+    - block:
+        - name: Install build packages
+          package:
+            name: "{{ build_packages }}"
+          become: yes
+
+        - name: GoLang install
+          package:
+            name: "golang-bin"
+          when: go_ver is failed
+          become: yes
+
+        - name: Download Dep Install file 
+          get_url:
+            url: https://raw.githubusercontent.com/golang/dep/master/install.sh
+            dest: "{{ work_dir }}/install.sh"
+            mode: 0777
+ 
+        - name: Install Dep
+          shell: "{{ work_dir }}/install.sh"
+
+    - block:
       - name: Download Installer Repository
         git:
           repo: https://github.com/openshift/installer.git
@@ -76,7 +75,6 @@
         shell: "dep ensure"
         args:
           chdir: "{{ work_dir }}/go/src/github.com/openshift/installer"
-
 
       - name: Build
         shell: "TAG=libvirt hack/build.sh"
