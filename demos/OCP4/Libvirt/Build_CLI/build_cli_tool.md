@@ -44,7 +44,15 @@ ansible-playbook go_build.yml -vvvvv
 ```
 [go_build.yml](./go_build.yml)
 
+TroubleShooting
 
+- CPU issue
+
+  Error Msg
+  ```
+    "/usr/lib/golang/pkg/tool/linux_amd64/link: signal: killed"
+  ```
+  Solution: Need more cpu resources.
 
 ## Reference
 - https://github.com/openshift/installer/blob/master/docs/dev/dependencies.md
