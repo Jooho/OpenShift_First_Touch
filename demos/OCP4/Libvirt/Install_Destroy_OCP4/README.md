@@ -11,7 +11,7 @@ Regarding access Web Console, new doc will explain it (TBD)
 - [Config KVM environment for OCP4](../Config_KVM/README.md)
 
 
-** Prepare variable
+**Prepare variable**
 
 - SSH key
   - If you have, you can use it
@@ -22,7 +22,7 @@ Regarding access Web Console, new doc will explain it (TBD)
   - Clieck secret button
     ![](./Pull_secret.png)
 
-** Install **
+**Install OpenShift**
 
 ```
 openshift-install create cluster --dir=libvirt --log-level=debug
@@ -38,15 +38,15 @@ openshift-install create cluster --dir=libvirt --log-level=debug
 
 *To check log*
 
-bootstrap master
-```
-ssh core@ocp4-bootstrap.tt.testing
-```
+- bootstrap master
+  ```
+  ssh core@ocp4-bootstrap.tt.testing
+  ```
 
-master ndoe
-```
-ssh core@ocp4-master-0.tt.testing
-```
+- master ndoe
+  ```
+  ssh core@ocp4-master-0.tt.testing
+  ```
 
 
 *How to know about these hostname?*
@@ -56,7 +56,7 @@ sudo cat /var/lib/libvirt/dnsmasq/ocp4.*
 
 
 
-** Destroy **
+**Destroy OpenShift**
 
 ```
 openshift-install destroy cluster --dir=libvirt --log-level=debug
