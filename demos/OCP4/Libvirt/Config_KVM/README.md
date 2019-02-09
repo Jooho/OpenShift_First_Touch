@@ -41,6 +41,7 @@ $ cat <<EOF > $HOME/.terraformrc
 
 
 **Ansible Playbook**
+
 Originally, this playbook is from [this PR](https://github.com/openshift/installer/blob/ffb427c07a24c30a17a2b13b4eb5096cb2f32609/hack/ocp_libvirt_setup.yaml). This is not mergered yet so I can not send PR after fix issues. I copied it and updated. If you wnat to see original file, please see the PR.
 
 ```
