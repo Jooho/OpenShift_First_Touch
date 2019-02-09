@@ -27,7 +27,7 @@
 
         - name: Fail if Golang is not installed
           fail: 
-            msg="Golang is not installed. This is mandatory package.'
+            msg="Golang is not installed. This is mandatory package."
           when: go_ver is failed 
 
         - name: Check the Go Lang verion
