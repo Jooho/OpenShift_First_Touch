@@ -18,6 +18,23 @@
       - {domain_name: "tt.testing", cluster_cidr: "192.168.126.0/24", dns_server: "192.168.126.1"}
     terraform_version: "0.11.8"
 
+  pre_tasks:
+    - block:
+        - name: Check if GOLANG installed 
+          command: go version
+          register: go_ver
+          ignore_errors: yes
+
+        - name: Fail if Golang is not installed
+          fail: 
+            msg="Golang is not installed. This is mandatory package.'
+          when: go_ver is failed 
+
+        - name: Check the Go Lang verion
+          fail: 
+            msg="GO Lang Verion {{go_ver.stdout|regex_search('(\d).(\d*).(\d*)')}} but it should be higher than 1.10.3"
+          when: go_ver is succeeded and go_ver.stdout|regex_search('(\d).(\d*).(\d*)')|int is version('1.10.3', '>=') 
+
   tasks:
   - block: 
       - name: Ensure KVM Device Exsists
@@ -121,11 +138,12 @@
         net_masks: "{{ item.matches.0.ip.address.split('.')[0:3] | join('.')}}.0/{{ item.matches.0.ip.netmask }}"
       loop: "{{ ip_address.results }}" 
       register: libvirt_netmasks
+      when: item.matches.0.ip.netmask is defined
 
     - fail:
         msg: "Net Mask {{ item }} confilcts with {{ cluster.cluster_cidr }}"
       when: item == cluster.0.cluster_cidr 
-      loop: "{{ libvirt_netmasks.results | map(attribute='ansible_facts.net_masks') | list | ipaddr('net') }}"
+      loop: "{{ libvirt_netmasks.results  | map(attribute='ansible_facts')| select('defined') | map(attribute='net_masks') | list | ipaddr('net') }}"
 
     become: yes
 
@@ -166,22 +184,15 @@
         mode: 0644
       loop: "{{ cluster }}"
 
-    - name: "Restart and Enable libvirtd" 
-      systemd:
-        name: "NetworkManager"
-        state: restarted
-        enabled: yes
-        daemon_reload: yes
-
     become: yes
 
   - block:
     - name: Get OS (var)
-      shell: "/usr/bin/go env GOOS"
+      shell: "go env GOOS"
       register: GOOS_VAR
 
     - name: Get Arch (var)  
-      shell: "/usr/bin/go env GOARCH"
+      shell: "go env GOARCH"
       register: GOARCH_VAR
 
     - name: Creates directory ~/.local/bin
