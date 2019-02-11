@@ -10,7 +10,7 @@ This explain how to break it down.
 
 *Every command should be executed on the target ETCD member node.*
 
-[Variable information](./backup_v2.md)
+[Variable information](../backup_v2.md)
 
 ## Target ETCD member ##
 - pvm-fusesource-patches.gsslab.rdu2.redhat.com (10.10.178.126)
