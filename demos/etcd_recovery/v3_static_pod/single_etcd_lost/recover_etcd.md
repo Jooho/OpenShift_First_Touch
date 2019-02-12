@@ -30,7 +30,7 @@ etcdctl3 --endpoints $etcd_members member list
 
 ## Remove /var/lib/etcd/* for clean up ##
 ```
-rm -rf $ETCD_DATA_PATH/*
+rm $ETCD_DATA_PATH/*
 ```
 
 ## Change selinux in etcd data directory ##
@@ -68,7 +68,7 @@ docker logs $(docker ps|grep etcd|grep -v pod|awk '{print $1}')
 ## Remove force new cluster option from systemd file ##
 ```
 mv /etc/origin/node/pods/etcd.yaml  /etc/origin/node/pods-stopped/.
-rm -rf /etc/etcd/etcd.conf
+rm  /etc/etcd/etcd.conf
 /bin/mv /etc/etcd/etcd.conf.bak /etc/etcd/etcd.conf
 mv /etc/origin/node/pods-stopped/etcd.yaml /etc/origin/node/pods/.
 ```
