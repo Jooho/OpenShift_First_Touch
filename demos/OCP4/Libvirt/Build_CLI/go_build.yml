@@ -77,7 +77,7 @@
           chdir: "{{ work_dir }}/go/src/github.com/openshift/installer"
 
       - name: Build
-        shell: "TAG=libvirt hack/build.sh"
+        shell: "TAGS=libvirt hack/build.sh"
         args:
           chdir: "{{ work_dir }}/go/src/github.com/openshift/installer"
 
