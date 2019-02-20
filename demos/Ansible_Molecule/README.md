@@ -11,7 +11,7 @@
   - Ansible Galaxy
     - Example
 
-- Molecule Overview
+- [Molecule Overview](./molecule/molecule_overview.md)
   - Testing Process
   - Useful Tools
     - virtualenv
@@ -24,10 +24,12 @@
     - Vagrant(virtualBox/Libvirt)
   - Provisioner
   - Lint
+    - yamllint
+    - ansible-lint
   - Scenario
   - Verifier
-    - lint(flake8)
-    - test(TestInfra)
+    - Lint(flake8)
+    - Test(TestInfra)
     
 
 - Practical Example
