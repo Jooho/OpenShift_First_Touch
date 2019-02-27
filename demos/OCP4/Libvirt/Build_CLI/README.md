@@ -10,7 +10,7 @@ This doc help you how to build the project by golang on Fedora.
 
 ## Manual
 
-** NOTE **
+**NOTE**
 - If you already have golang, do not install `golang-bin` 
 - If you don’t have the dep, please install `dep`.
 
@@ -39,12 +39,21 @@ TAG=libvirt hack/build.sh
 
 ## Ansible
 
+### Params
+
+|name| default|required|description|
+|-----|-----|-----|-----|
+|work_dir|/tmp|no| The location where to clone openshift installer repository|
+|installer_tag|v0.13.0| no| The tag name which openshift installer tag is |
+
 ```
 ansible-playbook go_build.yml -vvvvv
 ```
 [go_build.yml](./go_build.yml)
 
-TroubleShooting
+**Default openshift-install binary location:** */tmp/go/src/github.com/openshift/install/bin/openshift-install*
+
+### TroubleShooting
 
 - CPU issue
 
