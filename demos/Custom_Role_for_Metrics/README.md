@@ -1,4 +1,4 @@
-# Custom Role for Metrics with Service Account
+# How to get data of `oc adm top pod` for normal user or service account
 
 
 `oc adm top pod` show you the resource utilization but it requires enough permission.
