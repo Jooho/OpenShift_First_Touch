@@ -1,7 +1,7 @@
 # Custom Role for Metrics with Service Account
 
 
-`oc adm top pod` show you the resource utils but it requires enough permission.
+`oc adm top pod` show you the resource utilization but it requires enough permission.
 Using custom cluster role, you can give the permission to user/group or service account.
 
 From this tutorial, I will use Service Account.
@@ -23,11 +23,13 @@ ansible -i /etc/ansible/hosts masters[0] -m command -a "oc adm policy add-cluste
 
 ansible -i /etc/ansible/hosts masters -m command -a "htpasswd -b /etc/origin/master/htpasswd sue redhat"
 oc login --username=sue --password=redhat
+
 oc new-project sue-prj
 oc create sa sue-sa
 oc new-app --template=cakephp-mysql-example
 
 oc adm top pod --heapster-namespace='openshift-infra' --heapster-scheme="https" 
+oc policy who-can get pods.metrics.k8s.io
 ```
 
 
@@ -58,22 +60,51 @@ oc adm top pod --heapster-namespace='openshift-infra' --heapster-scheme="https"
   ```
 
 - Add the service account to role
-```
-oc adm policy add-cluster-role-to-user system:aggregated-metrics-reader system:serviceaccount:sue-prj:sue-sa
-```
+  ```
+  oc adm policy add-cluster-role-to-user system:aggregated-metrics-reader system:serviceaccount:sue-prj:sue-sa
+  ```
+  From now on, the service account have power to see metrics of all namespaces
 
 
-- Login with the service account
-```
-TOKEN=$(oc sa get-token sue-sa -n sue-prj) 
-oc login --token=$TOKEN 
-```
+  - Login with the service account
+    ```
+    TOKEN=$(oc sa get-token sue-sa -n sue-prj) 
+    oc login --token=$TOKEN 
+    ```
 
-- Check if the `oc adm top pod` is working
-```
-oc adm pod pod --heapster-namespace='openshift-infra' --heapster-scheme="https" 
-```
+  - Check if the `oc adm top pod` is working
+    ```
+    oc adm top pod --heapster-namespace='openshift-infra' --heapster-scheme="https" 
+    ```
 
+- Add the service account to user
+  ```
+  oc adm policy add-cluster-role-to-user system:aggregated-metrics-reader sue
+  ```
+  With the new clusterrole, user already have the power to see the metric of the project `sue-prj`
+  If you want to give the user more power can see metrics of all projects, you can also give the clusterrole `system:aggregated-metrics-reader` to the user
   
+  - Login with the user
+    ```
+    oc login --username=sue --password=redhat
+    ```
 
+  - Check if the `oc adm top pod` is working
+    ```
+    oc adm top pod --heapster-namespace='openshift-infra' --heapster-scheme="https" 
+    ```
+    
+    
+## Clean up
+
+```
+oc login --username=joe --password=redhat
+oc adm policy remove-cluster-role-from-user system:aggregated-metrics-reader sue
+oc adm policy remove-cluster-role-from-user system:aggregated-metrics-reader system:serviceaccount:sue-prj:sue-sa
+oc delete clusterrole system:aggregated-metrics-reader
+oc delete all -n sue-prj
+oc delete project sue-prj
+oc delete user sue
+```
+  
 
