@@ -13,14 +13,6 @@ This doc will help you restore all ETCD members.
 - vm125.gsslab.rdu2.redhat.com(10.10.178.125)
 
 
-## Copy snapshot file to the other ETCD members
-```
-/bin/cp ${MYBACKUPDIR}/var/lib/etcd/snapshot.db /tmp/snapshot.db
-scp ${MYBACKUPDIR}/var/lib/etcd/snapshot.db pvm-fusesource-patches.gsslab.rdu2.redhat.com:/tmp/snapshot.db
-scp ${MYBACKUPDIR}/var/lib/etcd/snapshot.db dhcp182-77.gsslab.rdu2.redhat.com:/tmp/snapshot.db
-
-```
-
 **Note: Execute the following commands on each ETCD node**
 
 ## Stop docker/atomic-openshift-node
@@ -37,6 +29,7 @@ mv /etc/etcd/etcd.conf.rpmsave /etc/etcd/etcd.conf
 
 ## Restore Data
 ```
+export ETCDCTL_API=3
 export ETCD_DATA_PATH=/var/lib/etcd
 rm -rf $ETCD_DATA_PATH
 
