@@ -5,7 +5,7 @@ Now, the ETCD is broken so it is not starting. The first thing we should do is m
 
 This doc explains how to make the etcd member start up even it will have different id. Then, it will show you how to put the recovered etcd member in the cluster and data synchronization.
 
-** Note: Execute commands on vm125 node **
+**Note: Execute commands on vm125 node**
 
 ## Export target ETCD member ##
 ```
@@ -26,11 +26,17 @@ etcdctl3 --endpoints $etcd_members member  remove $(etcdctl3 --endpoints $etcd_m
 etcdctl3 --endpoints $etcd_members member list
 ````
 
-** Note: Execute commands on pvm-fusesource-patches.gsslab.rdu2.redhat.com node **
+**Note: Execute commands on pvm-fusesource-patches.gsslab.rdu2.redhat.com node**
+
+## Stop ETCD 
+```
+mv /etc/origin/node/pods/etcd.yaml /etc/origin/node/pods-stopped/
+```
 
 ## Remove /var/lib/etcd/* for clean up ##
 ```
-rm $ETCD_DATA_PATH/*
+export ETCD_DATA_PATH=/var/lib/etcd
+rm -rf $ETCD_DATA_PATH/*
 ```
 
 ## Change selinux in etcd data directory ##
@@ -86,14 +92,15 @@ docker logs $(docker ps|grep etcd|grep -v pod|awk '{print $1}')
 mv /etc/origin/node/pods/etcd.yaml /etc/origin/node/pods-stopped/
 ```
 
-**NOTE: You can execute this command on the target ETCD node. However, please be careful to config `ETCD_CA_HOST` to the right ETCD member (not target ETCD member) **
+**NOTE: Go to `Ansible Controller`**
 
 ## Add the recovered ETCD member to the cluster again ##
 ```
-export ETCD_CA_HOST="vm125.gsslab.rdu2.redhat.com"              # <===== Update(The ETCD member must run properly)
+export RUNNING_ETCD=$(oc get pod -n kube-system --no-headers | grep -o -m 1 '\S*etcd\S*' )
+export ETCD_CA_HOST="$(echo ${RUNNING_ETCD}|sed 's/master-etcd-//g')" 
 export NEW_ETCD="pvm-fusesource-patches.gsslab.rdu2.redhat.com" # <===== Update
 export NEW_ETCD_IP="10.10.178.126"                              # <===== Update
-export ETCD_POD=$(oc get pod |grep ${ETCD_CA_HOST} |  grep -o -m 1 '\S*etcd\S*')
+
 export ETCD_EP=$(dig +short $ETCD_CA_HOST)
 
 # If you don't have etcdctl cli
@@ -133,7 +140,7 @@ mv /etc/origin/node/pods-stopped/etcd.yaml /etc/origin/node/pods/.
 
 ## Check cluster health & data sync ##
 ```
-export etcd_members=https://10.10.178.125:2379,https://10.10.182.77:2379,https://10.10.178.126:2379
+export etcd_members=$(etcdctl3 --write-out=fields member list | awk '/ClientURL/{printf "%s%s",sep,$3; sep=","}')
 etcdctl3 --endpoints $etcd_members endpoint health
 etcdctl3 --endpoints $etcd_members endpoint status -w table
 ```

@@ -62,6 +62,11 @@ pip install --user virtualenvwrapper
   ```
   
 
+## Update ~/.bashrc
+```
+export WORKON_HOME=~/VirtualEnvs
+source ~/.local/bin/virtualenvwrapper.sh 
+```
 
 
 ## Reference

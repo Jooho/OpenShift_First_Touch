@@ -9,6 +9,9 @@
       - 'libselinux-python'
       - 'libvirt-client'
       - 'python-netaddr'
+      - 'python-libvirt'
+      - 'python-lxml'
+      - 'virt-manager'
     libvirt_settings:
       - {name: 'listen_tls', val: 0}
       - {name: 'listen_tcp', val: 1}

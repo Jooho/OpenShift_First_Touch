@@ -21,7 +21,7 @@ scp ${MYBACKUPDIR}/var/lib/etcd/snapshot.db dhcp182-77.gsslab.rdu2.redhat.com:/t
 
 ```
 
-** Note: Execute the following commands on each ETCD node **
+**Note: Execute the following commands on each ETCD node**
 
 ## Stop docker/atomic-openshift-node
 ```
@@ -37,11 +37,12 @@ mv /etc/etcd/etcd.conf.rpmsave /etc/etcd/etcd.conf
 
 ## Restore Data
 ```
+export ETCD_DATA_PATH=/var/lib/etcd
 rm -rf $ETCD_DATA_PATH
 
 source /etc/etcd/etcd.conf
 
-etcdctl3 snapshot restore /tmp/snapshot.db \
+etcdctl3 snapshot restore ${MYBACKUPDIR}/var/lib/etcd/snapshot.db \
   --name $ETCD_NAME \
   --initial-cluster $ETCD_INITIAL_CLUSTER \
   --initial-cluster-token $ETCD_INITIAL_CLUSTER_TOKEN \
@@ -49,7 +50,7 @@ etcdctl3 snapshot restore /tmp/snapshot.db \
   --data-dir /var/lib/etcd
 
 chown -R etcd:etcd $ETCD_DATA_PATH
-restorecon -Rv /var/lib/etcd
+restorecon -Rv $ETCD_DATA_PATH
 ```
 
 ## Start docker/atomic-openshift-node
