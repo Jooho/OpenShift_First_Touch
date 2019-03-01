@@ -21,6 +21,11 @@ etcdctl3 --write-out=fields member list | awk '/ClientURL/{printf "%s%s",sep,$3;
 ## Create Backup Folders & export variables
 ```
 export etcd_members=$PASTE_THE_OUTPUT       #UPDATE
+
+# cluster-admin user
+oc login 
+oc project kube-system
+
 export ETCD_DATA_PATH=/var/lib/etcd
 export ETCD_POD_MANIFEST="/etc/origin/node/pods/etcd.yaml"
 export MYBACKUPDIR=/root/backup/etcd/$(date +%Y%m%d)
@@ -29,9 +34,7 @@ export RUNNING_ETCD=$(oc get pod -n kube-system --no-headers | grep -o -m 1 '\S*
 mkdir -p ${MYBACKUPDIR}/var/lib/etcd/member/snapshot
 mkdir -p /etc/origin/node/pods-stopped
 
-# cluster-admin user
-oc login 
-oc project kube-system
+
 
 ```
 
