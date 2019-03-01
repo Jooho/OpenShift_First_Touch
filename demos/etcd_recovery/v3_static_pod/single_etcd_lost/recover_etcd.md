@@ -14,6 +14,8 @@ export target_etcd=pvm-fusesource-patches.gsslab.rdu2.redhat.com
 
 ## Remove broken etcd member from the cluster ##
 ```
+export etcd_members=$(etcdctl3 --write-out=fields member list | awk '/ClientURL/{printf "%s%s",sep,$3; sep=","}')
+
 # Check the broken etcd member health
 etcdctl3 --endpoints $etcd_members member list
 
@@ -57,7 +59,6 @@ ETCD_INITIAL_CLUSTER_STATE=new
 
 ## Add force new cluster option to systemd file ##
 ```
-mv /etc/origin/node/pods/etcd.yaml /etc/origin/node/pods-stopped/
 /bin/cp /etc/etcd/etcd.conf /etc/etcd/etcd.conf.bak
 echo "ETCD_FORCE_NEW_CLUSTER=true" >> /etc/etcd/etcd.conf
 mv /etc/origin/node/pods-stopped/etcd.yaml /etc/origin/node/pods/.
