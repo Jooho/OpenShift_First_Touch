@@ -35,19 +35,19 @@ etcdctl3 --endpoints $etcd_members member list
 mv /etc/origin/node/pods/etcd.yaml /etc/origin/node/pods-stopped/
 ```
 
-## Remove /var/lib/etcd/* for clean up ##
+## Remove /var/lib/etcd/* for clean up
 ```
 export ETCD_DATA_PATH=/var/lib/etcd
 rm -rf $ETCD_DATA_PATH/*
 ```
 
-## Change selinux in etcd data directory ##
+## Change selinux in etcd data directory
 ```
 chown -R etcd:etcd $ETCD_DATA_PATH
 restorecon -Rv $ETCD_DATA_PATH
 ```
 
-## Update etcd.conf like new etcd ##
+## Update etcd.conf like new etcd
 
 ```
 vi /etc/etcd/etcd.conf
@@ -57,13 +57,13 @@ ETCD_INITIAL_CLUSTER="pvm-fusesource-patches.gsslab.rdu2.redhat.com=https://10.1
 ETCD_INITIAL_CLUSTER_STATE=new
 ```
 
-## Add force new cluster option to systemd file ##
+## Add force new cluster option to systemd file
 ```
 /bin/cp /etc/etcd/etcd.conf /etc/etcd/etcd.conf.bak
 echo "ETCD_FORCE_NEW_CLUSTER=true" >> /etc/etcd/etcd.conf
 mv /etc/origin/node/pods-stopped/etcd.yaml /etc/origin/node/pods/.
 ```
-## Check if a new etcd start up ##
+## Check if a new etcd start up
 ```
 export etcd_members="https://10.10.178.126:2379"
 etcdctl3 --endpoints $etcd_members endpoint health
@@ -72,7 +72,7 @@ etcdctl3 --endpoints $etcd_members endpoint health
 docker logs $(docker ps|grep etcd|grep -v pod|awk '{print $1}')
 ```
 
-## Remove force new cluster option from systemd file ##
+## Remove force new cluster option from systemd file
 ```
 mv /etc/origin/node/pods/etcd.yaml  /etc/origin/node/pods-stopped/.
 rm  /etc/etcd/etcd.conf
@@ -80,7 +80,7 @@ rm  /etc/etcd/etcd.conf
 mv /etc/origin/node/pods-stopped/etcd.yaml /etc/origin/node/pods/.
 ```
 
-## Check if a new etcd start up properly without --force-new-cluster option ##
+## Check if a new etcd start up properly without --force-new-cluster option
 ```
 etcdctl3 --endpoints $etcd_members endpoint health
 
@@ -95,7 +95,7 @@ mv /etc/origin/node/pods/etcd.yaml /etc/origin/node/pods-stopped/
 
 **NOTE: Go to `Ansible Controller`**
 
-## Add the recovered ETCD member to the cluster again ##
+## Add the recovered ETCD member to the cluster again
 ```
 export RUNNING_ETCD=$(oc get pod -n kube-system --no-headers | grep -o -m 1 '\S*etcd\S*' )
 export ETCD_CA_HOST="$(echo ${RUNNING_ETCD}|sed 's/master-etcd-//g')" 
@@ -105,7 +105,7 @@ export NEW_ETCD_IP="10.10.178.126"                              # <===== Update
 export ETCD_EP=$(dig +short $ETCD_CA_HOST)
 
 # If you don't have etcdctl cli
-oc exec ${ETCD_POD} -c etcd -- /bin/bash -c "ETCDCTL_API=3 etcdctl \
+oc exec ${RUNNING_ETCD} -c etcd -- /bin/bash -c "ETCDCTL_API=3 etcdctl \
     --cert /etc/etcd/peer.crt \
     --key /etc/etcd/peer.key \
     --cacert /etc/etcd/ca.crt \
@@ -118,8 +118,8 @@ etcdctl3 --endpoints=https://${ETCD_CA_HOST}:2379 member add  ${NEW_ETCD} --peer
 **NOTE: You must execute this command on a recovered ETCD node!!**
 Go back to `pvm-fusesource-patches.gsslab.rdu2.redhat.com` 
 
-## Update etcd.conf with output after adding the recovered ETCD member to the cluster ##
-### Specify all etcd nodes ###
+## Update etcd.conf with output after adding the recovered ETCD member to the cluster
+### Specify all etcd nodes
 ```
 vi /etc/etcd/etcd.conf
 
@@ -128,18 +128,18 @@ ETCD_INITIAL_CLUSTER="dhcp182-77.gsslab.rdu2.redhat.com=https://10.10.182.77:238
 ETCD_INITIAL_CLUSTER_STATE="existing"
 ```
 
-## Delete member data & change owner for /var/lib/etcd ##
+## Delete member data & change owner for /var/lib/etcd
 ```
 rm -rf /var/lib/etcd/member
 chown -R etcd:etcd /var/lib/etcd
 ```
 
-## Start ETCD and join to the cluster##
+## Start ETCD and join to the cluster
 ```
 mv /etc/origin/node/pods-stopped/etcd.yaml /etc/origin/node/pods/.
 ```
 
-## Check cluster health & data sync ##
+## Check cluster health & data sync
 ```
 export etcd_members=$(etcdctl3 --write-out=fields member list | awk '/ClientURL/{printf "%s%s",sep,$3; sep=","}')
 etcdctl3 --endpoints $etcd_members endpoint health
