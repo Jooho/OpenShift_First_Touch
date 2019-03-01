@@ -13,19 +13,17 @@ This doc will help you restore all ETCD members.
 - vm125.gsslab.rdu2.redhat.com(10.10.178.125)
 
 
-## Copy snapshot file to the other ETCD members
-```
-/bin/cp ${MYBACKUPDIR}/var/lib/etcd/snapshot.db /tmp/snapshot.db
-scp ${MYBACKUPDIR}/var/lib/etcd/snapshot.db pvm-fusesource-patches.gsslab.rdu2.redhat.com:/tmp/snapshot.db
-scp ${MYBACKUPDIR}/var/lib/etcd/snapshot.db dhcp182-77.gsslab.rdu2.redhat.com:/tmp/snapshot.db
-
-```
-
 **Note: Execute the following commands on each ETCD node**
+
+## Export snapshot db folder
+~~~
+export MYBACKUPDIR=/root/backup/etcd/20190301
+~~~
 
 ## Stop docker/atomic-openshift-node
 ```
 systemctl stop docker atomic-openshift-node 
+rm -rf /var/lib/etcd
 ```
 
 ## Install ETCD on all ETCD nodes ##
@@ -35,26 +33,29 @@ yum install -y etcd
 mv /etc/etcd/etcd.conf.rpmsave /etc/etcd/etcd.conf
 ```
 
-## Restore Data
+## Restore Data on a etcd node
 ```
-export ETCD_DATA_PATH=/var/lib/etcd
-rm -rf $ETCD_DATA_PATH
+export ETCDCTL_API=3
+rm -rf /var/lib/etcd
 
 source /etc/etcd/etcd.conf
 
-etcdctl3 snapshot restore ${MYBACKUPDIR}/var/lib/etcd/snapshot.db \
+etcdctl snapshot restore ${MYBACKUPDIR}/var/lib/etcd/snapshot.db \
   --name $ETCD_NAME \
   --initial-cluster $ETCD_INITIAL_CLUSTER \
   --initial-cluster-token $ETCD_INITIAL_CLUSTER_TOKEN \
   --initial-advertise-peer-urls $ETCD_INITIAL_ADVERTISE_PEER_URLS \
   --data-dir /var/lib/etcd
 
-chown -R etcd:etcd $ETCD_DATA_PATH
-restorecon -Rv $ETCD_DATA_PATH
+chown -R etcd:etcd /var/lib/etcd
+restorecon -Rv /var/lib/etcd
 ```
 
-## Start docker/atomic-openshift-node
+## Start docker/atomic-openshift-node for all nodes
 ```
+mkdir /var/lib/etcd
+chown -R etcd:etcd /var/lib/etcd
+restorecon -Rv /var/lib/etcd
 systemctl start docker atomic-openshift-node 
 ```
 
