@@ -105,6 +105,9 @@ oc delete clusterrole system:aggregated-metrics-reader
 oc delete all -n sue-prj
 oc delete project sue-prj
 oc delete user sue
+oc delete user joe
+oc delete identity htpasswd_auth:joe
+oc delete identity htpasswd_auth:sue
 ```
   
 
