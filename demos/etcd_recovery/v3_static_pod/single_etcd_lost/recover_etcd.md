@@ -5,11 +5,11 @@ Now, the ETCD is broken so it is not starting. The first thing we should do is m
 
 This doc explains how to make the etcd member start up even it will have different id. Then, it will show you how to put the recovered etcd member in the cluster and data synchronization.
 
-**Note: Execute commands on vm125 node**
+**Note: Execute commands on vm49 node**
 
 ## Export target ETCD member ##
 ```
-export target_etcd=pvm-fusesource-patches.gsslab.rdu2.redhat.com
+export target_etcd=dhcp181-165.gsslab.rdu2.redhat.com   #UPDATE
 ```
 
 ## Remove broken etcd member from the cluster ##
@@ -28,7 +28,7 @@ etcdctl3 --endpoints $etcd_members member  remove $(etcdctl3 --endpoints $etcd_m
 etcdctl3 --endpoints $etcd_members member list
 ````
 
-**Note: Execute commands on pvm-fusesource-patches.gsslab.rdu2.redhat.com node**
+**Note: Execute commands on target etcd node(dhcp181-165.gsslab.rdu2.redhat.com) node**
 
 ## Stop ETCD 
 ```
@@ -52,7 +52,7 @@ restorecon -Rv $ETCD_DATA_PATH
 ```
 vi /etc/etcd/etcd.conf
 
-ETCD_INITIAL_CLUSTER="pvm-fusesource-patches.gsslab.rdu2.redhat.com=https://10.10.178.126:2380"
+ETCD_INITIAL_CLUSTER="dhcp181-165.gsslab.rdu2.redhat.com=https://10.10.181.165:2380"   #UPDATE
 # change existing to new
 ETCD_INITIAL_CLUSTER_STATE=new
 ```
@@ -65,7 +65,7 @@ mv /etc/origin/node/pods-stopped/etcd.yaml /etc/origin/node/pods/.
 ```
 ## Check if a new etcd start up
 ```
-export etcd_members="https://10.10.178.126:2379"
+export etcd_members="https://10.10.181.165:2379"  #UPDATE
 etcdctl3 --endpoints $etcd_members endpoint health
 
 # Check logs
@@ -116,14 +116,14 @@ etcdctl3 --endpoints=https://${ETCD_CA_HOST}:2379 member add  ${NEW_ETCD} --peer
 ```
 
 **NOTE: You must execute this command on a recovered ETCD node!!**
-Go back to `pvm-fusesource-patches.gsslab.rdu2.redhat.com` 
+Go back to `dhcp181-165.gsslab.rdu2.redhat.com` 
 
 ## Update etcd.conf with output after adding the recovered ETCD member to the cluster
 ### Specify all etcd nodes
 ```
 vi /etc/etcd/etcd.conf
 
-ETCD_INITIAL_CLUSTER="dhcp182-77.gsslab.rdu2.redhat.com=https://10.10.182.77:2380,pvm-fusesource-patches.gsslab.rdu2.redhat.com=https://10.10.178.126:2380,vm125.gsslab.rdu2.redhat.com=https://10.10.178.125:2380"
+ETCD_INITIAL_CLUSTER="vm49.gsslab.rdu2.redhat.com=https://10.10.178.49:2380,dhcp181-165.gsslab.rdu2.redhat.com=https://10.10.181.165:2380,dhcp179-170.gsslab.rdu2.redhat.com=https://10.10.179.170:2380"
 ## from new to existing
 ETCD_INITIAL_CLUSTER_STATE="existing"
 ```
