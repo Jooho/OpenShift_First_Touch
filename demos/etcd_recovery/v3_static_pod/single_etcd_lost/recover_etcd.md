@@ -5,6 +5,9 @@ Now, the ETCD is broken so it is not starting. The first thing we should do is m
 
 This doc explains how to make the etcd member start up even it will have different id. Then, it will show you how to put the recovered etcd member in the cluster and data synchronization.
 
+[![Static POD Single ETCD Recovery](http://img.youtube.com/vi/1-1WzcvDRLY/0.jpg)](https://www.youtube.com/embed/1-1WzcvDRLY)
+
+
 **Note: Execute commands on vm49 node**
 
 ## Export target ETCD member ##
