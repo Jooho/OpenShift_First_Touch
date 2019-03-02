@@ -9,11 +9,11 @@ This explain how to break it down.
 [Variable information](./backup_v3.md)
 
 ## Target ETCD member ##
-- pvm-fusesource-patches.gsslab.rdu2.redhat.com (10.10.178.126)
+- dhcp181-165.gsslab.rdu2.redhat.com (10.10.181.165)
 
 ## Export target ETCD member ##
 ```
-export target_etcd=pvm-fusesource-patches.gsslab.rdu2.redhat.com
+export target_etcd=dhcp181-165.gsslab.rdu2.redhat.com
 ```
 
 ## Remove all files under /var/lib/etcd ##
@@ -23,9 +23,9 @@ rm -rf /var/lib/etcd/*
 ```
 
 ## Check if the ETCD member is not health on VM125 ETCD member where ETCD work well##
-FYI, `etcd_members` is `https://10.10.178.125:2379,https://10.10.182.77:2379,https://10.10.178.126:2379`
+
 ```
-export etcd_members=https://10.10.178.125:2379,https://10.10.182.77:2379,https://10.10.178.126:2379
+export etcd_members=https://$(hostname):2379
 etcdctl3 --endpoints $etcd_members endpoint health
 ```
 
