@@ -3,6 +3,9 @@ Back up ETCD v3 schema data
 
 This doc explains how to back up etcd v3 schema data. 
 
+[![ETCD Recovery Overview](http://img.youtube.com/vi/T1AzaG3NapA/0.jpg)](https://www.youtube.com/embed/T1AzaG3NapA)
+
+
 ## Gather etcd meber list
 
 - Go to `one of masters`
