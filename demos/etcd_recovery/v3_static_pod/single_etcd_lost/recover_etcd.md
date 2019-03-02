@@ -93,14 +93,14 @@ docker logs $(docker ps|grep etcd|grep -v pod|awk '{print $1}')
 mv /etc/origin/node/pods/etcd.yaml /etc/origin/node/pods-stopped/
 ```
 
-**NOTE: Go to `Ansible Controller`**
+**NOTE: Go to one of ETCD node `vm49`**
 
 ## Add the recovered ETCD member to the cluster again
 ```
-export RUNNING_ETCD=$(oc get pod -n kube-system --no-headers | grep -o -m 1 '\S*etcd\S*' )
+export RUNNING_ETCD=$(oc get pod -n kube-system --no-headers | grep $(hostname) |grep -o -m 1 '\S*etcd\S*' )
 export ETCD_CA_HOST="$(echo ${RUNNING_ETCD}|sed 's/master-etcd-//g')" 
-export NEW_ETCD="pvm-fusesource-patches.gsslab.rdu2.redhat.com" # <===== Update
-export NEW_ETCD_IP="10.10.178.126"                              # <===== Update
+export NEW_ETCD="dhcp181-165.gsslab.rdu2.redhat.com"            # <===== Update
+export NEW_ETCD_IP="10.10.181.165"                              # <===== Update
 
 export ETCD_EP=$(dig +short $ETCD_CA_HOST)
 
