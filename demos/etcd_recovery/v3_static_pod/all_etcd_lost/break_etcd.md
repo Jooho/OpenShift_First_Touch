@@ -7,6 +7,8 @@ This is the most critical situation. With this issue, OpenShift will be out of s
 ## Check ETCD Backup Data
 ```
 ls ${MYBACKUPDIR}
+
+## export MYBACKUPDIR=/root/backup/etcd/$(date +%Y%m%d) 
 ```
 
 ## Remove all files under /var/lib/etcd on all ETCD nodes
