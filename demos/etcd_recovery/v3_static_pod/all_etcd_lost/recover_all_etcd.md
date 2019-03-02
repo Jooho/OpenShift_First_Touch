@@ -10,14 +10,14 @@ This doc will help you restore all ETCD members.
 [Variable information](../backup_v3.md)
 
 ## Target ETCD member ##
-- vm125.gsslab.rdu2.redhat.com(10.10.178.125)
+- vm49.gsslab.rdu2.redhat.com(10.10.178.49)
 
 
 **Note: Execute the following commands on each ETCD node**
 
 ## Export snapshot db folder
 ~~~
-export MYBACKUPDIR=/root/backup/etcd/20190301
+export MYBACKUPDIR=/root/backup/etcd/20190301    #UPDATE
 ~~~
 
 ## Stop docker/atomic-openshift-node
@@ -33,6 +33,7 @@ yum install -y etcd
 mv /etc/etcd/etcd.conf.rpmsave /etc/etcd/etcd.conf
 ```
 
+**NOTE: Execute the following commands on target ETCD node(vm49)**
 ## Restore Data on a etcd node
 ```
 export ETCDCTL_API=3
@@ -51,6 +52,7 @@ chown -R etcd:etcd /var/lib/etcd
 restorecon -Rv /var/lib/etcd
 ```
 
+**Note: Execute the following commands on each ETCD node**
 ## Start docker/atomic-openshift-node for all nodes
 ```
 mkdir /var/lib/etcd
