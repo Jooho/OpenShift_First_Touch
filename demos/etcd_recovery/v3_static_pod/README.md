@@ -14,12 +14,13 @@ Static Pod ETCD with Data Schema Version 3
 ```
 +-------------------------------------------------------------+  +---------------------------------------------------+ + ---------------------------------------------+
 |                          ETCD1                              |  |                      ETCD2                        | |                   ETCD3                      |
-|  pvm-fusesource-patches.gsslab.rdu2.redhat.com(10.10.182.77)|  | dhcp182-77.gsslab.rdu2.redhat.com(10.10.178.126)  | |  vm125.gsslab.rdu2.redhat.com(10.10.178.125) |   
+|  dhcp181-165.gsslab.rdu2.redhat.com(10.10.181.165)|  | dhcp179-170.gsslab.rdu2.redhat.com(10.10.179.170)  | |  vm49.gsslab.rdu2.redhat.com(10.10.178.49) |   
 +-------------------------------------------------------------+  +---------------------------------------------------+ +----------------------------------------------+
 ```
 
 ## Video
 [![ETCD Recovery Overview](http://img.youtube.com/vi/JA0vJ5M4I60/0.jpg)](https://www.youtube.com/embed/JA0vJ5M4I60)
+This video is from v2 but most of parts are the similar
 
 ## Pre-tasks ##
 - [Backup ETCD Data](./backup_v3.md)
