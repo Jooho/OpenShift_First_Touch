@@ -20,6 +20,7 @@ Static Pod ETCD with Data Schema Version 3
 
 ## Video
 [![ETCD Recovery Overview](http://img.youtube.com/vi/JA0vJ5M4I60/0.jpg)](https://www.youtube.com/embed/JA0vJ5M4I60)
+
 This video is from v2 but most of parts are the similar
 
 ## Pre-tasks ##
