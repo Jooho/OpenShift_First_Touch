@@ -34,7 +34,8 @@ oc delete secret router-certs-default
 
 oc create secret tls router-certs-default  --cert=/tmp/cert_base/wild.apps.ocp4.jlee.rhcee.support/wild.apps.ocp4.jlee.rhcee.support.cert.pem --key=/tmp/cert_base/wild.apps.ocp4.jlee.rhcee.support/wild.apps.ocp4.jlee.rhcee.support.key.pem
 
-oc delete pod --all
+oc rollout status deployment/router-default
+
 ```
 
 ## Check new cert
