@@ -5,6 +5,9 @@ KVM is not supported platform for OpenShift 4 and it is only for development pur
 
 However, it does not mean that you can not install OCP 4 on KVM. This doc will help you how to configure KVM and host environment.
 
+## Video
+[![How to Config KVM for OCP4](http://img.youtube.com/vi/ne_gN7WEjHU/0.jpg)](https://www.youtube.com/embed/ne_gN7WEjHU)
+
 **Prerequisite**
 
 In order to install OCP4 on KVM, you need to build the NextGen installer on you end, which means you have to install golang package.
