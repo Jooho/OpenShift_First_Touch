@@ -22,21 +22,29 @@
     terraform_version: "0.11.8"
 
   pre_tasks:
-    - block:
-        - name: Check if GOLANG installed 
-          command: go version
-          register: go_ver
-          ignore_errors: yes
+  - block:
+      - name: Check if GOLANG installed 
+        command: go version
+        register: go_ver
+        ignore_errors: yes
 
-        - name: Fail if Golang is not installed
-          fail: 
-            msg="Golang is not installed. This is mandatory package."
-          when: go_ver is failed 
+      - name: Fail if Golang is not installed
+        fail: 
+          msg="Golang is not installed. This is mandatory package."
+        when: go_ver is failed 
 
-        - name: Check the Go Lang verion
-          fail: 
-            msg="GO Lang Verion {{go_ver.stdout|regex_search('(\d).(\d*).(\d*)')}} but it should be higher than 1.10.3"
-          when: go_ver is succeeded and go_ver.stdout|regex_search('(\d).(\d*).(\d*)')|int is version('1.10.3', '>=') 
+      - name: Check the Go Lang verion
+        fail: 
+          msg="GO Lang Verion {{go_ver.stdout|regex_search('(\d).(\d*).(\d*)')}} but it should be higher than 1.10.3"
+        when: go_ver is succeeded and go_ver.stdout|regex_search('(\d).(\d*).(\d*)')|int is version('1.10.3', '>=') 
+  
+  - block:
+    - name: Install Packages
+      package:
+        name: "{{ hypervisor_packages }}"
+        state: present
+    become: yes
+
 
   tasks:
   - block: 
@@ -50,14 +58,6 @@
                Your system does not have KVM enabled 
                (device {{ kvm_device_path }} is missing).
         when: stat_result.stat.exists == False
-
-  - block:
-    - name: Install Packages
-      package:
-        name: "{{ hypervisor_packages }}"
-        state: present
-
-    become: yes
 
   - block:
     - name: Open Libvirt for wheel access
