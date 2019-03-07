@@ -1,0 +1,116 @@
+version: '2'
+services:
+
+    etcd-1:
+        image: gcr.io/etcd-development/etcd:v3.3.11 
+        restart: always
+        ports:
+            - 2379
+            - 2380
+        volumes:
+          - ./certs/:/etc/ssl/certs/
+          - ./etcd1/:/var/lib/etcd/
+        networks:
+          etcd_net_dev:
+            ipv4_address: 172.33.21.41
+        environment:
+            ETCD_NAME: etcd-1
+            ETCDCTL_API: 3
+            ETCD_DEBUG: 1
+            ETCD_INITIAL_ADVERTISE_PEER_URLS: http://etcd-1:2380
+            ETCD_INITIAL_CLUSTER: etcd-3=http://etcd-3:2380,etcd-2=http://etcd-2:2380,etcd-1=http://etcd-1:2380
+            ETCD_INITIAL_CLUSTER_STATE: existing 
+            ETCD_INITIAL_CLUSTER_TOKEN: etcd-ftw
+            ETCD_LISTEN_CLIENT_URLS: http://0.0.0.0:2379
+            ETCD_LISTEN_PEER_URLS: http://0.0.0.0:2380
+            ETCD_ADVERTISE_CLIENT_URLS: http://etcd-1:2379,http://127.0.0.1:2379
+            ETCD_DATA_DIR: /var/lib/etcd
+    etcd-2:
+        image: gcr.io/etcd-development/etcd:v3.3.11 
+        restart: always
+        ports:
+            - 2379
+            - 2380
+        volumes:
+          - ./certs/:/etc/ssl/certs/
+          - ./etcd2/:/var/lib/etcd/
+        networks:
+          etcd_net_dev:
+            ipv4_address: 172.33.21.42
+        environment:
+            ETCD_NAME: etcd-2
+            ETCDCTL_API: 3
+            ETCD_DEBUG: 1
+            ETCD_INITIAL_ADVERTISE_PEER_URLS: http://etcd-2:2380
+            ETCD_INITIAL_CLUSTER: etcd-3=http://etcd-3:2380,etcd-2=http://etcd-2:2380,etcd-1=http://etcd-1:2380
+            ETCD_INITIAL_CLUSTER_STATE: new
+            ETCD_INITIAL_CLUSTER_TOKEN: etcd-ftw
+            ETCD_LISTEN_CLIENT_URLS: http://0.0.0.0:2379
+            ETCD_LISTEN_PEER_URLS: http://0.0.0.0:2380
+            ETCD_ADVERTISE_CLIENT_URLS: http://etcd-2:2379,http://127.0.0.1:2379
+            ETCD_DATA_DIR: /var/lib/etcd
+    etcd-3:
+        image: gcr.io/etcd-development/etcd:v3.3.11
+        restart: always
+        ports:
+            - 2379
+            - 2380
+        volumes:
+          - ./certs/:/etc/ssl/certs/
+          - ./etcd3/:/var/lib/etcd/
+        networks:
+          etcd_net_dev:
+            ipv4_address: 172.33.21.43
+        environment:
+            ETCD_NAME: etcd-3
+            ETCDCTL_API: 3
+            ETCD_DEBUG: 1
+            ETCD_INITIAL_ADVERTISE_PEER_URLS: http://etcd-3:2380
+            ETCD_INITIAL_CLUSTER: etcd-3=http://etcd-3:2380,etcd-2=http://etcd-2:2380,etcd-1=http://etcd-1:2380
+            ETCD_INITIAL_CLUSTER_STATE: new
+            ETCD_INITIAL_CLUSTER_TOKEN: etcd-ftw
+            ETCD_LISTEN_CLIENT_URLS: http://0.0.0.0:2379
+            ETCD_LISTEN_PEER_URLS: http://0.0.0.0:2380
+            ETCD_ADVERTISE_CLIENT_URLS: http://etcd-3:2379,http://127.0.0.1:2379
+            ETCD_DATA_DIR: /var/lib/etcd
+    # etcd-proxy:
+    #     image: gcr.io/etcd-development/etcd:v3.2.2 
+    #     restart: always
+    #     ports:
+    #         - 2379
+    #         - 2380
+    #     volumes:
+    #       - ./certs/:/etc/ssl/certs/
+    #     networks:
+    #       etcd_net_dev:
+    #         ipv4_address: 172.33.21.44
+    #     command:
+    #     - /bin/sh
+    #     - -c
+    #     - |
+    #       #!/bin/sh
+    #       set -euo pipefail
+    #       #etcd grpc-proxy start --endpoints=http://etcd-3:2379,http://etcd-2:2379,http://etcd-1:2379 \
+    #       etcd grpc-proxy start --endpoints=http://172.33.21.43:2379 \
+    #                --key /etc/ssl/certs/etcd-peer-key.pem \
+    #                --cert /etc/ssl/certs/etcd-peer.pem \
+    #                --cacert /etc/ssl/certs/ca.pem \
+    #                --insecure-skip-tls-verify \
+    #                --namespace partition \
+    #                --listen-addr=0.0.0.0:23790
+    #
+    #     environment:
+    #         ETCD_NAME: etcd-proxy
+    #         ETCDCTL_API: 3
+    #         ETCD_DEBUG: 1
+    #
+networks:
+  etcd_net_dev:
+    driver: bridge
+    driver_opts:
+      com.docker.network.enable_ipv6: "false"
+    ipam:
+      driver: default
+      config:
+      - subnet: 172.33.21.0/24
+        gateway: 172.33.21.1
