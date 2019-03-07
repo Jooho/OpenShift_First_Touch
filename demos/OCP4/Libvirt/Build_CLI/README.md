@@ -7,6 +7,9 @@ In order to install OCP4 on KVM, you must build it by yourself.
 
 This doc help you how to build the project by golang on Fedora.
 
+## Video
+[![Build Openshift New Generation Installer](http://img.youtube.com/vi/ZD5SnNyOuy4/0.jpg)](https://www.youtube.com/embed/ZD5SnNyOuy4)
+
 
 ## Manual
 
