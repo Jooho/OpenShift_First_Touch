@@ -18,8 +18,6 @@ Actually, we don’t need to have snapshot on each etcd member but I will do it 
 
 
 ```
-export PRIVATE_KEY=~/.ssh/libra.pem   #UPDATE
-
 for etcd in $(oc get pod -n kube-system --no-headers|grep -v $(hostname) |grep -o  '\S*etcd\S*' );
 do
   echo $etcd
