@@ -23,7 +23,7 @@ Static Pod ETCD with Data Schema Version 3
 This video is from v2 but most of parts are the similar
 
 ## Pre-tasks ##
-- [Backup ETCD Data](./backup_v3.md)
+- [Backup ETCD Data](./backup_v4.md)
 
 ## Demo Scenarios ##
 - **Single ETCD member lost**
