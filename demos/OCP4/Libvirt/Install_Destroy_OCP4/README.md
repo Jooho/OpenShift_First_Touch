@@ -51,7 +51,7 @@ openshift-install create cluster --dir=libvirt --log-level=debug
 
 *How to know about these hostname?*
 ```
-sudo cat /var/lib/libvirt/dnsmasq/ocp4.*
+sudo cat /var/lib/libvirt/dnsmasq/tt0.*
 ```
 
 
