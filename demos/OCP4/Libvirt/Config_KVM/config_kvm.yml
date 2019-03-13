@@ -18,7 +18,7 @@
       - {name: 'auth_tcp', val: "'none'"}
       - {name: 'tcp_port', val: "'16509'"}
     cluster:
-      - {domain_name: "tt.testing", cluster_cidr: "192.168.126.0/24", dns_server: "192.168.126.1"}
+      - {domain_name: "tt.testing", wildcard_name: "apps.tt.testing", cluster_cidr: "192.168.126.0/24", dns_server: "192.168.126.1", router_server: "192.168.126.51"}
     terraform_version: "0.11.8"
 
   pre_tasks:
@@ -155,7 +155,24 @@
     - virt_pool:
         command: status
         name: "default"
+      ignore_errors: yes
       register: storage_pool
+
+  - block:
+    - virt_pool:
+        command: define
+        name: "default"
+        xml: '{{ lookup("file","./default_pool.xml") }}'
+
+    - virt_pool:
+        command: start
+        name: "default"
+        autostart: yes
+
+    - command: restorecon -irv /var/lib/libvirt
+
+    when: storage_pool is failed
+
 
   - block: 
     - name: Enable dnsmasq dns for NetworkManager
@@ -176,17 +193,19 @@
         owner: root
         mode: 0644
       loop: "{{ cluster }}"
-
-    - name: Creating dnsmasq conf file (populated) 
-      lineinfile:
+  
+    - name: Creating dnsmasq conf file (populate)
+      blockinfile:
         path: "/etc/NetworkManager/dnsmasq.d/{{ item.domain_name }}.conf"
-        regexp: '^server='
-        line: 'server=/{{ item.domain_name }}/{{ item.dns_server }}'
+        insertafter: '^server='
+        content: |
+           server=/{{ item.domain_name }}/{{ item.dns_server }}
+           address=/.{{ item.wildcard_name }}/{{ item.router_server }}
         owner: root
         group: root
         mode: 0644
       loop: "{{ cluster }}"
-
+  
     become: yes
 
   - block:
