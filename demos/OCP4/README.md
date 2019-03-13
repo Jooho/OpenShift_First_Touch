@@ -1,7 +1,7 @@
 # OpenShift Container Platform 4
 
-- [Libvirt](./OCP4/Libvirt)
+- [Libvirt](./Libvirt)
 
 - [Features](./OCP4/Features)
-  - [How to access registry?](./OCP4//Features/Registry/access_registry.md)
-  - [How to replace web console certificate?](./OCP4/Features/Certs/replace_webconsole_cert.md)
+  - [How to access registry?](./Features/Registry/access_registry.md)
+  - [How to replace web console certificate?](./Features/Certs/replace_webconsole_cert.md)
