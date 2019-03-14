@@ -57,3 +57,10 @@ sudo rm -rf /tmp/etcd{1,2,3}
 sed 's/etcd-4/etcd-1/g'  -i ./docker-compose.yml 
 ```
 
+
+## Tip
+- Docker network 
+```
+docker network ls
+docker network rm ${id}
+```
