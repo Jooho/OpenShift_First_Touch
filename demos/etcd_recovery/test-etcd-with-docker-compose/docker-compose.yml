@@ -9,7 +9,7 @@ services:
             - 2380
         volumes:
           - ./certs/:/etc/ssl/certs/
-          - ./etcd1/:/var/lib/etcd/
+          - /tmp/etcd1/:/var/lib/etcd/
         networks:
           etcd_net_dev:
             ipv4_address: 172.33.21.41
@@ -33,7 +33,7 @@ services:
             - 2380
         volumes:
           - ./certs/:/etc/ssl/certs/
-          - ./etcd2/:/var/lib/etcd/
+          - /tmp/etcd2/:/var/lib/etcd/
         networks:
           etcd_net_dev:
             ipv4_address: 172.33.21.42
@@ -57,7 +57,7 @@ services:
             - 2380
         volumes:
           - ./certs/:/etc/ssl/certs/
-          - ./etcd3/:/var/lib/etcd/
+          - /tmp/etcd3/:/var/lib/etcd/
         networks:
           etcd_net_dev:
             ipv4_address: 172.33.21.43
