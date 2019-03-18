@@ -1,5 +1,10 @@
 # ETCD Recovery without SSL
 
+## Download `etcdctl` binary ( Ceheck new release:https://github.com/etcd-io/etcd/releases)
+```
+wget -c https://github.com/etcd-io/etcd/releases/download/v3.3.12/etcd-v3.3.12-linux-amd64.tar.gz -O -|tar xvz
+```
+
 ## Create folders for ETCD data
 ```
 mkdir /tmp/etcd{1,2,3}
@@ -52,3 +57,10 @@ sudo rm -rf /tmp/etcd{1,2,3}
 sed 's/etcd-4/etcd-1/g'  -i ./docker-compose.yml 
 ```
 
+
+## Tip
+- Docker network 
+```
+docker network ls
+docker network rm ${id}
+```
