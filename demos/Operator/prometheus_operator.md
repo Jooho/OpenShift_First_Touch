@@ -1,0 +1,1 @@
+[](https://medium.com/devopslinks/using-the-operator-lifecycle-manager-to-deploy-prometheus-on-openshift-cd2f3abb3511)

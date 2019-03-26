@@ -18,7 +18,7 @@ sudo yum install -y gcc python3-pip python3-devel openssl-devel libselinux-pytho
 pip install --user molecule
 ```
 
-### With virtualenvwrapper
+## With virtualenvwrapper
 
 ```
 mkvirtualenv molecule
@@ -26,12 +26,11 @@ mkvirtualenv molecule
 or 
 
 workon molecule
+
+pip install --user molecule
 ```
 
-## virtualenvwrapper Environment
-```
-yum install ansible
-```
+
 
 ## Using Docker
 ```
