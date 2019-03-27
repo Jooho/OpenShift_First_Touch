@@ -1,7 +1,5 @@
-# Jsonpath/template/go-template Cheat Sheet
+# jsonpath Cheat Sheet
 
-
-## Jsonpath
 
 ### Syntax
 
