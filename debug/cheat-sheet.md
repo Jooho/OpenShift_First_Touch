@@ -17,7 +17,7 @@ oc get pods -o jsonpath='{.items[?(@.status.phase!="Running")].metadata.name}'|x
 
 *Cluster level*
 ```
-oc get pod --all-namespaces --template='{{ range $pod := .items}} {{if ne $pod.status.phase "Running"}}  -n {{$pod.metadata.namespace}} {{$pod.metadata.name}} {{end}} {{end}}' |bash -
+ oc get pod --all-namespaces --template='{{ range $pod := .items}}{{if ne $pod.status.phase "Running"}} oc delete pod -n {{$pod.metadata.namespace}} {{$pod.metadata.name}} {{"\n"}}{{end}}{{end}}'  |bash -
 
 ```
 
