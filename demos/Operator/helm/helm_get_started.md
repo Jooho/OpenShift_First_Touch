@@ -61,6 +61,7 @@ helm init
 
 ## Commands
 
+```
 helm create mychart
 
 helm install ./mychart
@@ -71,7 +72,7 @@ helm install stable/drupal --set image=my-registry/drupal:0.1.0 --set livenessPr
 helm list
 
 helm get manifest $NAME
-
+```
 
 ### Built-in Object
 ```
