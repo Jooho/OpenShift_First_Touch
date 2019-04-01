@@ -5,7 +5,7 @@ OpenShift 4 on Libvirt
 ## Docs
 - [Build OpenShift Install](./Build_CLI/README.md)
 - [Config KVM environment for OCP4](./Config_KVM/README.md)
-
+- [Install/Destroy OCP4](./Install_Destroy_OCP4/READMD.md)
 
 
 ## Script
