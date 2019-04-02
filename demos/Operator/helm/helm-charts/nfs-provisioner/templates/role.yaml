@@ -2,7 +2,7 @@ kind: Role
 apiVersion: rbac.authorization.k8s.io/v1beta1
 metadata:
   name: leader-locking-{{ include "nfs-provisioner.name" . }}
-  namespace: {{ .Values.project | default (.Release.Namespace) }}
+  namespace: {{ .Release.Namespace }}
 rules:
   - apiGroups: [""]
     resources: ["endpoints"]

@@ -4,7 +4,7 @@ metadata:
   name: {{ include "nfs-provisioner.name" . }}
 subjects:
   - kind: ServiceAccount
-    name: {{ include "nfs-provisioner.name" . }}
+    name: {{ .Values.serviceaccount | default (include "nfs-provisioner.name" .) }}
      # replace with namespace where provisioner is deployed
     namespace: {{ .Release.Namespace }}
 roleRef:
