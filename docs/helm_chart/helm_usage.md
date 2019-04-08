@@ -90,7 +90,7 @@ One of the powerful features of the template language is its concept of pipeline
     - unset variables evaluate to false and .Values.setVariable was negated with the not function. 
 
 
-### Flow Control
+### Flow Control (Action)
 - **if/else**
   ```
   {{ if PIPELINE }}

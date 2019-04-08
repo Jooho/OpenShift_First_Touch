@@ -50,3 +50,38 @@ subjects:
 ~~~
 helm init
 ~~~
+
+
+Give the permission to access tiller server
+```
+oc policy remove-role-from-group edit system:authenticated -n tiller
+```
+
+You should give the `edit` or `admin` role to only reliable users 
+```
+oc policy add-role-to-user admin peter -n tiller
+```
+
+```
+oc policy add-role-to-user admin peter -n tiller
+```
+
+
+https://engineering.bitnami.com/articles/helm-security.html
+
+```
+helm version --host=10.128.2.202:44134
+```
+
+```
+kubectl  patch deployment tiller-deploy --patch '
+spec:
+  template:
+    spec:
+      containers:
+        - name: tiller
+          ports: []
+          command: ["/tiller"]
+          args: ["--listen=localhost:44134"]
+'
+```
