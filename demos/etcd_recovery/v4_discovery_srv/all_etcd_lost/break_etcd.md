@@ -1,7 +1,7 @@
-Remove ETCD packages on all nodes to break etcd cluster
+Remove ETCD data on all master nodes to break etcd cluster
 -------------------------------------------------------
 
-To break all etcd perfectly, I choose package uninstallation.
+To break all etcd perfectly, I choose delete ETCD data folder.
 This is the most critical situation. With this issue, OpenShift will be out of service.
 
 
