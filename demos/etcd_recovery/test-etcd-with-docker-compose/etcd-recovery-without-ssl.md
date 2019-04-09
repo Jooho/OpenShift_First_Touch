@@ -3,6 +3,9 @@
 ## Download `etcdctl` binary ( Ceheck new release:https://github.com/etcd-io/etcd/releases)
 ```
 wget -c https://github.com/etcd-io/etcd/releases/download/v3.3.12/etcd-v3.3.12-linux-amd64.tar.gz -O -|tar xvz
+
+or 
+curl -L https://github.com/etcd-io/etcd/releases/download/v3.3.12/etcd-v3.3.12-linux-amd64.tar.gz|tar xvz
 ```
 
 ## Create folders for ETCD data

@@ -31,7 +31,7 @@ done
 ```
 
 
-## Mover ETCD Backup DB
+## Move ETCD Backup DB
 
 You need to create basion node to access master server. The public DNS is not created by default.
 
