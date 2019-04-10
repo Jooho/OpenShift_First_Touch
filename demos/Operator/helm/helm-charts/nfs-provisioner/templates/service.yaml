@@ -2,7 +2,7 @@ kind: Service
 apiVersion: v1
 metadata:
   name: {{ .Values.service.name | default (include "nfs-provisioner.name" .) }}
-  namespace: {{ .Values.project | default (.Release.Namespace) }}
+  namespace: {{ .Values.namespace | default (.Release.Namespace) }}
   labels:
     app.kubernetes.io/name: {{ include "nfs-provisioner.name" . }}
     helm.sh/chart: {{ include "nfs-provisioner.chart" . }}

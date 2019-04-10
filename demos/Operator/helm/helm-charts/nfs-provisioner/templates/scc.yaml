@@ -26,7 +26,7 @@ runAsUser:
 seLinuxContext:
   type: MustRunAs
 users:
-- system:serviceaccount:{{ .Release.Namespace }}:{{ .Values.serviceaccount| default (include "nfs-provisioner.name" .) }}
+- system:serviceaccount:{{ .Values.namespace | default (.Release.Namespace) }}:{{ .Values.serviceaccount| default (include "nfs-provisioner.name" .) }}
 supplementalGroups:
   type: RunAsAny
 volumes:

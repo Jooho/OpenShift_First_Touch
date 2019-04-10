@@ -2,7 +2,7 @@ kind: Pod
 apiVersion: v1
 metadata:
   name: test-pod
-  namespace: {{ .Values.project | default (.Release.Namespace) }}
+  namespace: {{ .Values.namespace | default (.Release.Namespace) }}
   annotations:
     "helm.sh/hook": test-success
 spec:

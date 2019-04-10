@@ -2,7 +2,7 @@ kind: Deployment
 apiVersion: extensions/v1beta1
 metadata:
   name: {{ .Values.deployment.name| default (include "nfs-provisioner.name" .) }}
-  namespace: {{ .Values.project | default (.Release.Namespace) }}
+  namespace: {{ .Values.namespace | default (.Release.Namespace) }}
 spec:
   selector:
     matchLabels:

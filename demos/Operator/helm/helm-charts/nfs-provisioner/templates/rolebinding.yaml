@@ -2,12 +2,12 @@ kind: RoleBinding
 apiVersion: rbac.authorization.k8s.io/v1beta1
 metadata:
   name: leader-locking-{{ include "nfs-provisioner.name" . }}
-  namespace: {{ .Release.Namespace }}
+  namespace: {{ .Values.namespace | default (.Release.Namespace) }}
 subjects:
   - kind: ServiceAccount
     name: {{ include "nfs-provisioner.name" . }}
     # replace with namespace where provisioner is deployed
-    namespace: {{ .Release.Namespace }}
+    namespace: {{ .Values.namespace | default (.Release.Namespace) }}
 roleRef:
   kind: Role
   name: leader-locking-{{ include "nfs-provisioner.name" . }}

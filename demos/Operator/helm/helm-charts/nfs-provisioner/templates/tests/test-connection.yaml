@@ -13,5 +13,5 @@ spec:
   containers:
     - name: showmount
       image: itsthenetwork/nfs-server-alpine
-      command: ['showmount',"-e","{{ .Values.service.name | default ( .Chart.Name )}}.{{ .Release.Namespace }}.svc.cluster.local" ]
+      command: ['showmount',"-e","{{ .Values.service.name | default ( .Chart.Name )}}.{{ .Values.namespace | default (.Release.Namespace) }}.svc.cluster.local" ]
   restartPolicy: Never

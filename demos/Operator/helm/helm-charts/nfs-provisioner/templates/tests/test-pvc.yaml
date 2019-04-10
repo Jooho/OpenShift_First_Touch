@@ -2,7 +2,7 @@ apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
  name: test-pvc
- namespace: {{ .Values.project | default (.Release.Namespace) }}
+ namespace: {{ .Values.namespace | default (.Release.Namespace) }}
 spec:
  accessModes:
   - ReadWriteMany

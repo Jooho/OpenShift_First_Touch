@@ -6,7 +6,7 @@ subjects:
   - kind: ServiceAccount
     name: {{ .Values.serviceaccount | default (include "nfs-provisioner.name" .) }}
      # replace with namespace where provisioner is deployed
-    namespace: {{ .Release.Namespace }}
+    namespace: {{ .Values.namespace | default (.Release.Namespace) }}
 roleRef:
   kind: ClusterRole
   name: {{ include "nfs-provisioner.name" . }}
