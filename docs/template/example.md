@@ -42,29 +42,39 @@ oc get pod --all-namespaces --template='{{ range $pod := .items}}{{if ne $pod.st
 
 ## Gather fail reason from not Running Pod.
 ```
-oc get pods  --template='
+oc get pods --all-namespaces --template='
  {{- range .items -}} 
-   {{- if ne .status.phase "Running" -}} 
-       **namespace: {{.metadata.namespace}} **pod: {{ .metadata.name }} **Reason: 
+   {{- $pod_name:=.metadata.name -}}
+   {{- $pod_namespace:=.metadata.namespace -}} 
+   {{- if  ne .status.phase "Running" -}}  
+       **namespace: {{ $pod_namespace}} **pod: {{ $pod_name }} **Reason: 
          {{- if .status.reason -}} 
              {{- .status.reason -}}
          {{- else if .status.containerStatuses -}}
              {{- range $containerStatus:=.status.containerStatuses -}}
                  {{- if $containerStatus.state.waiting -}}
-		     {{- $containerStatus.state.waiting.reason -}}
+		            {{- $containerStatus.state.waiting.reason -}}				
    		 {{- else if $containerStatus.state.terminated -}}
                      {{- $containerStatus.state.terminated.reason -}}
                   {{- end -}}
              {{- end -}}
          {{- else -}}
              {{- range $condition:=.status.conditions -}}
-                 {{- if $condition.reason -}}
-                     {{- $condition.reason -}}
-                 {{- else -}}
-                     "NOT SPECIFIED"
-                 {{- end -}}
+                 {{ with $condition.reason -}}
+					 {{ if $condition.reason -}}
+						 {{- $condition.reason -}}
+					 {{- else -}}
+						 "NOT SPECIFIED"
+					 {{- end -}}
+				 {{- end -}}
              {{- end -}}
          {{- end -}}
-   {{- end -}}{{ "\n"}}
-{{- end -}}'
+	{{- else if .status.containerStatuses -}}
+	        {{- range $containerStatus:=.status.containerStatuses -}}
+                {{- if $containerStatus.state.waiting -}}
+			      **namespace: {{ $pod_namespace }} **pod: {{ $pod_name }} **Reason: {{- $containerStatus.state.waiting.reason -}}					 
+				{{- end -}}
+		    {{- end -}}
+   {{ "\n"}}{{- end -}}
+{{- end -}}'| tr -s '\n' '\n'
 ```

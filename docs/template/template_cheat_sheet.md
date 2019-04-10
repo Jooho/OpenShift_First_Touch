@@ -2,9 +2,9 @@
 
 
 - [jsonpath](./jsonpath.md)
-- [go-template](./go-template.md)
-- [template](./template.md)
-- [practical example](./example.md)
+- TBD- [go-template](./go-template.md)
+- [Practical Examples](./example.md)
+- [Youtube script](./youtube_script.md)
 
 
 
