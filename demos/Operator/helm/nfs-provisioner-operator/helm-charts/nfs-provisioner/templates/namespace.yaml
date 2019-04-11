@@ -1,0 +1,17 @@
+{{- if eq .Values.isOpenshift "yes" -}}
+apiVersion: project.openshift.io/v1
+kind: Project
+{{- else -}}
+apiVersion: v1
+kind: Namespace
+{{- end }}
+metadata:
+  annotations:
+    app.kubernetes.io/name: {{ include "nfs-provisioner.name" . }}
+    helm.sh/chart: {{ include "nfs-provisioner.chart" . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+  name: {{ .Values.namespace | default ( .Release.Namespace ) }}
+spec:
+  finalizers:
+  - kubernetes

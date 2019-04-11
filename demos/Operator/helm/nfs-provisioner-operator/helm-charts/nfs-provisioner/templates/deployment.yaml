@@ -1,0 +1,73 @@
+kind: Deployment
+apiVersion: extensions/v1beta1
+metadata:
+  name: {{ .Values.deployment.name| default (include "nfs-provisioner.name" .) }}
+  namespace: {{ .Values.namespace | default (.Release.Namespace) }}
+spec:
+  selector:
+    matchLabels:
+      app: {{ include "nfs-provisioner.name" . }}
+  replicas: {{ .Values.replicaCount | default 1 }}
+  strategy:
+    type: {{ .Values.deployment.strategy.type | default "RollingUpdate" }}
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: {{ include "nfs-provisioner.name" . }}
+        helm.sh/chart: {{ include "nfs-provisioner.chart" . }}
+        app.kubernetes.io/instance: {{ .Release.Name }}
+        app.kubernetes.io/managed-by: {{ .Release.Service }}
+        app: {{ include "nfs-provisioner.name" . }}
+    spec:
+      serviceAccount: {{ .Values.serviceaccount| default (include "nfs-provisioner.name" .) }}
+      containers:
+        - name: {{ .Chart.Name }}
+          image: {{ .Values.image.repository }}:{{ .Values.image.tag }}
+          ports:
+            - name: nfs
+              containerPort: 2049
+            - name: mountd
+              containerPort: 20048
+            - name: rpcbind
+              containerPort: 111
+            - name: rpcbind-udp
+              containerPort: 111
+              protocol: UDP
+          securityContext:
+            capabilities:
+              add:
+                - DAC_READ_SEARCH
+                - SYS_RESOURCE
+          args:
+            - -provisioner={{ .Values.storageclass.provisioner }}
+          env:
+            - name: POD_IP
+              valueFrom:
+                fieldRef:
+                  fieldPath: status.podIP
+            - name: SERVICE_NAME
+              value: {{ .Values.service.name| default (include "nfs-provisioner.name" .) }}
+            - name: POD_NAMESPACE
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.namespace
+          imagePullPolicy: {{ .Values.image.pullPolicy | default "IfNotPresent" }}
+          volumeMounts:
+            - name: export-volume
+              mountPath: {{ .Values.deployment.mountPath | default "/export" }}
+      volumes:
+        - name: export-volume
+          hostpath:
+            path: {{ .Values.deployment.hostpath | default "/export" }}
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+    {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+    {{- end }}
+    {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+    {{- end }}

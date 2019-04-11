@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+ name: test-pvc
+ namespace: {{ .Values.namespace | default (.Release.Namespace) }}
+spec:
+ accessModes:
+  - ReadWriteMany
+ resources:
+   requests:
+     storage: 1Gi
+ storageClassName: {{ .Values.storageclass.name }}
+

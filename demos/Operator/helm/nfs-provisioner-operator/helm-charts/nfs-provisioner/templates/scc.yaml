@@ -1,0 +1,38 @@
+allowHostDirVolumePlugin: true
+allowHostIPC: false
+allowHostNetwork: false
+allowHostPID: false
+allowHostPorts: false
+allowPrivilegedContainer: false
+allowedCapabilities:
+- DAC_READ_SEARCH
+- SYS_RESOURCE
+apiVersion: v1
+defaultAddCapabilities: null
+fsGroup:
+  type: MustRunAs
+kind: SecurityContextConstraints
+metadata:
+  annotations: null
+  name: {{ include "nfs-provisioner.name" . }}
+priority: null
+readOnlyRootFilesystem: false
+requiredDropCapabilities:
+- KILL
+- MKNOD
+- SYS_CHROOT
+runAsUser:
+  type: RunAsAny
+seLinuxContext:
+  type: MustRunAs
+users:
+- system:serviceaccount:{{ .Values.namespace | default (.Release.Namespace) }}:{{ .Values.serviceaccount| default (include "nfs-provisioner.name" .) }}
+supplementalGroups:
+  type: RunAsAny
+volumes:
+- configMap
+- downwardAPI
+- emptyDir
+- persistentVolumeClaim
+- secret
+

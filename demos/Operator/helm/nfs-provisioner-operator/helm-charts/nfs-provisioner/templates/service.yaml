@@ -1,0 +1,25 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: {{ .Values.service.name | default (include "nfs-provisioner.name" .) }}
+  namespace: {{ .Values.namespace | default (.Release.Namespace) }}
+  labels:
+    app.kubernetes.io/name: {{ include "nfs-provisioner.name" . }}
+    helm.sh/chart: {{ include "nfs-provisioner.chart" . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+    app: {{ include "nfs-provisioner.name" . }}
+spec:
+  ports:
+    - name: nfs
+      port: 2049
+    - name: mountd
+      port: 20048
+    - name: rpcbind
+      port: 111
+    - name: rpcbind-udp
+      port: 111
+      protocol: UDP
+  selector:
+    app: {{ include "nfs-provisioner.name" . }}
+

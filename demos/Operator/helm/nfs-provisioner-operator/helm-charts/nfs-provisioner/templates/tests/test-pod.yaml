@@ -1,0 +1,20 @@
+kind: Pod
+apiVersion: v1
+metadata:
+  name: test-pod
+  namespace: {{ .Values.namespace | default (.Release.Namespace) }}
+  annotations:
+    "helm.sh/hook": test-success
+spec:
+  containers:
+  - name: test-pod
+    image: busybox
+    volumeMounts:
+      - name: nfs-pvc
+        mountPath: "/mnt"
+  restartPolicy: "Never"
+  volumes:
+    - name: nfs-pvc
+      persistentVolumeClaim:
+        claimName: test-pvc
+
