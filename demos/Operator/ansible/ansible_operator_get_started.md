@@ -20,3 +20,7 @@
   yum install -y ansible 
   ```
 
+
+  Reference
+  - [User Guide](https://github.com/operator-framework/operator-sdk/blob/master/doc/ansible/user-guide.md)
+

@@ -39,3 +39,6 @@
    ```
    rm -rf /usr/bin/{dep,operator-sdk}   
    ```
+
+## Reference
+- [User Guide](https://github.com/operator-framework/operator-sdk/blob/master/doc/user-guide.md)
