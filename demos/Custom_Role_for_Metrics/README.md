@@ -59,7 +59,7 @@ oc policy who-can get pods.metrics.k8s.io
 
   ```
 
-- Add the service account to role
+- Add the *service account* to role
   ```
   oc adm policy add-cluster-role-to-user system:aggregated-metrics-reader system:serviceaccount:sue-prj:sue-sa
   ```
@@ -77,11 +77,12 @@ oc policy who-can get pods.metrics.k8s.io
     oc adm top pod --heapster-namespace='openshift-infra' --heapster-scheme="https" 
     ```
 
-- Add the service account to user
+- Add the *user* to role
   ```
   oc adm policy add-cluster-role-to-user system:aggregated-metrics-reader sue
   ```
-  With the new clusterrole, user already have the power to see the metric of the project `sue-prj`
+  With the new clusterrole, user already have the power to see the metric of the project `sue-prj` only.
+
   If you want to give the user more power can see metrics of all projects, you can also give the clusterrole `system:aggregated-metrics-reader` to the user
   
   - Login with the user
@@ -89,9 +90,9 @@ oc policy who-can get pods.metrics.k8s.io
     oc login --username=sue --password=redhat
     ```
 
-  - Check if the `oc adm top pod` is working
+  - Check if the `oc adm top pod` is working for default project
     ```
-    oc adm top pod --heapster-namespace='openshift-infra' --heapster-scheme="https" 
+    oc adm top pod --heapster-namespace='openshift-infra' --heapster-scheme="https" -n default
     ```
     
     
