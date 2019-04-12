@@ -149,9 +149,21 @@ Refer [helm chart doc](./helm_charts/nfs-provisioner/REAEME.md)
   docker push quay.io/jooholee/nfs-provisioner-operator:v0.0.1
   ```
 
+
 - Create operator project
   ```
   oc new-project nfs-provisioner-operator
+  ```
+
+- Update yaml files
+  ```
+  # Operator.yaml
+  sed -i 's|REPLACE_IMAGE|quay.io/jooholee/nfs-provisioner-operator:v0.0.1|g'  deploy/operator.yaml
+
+
+  # role_binding.yaml
+  export OPERATOR_NAMESPACE=$(oc config view --minify -o jsonpath='{.contexts[0].context.namespace}')
+  sed -i "s|REPLACE_NAMESPACE|$OPERATOR_NAMESPACE|g" deploy/role_binding.yaml
   ```
 
 - Deploy NFS Provisioner Operator
