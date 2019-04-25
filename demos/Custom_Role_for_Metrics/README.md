@@ -103,11 +103,9 @@ oc login --username=joe --password=redhat
 oc adm policy remove-cluster-role-from-user system:aggregated-metrics-reader sue
 oc adm policy remove-cluster-role-from-user system:aggregated-metrics-reader system:serviceaccount:sue-prj:sue-sa
 oc delete clusterrole system:aggregated-metrics-reader
-oc delete all -n sue-prj
+oc delete all --all -n sue-prj
 oc delete project sue-prj
 oc delete user sue
-oc delete user joe
-oc delete identity htpasswd_auth:joe
 oc delete identity htpasswd_auth:sue
 ```
   

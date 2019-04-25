@@ -15,9 +15,13 @@
   chmod 777 /usr/bin/.
   ```
 
-- Install Ansible
+- Install necessary packages for local test
   ```
-  yum install -y ansible 
+  sudo yum install -y gcc python-devel ansible
+  pip install ansible-runner ansible-runner-http openshift
+
+  # openshift python package for CentOS or RHEL
+  # yum install python-openshift
   ```
 
 
