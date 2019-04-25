@@ -1,4 +1,4 @@
-# Create Ansible Operator based on existing ansible role
+# Ansible Operator based on existing ansible role
 
  This tutorial show how to create ansible operator with developed ansible role   
     
