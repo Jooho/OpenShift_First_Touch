@@ -1,0 +1,63 @@
+---
+kind: Deployment
+apiVersion: extensions/v1beta1
+metadata:
+  name: {{deployment.name}}
+  namespace: {{namespace}}
+spec:
+  selector:
+    matchLabels:
+      app: {{provisioner_name}}
+  replicas: {{replicaCount}}
+  strategy:
+    type: {{deployment.strategy.type}}
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: {{provisioner_name}}
+        app: {{provisioner_name}}
+    spec:
+      serviceAccount: {{serviceaccount}}
+      containers:
+        - name: {{provisioner_name}}
+          image: {{image.repository}}:{{image.tag}}
+          ports:
+            - name: nfs
+              containerPort: 2049
+            - name: mountd
+              containerPort: 20048
+            - name: rpcbind
+              containerPort: 111
+            - name: rpcbind-udp
+              containerPort: 111
+              protocol: UDP
+          securityContext:
+            capabilities:
+              add:
+                - DAC_READ_SEARCH
+                - SYS_RESOURCE
+          args:
+            - -provisioner={{storageclass.provisioner}}
+          env:
+            - name: POD_IP
+              valueFrom:
+                fieldRef:
+                  fieldPath: status.podIP
+            - name: SERVICE_NAME
+              value: {{service.name}}
+            - name: POD_NAMESPACE
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.namespace
+          imagePullPolicy: {{image.pullPolicy}}
+          volumeMounts:
+            - name: export-volume
+              mountPath: {{deployment.mountPath}}
+      volumes:
+        - name: export-volume
+          hostPath:
+            path: {{deployment.hostPath}}
+      {% if nodeSelector is defined and nodeSelector != '' -%}
+      nodeSelector:
+        {{nodeSelector}}
+      {%- endif -%}

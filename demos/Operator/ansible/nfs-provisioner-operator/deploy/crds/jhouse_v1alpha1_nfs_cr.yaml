@@ -1,0 +1,7 @@
+apiVersion: jhouse.com/v1alpha1
+kind: NFS
+metadata:
+  name: nfs-provisioner
+spec:
+  # Add fields here
+  replicaCount: 1

@@ -1,0 +1,9 @@
+---
+- name: Converge
+  hosts: localhost
+  tasks:
+   - import_role:
+       name: ansible-role-nfs-provisioner
+     vars:
+       host: 'https://masters-311-0129.example.com:8443'
+       api_key: '_gQPBF8-Dkg_fREUDk1Y1oGEo2FFnG58lqpSEblil0A'

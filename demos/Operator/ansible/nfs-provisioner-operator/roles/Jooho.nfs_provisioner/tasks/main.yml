@@ -1,0 +1,25 @@
+---
+# - name: debugging purpose
+#   template: 
+#     src: deployment.yaml.j2
+#     dest: /tmp/deployment.yaml
+- name: Create objects
+  k8s:
+    state: "{{k8s_state}}"
+    definition: "{{ lookup('template', item) }}"
+    api_key: "{{api_key}}"
+    host: "{{host}}"
+    verify_ssl: no
+    force: "{{k8s_force}}"
+  with_items:
+    - 'namespace.yaml.j2'
+    - 'serviceaccount.yaml.j2'
+    - 'scc.yaml.j2'
+    - 'storageclass.yaml.j2'
+    - 'service.yaml.j2'
+    - 'clusterrole.yaml.j2'
+    - 'clusterrolebinding.yaml.j2'
+    - 'role.yaml.j2'
+    - 'rolebinding.yaml.j2'
+    - 'deployment.yaml.j2'
+

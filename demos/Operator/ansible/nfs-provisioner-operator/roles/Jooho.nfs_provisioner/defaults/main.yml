@@ -1,0 +1,38 @@
+---
+provisioner_name: nfs-provisioner
+serviceaccount: "{{ provisioner_name }}"
+namespace: "{{ provisioner_name }}"
+
+k8s_force: False
+k8s_state: present
+
+storageclass:
+  name: nfs-storageclass
+  provisioner: example.com/nfs
+  mountOptions: "vers=4.1"
+
+deployment:
+  name: "{{ provisioner_name }}"
+  strategy:
+    type: "RollingUpdate"
+  mountPath: "/export"
+  hostPath: "/exports-nfs"
+
+replicaCount: 1
+
+image:
+  repository: "quay.io/kubernetes_incubator/nfs-provisioner"
+  tag: "latest"
+  pullPolicy: "IfNotPresent"
+
+service:
+  name: "{{ provisioner_name }}"
+  type: ""
+  port: "2049"
+
+nameOverride: ""
+fullnameOverride: ""
+nodeSelector: "app: nfs-provisioner"
+
+tolerations: []
+affinity: {}

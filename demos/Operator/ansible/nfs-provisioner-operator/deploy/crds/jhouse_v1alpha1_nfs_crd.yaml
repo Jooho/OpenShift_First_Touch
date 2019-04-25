@@ -1,0 +1,19 @@
+apiVersion: apiextensions.k8s.io/v1beta1
+kind: CustomResourceDefinition
+metadata:
+  name: nfs.jhouse.com
+spec:
+  group: jhouse.com
+  names:
+    kind: NFS
+    listKind: NFSList
+    plural: nfs
+    singular: nfs
+  scope: Namespaced
+  subresources:
+    status: {}
+  version: v1alpha1
+  versions:
+  - name: v1alpha1
+    served: true
+    storage: true

@@ -1,0 +1,5 @@
+---
+- version: v1alpha1
+  group: jhouse.com
+  kind: NFS
+  role: /opt/ansible/roles/Jooho.nfs_provisioner

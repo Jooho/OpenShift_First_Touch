@@ -1,0 +1,22 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: {{ service.name }}
+  namespace: {{ namespace }}
+  labels:
+    app.kubernetes.io/name: {{ provisioner_name }}
+    app: {{ provisioner_name }}
+spec:
+  ports:
+    - name: nfs
+      port: 2049
+    - name: mountd
+      port: 20048
+    - name: rpcbind
+      port: 111
+    - name: rpcbind-udp
+      port: 111
+      protocol: UDP
+  selector:
+    app: {{ provisioner_name }}
+

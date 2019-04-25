@@ -1,0 +1,12 @@
+---
+galaxy_info:
+  role_name: nfs_provisioner
+  author: Jooho Lee
+  description: NFS Provisioner
+  company: Red Hat
+
+  license: BSD
+  min_ansible_version: 2.6
+  galaxy_tags: [nfs, nfs_provisioner]
+
+dependencies: []

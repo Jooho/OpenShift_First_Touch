@@ -1,0 +1,15 @@
+---
+kind: RoleBinding
+apiVersion: rbac.authorization.k8s.io/v1beta1
+metadata:
+  name: leader-locking-{{provisioner_name}}
+  namespace: {{namespace}}
+subjects:
+  - kind: ServiceAccount
+    name: {{provisioner_name}}
+    # replace with namespace where provisioner is deployed
+    namespace: {{namespace}}
+roleRef:
+  kind: Role
+  name: leader-locking-{{provisioner_name}}
+  apiGroup: rbac.authorization.k8s.io
