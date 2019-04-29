@@ -58,7 +58,7 @@
    ```
 - Create CR for test
    ```
-   oc new-project ansible-provisioner-operator
+   oc new-project nfs-provisioner-operator
    oc apply -f deploy/crds/jhouse_v1alpha1_nfs_cr.yaml 
    ```
 

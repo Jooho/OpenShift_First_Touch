@@ -35,7 +35,7 @@ Helm chart templates can be resued to ansible templates but you need to change t
   ~~~
 - Copy it to ansible role folder 
   ~~~
-  cp -R /tmp/jhouse_openshift/demos/Operator/helm/helm-charts/  nfs-provisioner/templates/* ./templates/.
+  cp -R /tmp/jhouse_openshift/demos/Operator/helm/helm-charts/nfs-provisioner/templates/* ./templates/.
   cd ./templates
   ~~~
 
@@ -104,9 +104,10 @@ Helm chart templates can be resued to ansible templates but you need to change t
 #### Steps
 - Remove unnecessary files
   ```
-  rm -rf _helpers.tpl NOTES.txt ./test/test-connection.yaml ../handlers 
+  rm -rf _helpers.tpl NOTES.txt ./tests/test-connection.yaml ../handlers 
   mkdir ../tests
-  mv ./test/test-*  ../tests/.
+  mv ./tests/test-*  ../tests/.
+  rm -rf ./tests
   ```
 
 - Change file type to j2
@@ -162,15 +163,15 @@ Helm chart templates can be resued to ansible templates but you need to change t
 - Update modeclue/default/playbook.yml 
   ```
   ---
-- name: Converge
-  hosts: localhost
-  tasks:
-   - import_role:
-       name: ansible-role-nfs-provisioner
-     vars:
-       host: 'https://masters-311-0129.example.com:8443'      #Update
-       api_key: '_gQPBF8-Dkg_fREUDk1Y1oGEo2FFnG58lqpSEblil0A' #Update
-
+  - name: Converge
+    hosts: localhost
+    tasks:
+     - import_role:
+         name: ansible-role-nfs-provisioner
+       vars:
+         host: 'https://masters-311-0129.example.com:8443'      #Update
+         api_key: '_gQPBF8-Dkg_fREUDk1Y1oGEo2FFnG58lqpSEblil0A' #Update
+  
   ```
 
 - Update defatults/main.yml
@@ -219,7 +220,14 @@ Helm chart templates can be resued to ansible templates but you need to change t
   ```
   molecule converge
   ```
-  error will happen (hostpath related)
+  
+- Error will happen (hostpath related)
+  ```
+  hostpath: {{ hostpath }}
+
+  ==>
+  hostPath: {{ hostPath }}
+  ``` 
   
 
 
@@ -233,7 +241,7 @@ Helm chart templates can be resued to ansible templates but you need to change t
 
 ```
 oc project nfs-provisioner
-oc create -f ./templates/test/test-pvc.yaml
+oc create -f ./tests/test-pvc.yaml
 oc get pvc
 ```
 
