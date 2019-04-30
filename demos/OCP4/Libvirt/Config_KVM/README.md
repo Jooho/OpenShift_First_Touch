@@ -32,3 +32,29 @@ ansible-playbook config_kvm.yml
 This is updated file([config_kvm.yml](./config_kvm.yml)).
 
 
+
+### Troubeshooting
+
+- python-dnf error
+  - change python version to 3
+  ```
+  vi config_kvm.yml
+
+  - 'python-netaddr'
+  - 'python-libvirt'
+  - 'python-lxml'
+  ==> 
+  - 'python3-netaddr'
+  - 'python3-libvirt'
+  - 'python3-lxml'
+  ``` 
+  - use this ansible command
+  ```
+  ansible-playbook -i hosts config_kvm.yml
+  ```
+
+
+- The ipaddr filter requires python-netaddr be installed on the ansible controller
+  ```
+  pip install netaddr
+  ```
