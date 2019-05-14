@@ -59,7 +59,7 @@ oc policy remove-role-from-group edit system:authenticated -n tiller
 
 You should give the `edit` or `admin` role to only reliable users 
 ```
-oc policy add-role-to-user admin peter -n tiller
+oc policy add-role-to-user edit peter -n tiller
 ```
 
 ```
