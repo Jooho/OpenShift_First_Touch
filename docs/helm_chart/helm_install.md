@@ -52,7 +52,7 @@ helm init
 ~~~
 
 
-Give the permission to access tiller server
+Take the permission to access tiller server
 ```
 oc policy remove-role-from-group edit system:authenticated -n tiller
 ```
