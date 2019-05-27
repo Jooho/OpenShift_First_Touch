@@ -8,7 +8,7 @@ git clone https://github.com/Jooho/jhouse_openshift.git
 
 # Build Installer
 cd jhouse_openshift/demos/OCP4/Libvirt/Build_CLI
-ansible-playbook ./go_build.yml -e installer_tag=v0.14.0 -vvvv
+ansible-playbook ./go_build.yml -e git_repo_branch=v0.14.0 -vvvv
 
 # Config KVM on Fedora
 cd ../Config_KVM
