@@ -6,7 +6,7 @@
     work_dir: '/tmp'
     GOBIN: "{{ work_dir }}/go/bin"
     GOPATH: "{{ work_dir }}/go"
-    installer_tag: 'v0.13.0'
+    git_repo_branch: 'v0.13.0'
 
   environment:
     GOBIN: "{{ GOBIN }}"
@@ -71,7 +71,7 @@
         git:
           repo: https://github.com/openshift/installer.git
           dest: "{{ work_dir }}/go/src/github.com/openshift/installer"
-          version: "{{ installer_tag }}"
+          version: "{{ git_repo_branch }}"
 
       - name: Download dependencies
         shell: "dep ensure"
