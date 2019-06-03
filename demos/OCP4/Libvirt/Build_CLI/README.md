@@ -37,7 +37,7 @@ cd ${WORK_DIR}/dev/git/go/src/openshift/installer
 dep ensure
  
 # Build
-TAG=libvirt hack/build.sh
+TAGS=libvirt hack/build.sh
 ```
 
 ## Ansible
