@@ -12,14 +12,14 @@
 - Download operator-sdk
   ```
   wget https://github.com/operator-framework/operator-sdk/releases/download/v${OPERATOR_VERSION}/operator-sdk-v${OPERATOR_VERSION}-x86_64-linux-gnu
-  mv operator-sdk-v0.6.0-x86_64-linux-gnu /usr/bin/operator-sdk
+  mv operator-sdk-v${OPERATOR_VERSION}-x86_64-linux-gnu /usr/bin/operator-sdk
   chmod 777 /usr/bin/.
   ```
 
 - Install GoLang
   ```
   sudo yum install -y golang-bin gcc-c++ libvirt-devel
-  mkdir -p ${WORK_DIR}/dev/git/go/{src,pkg,bin}
+  mkdir -p ${WORK_DIR}/go/{src,pkg,bin}
   
   echo "export GOBIN=${WORK_DIR}/dev/git/go/bin" >> ~/.bashrc
   echo "export GOPATH=${WORK_DIR}/dev/git/go" >> ~/.bashrc
