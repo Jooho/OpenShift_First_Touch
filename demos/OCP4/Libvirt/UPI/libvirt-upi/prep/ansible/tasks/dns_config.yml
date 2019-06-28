@@ -1,0 +1,31 @@
+---
+- name: Setup DNS for OCP4 UPI installation
+  hosts: hypervisor
+  become: true   
+  become_user: root   
+
+  vars:
+    op: install
+
+  tasks:
+    - name: Create DNSMasq config 
+      template:
+        src: "../templates/dnsmasq_config.j2"
+        dest: "/etc/NetworkManager/dnsmasq.d/{{ cluster_name }}_dns.conf"
+      when: op != 'destroy'
+        #dest: "/var/lib/libvirt/dnsmasq/{{ cluster_name }}_dns.conf"
+
+    - name: Remove DSNMasq config
+      file:
+        path: "/etc/NetworkManager/dnsmasq.d/{{ cluster_name }}_dns.conf"
+        state: absent
+      when: op == 'destroy'
+
+    - name: Update NetworkManager (enable DNS changes)
+      service:
+        name: NetworkManager
+        state: reloaded                               # restarted may be required. 
+      become: true
+
+      
+

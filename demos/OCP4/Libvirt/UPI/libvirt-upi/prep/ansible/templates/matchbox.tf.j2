@@ -1,0 +1,89 @@
+
+locals {
+  kernel_args = [
+    "console=tty0",
+    "console=ttyS1,115200n8",
+    "rd.neednet=1",
+
+    # "rd.break=initqueue"
+    "coreos.inst=yes",
+
+    "coreos.inst.image_url=${var.pxe_os_image_url}",
+    "coreos.inst.install_dev=sda",
+    "coreos.inst.skip_media_check",
+  ]
+
+  pxe_kernel = "${var.pxe_kernel_url}"
+  pxe_initrd = "${var.pxe_initrd_url}"
+}
+
+provider "matchbox" {
+  endpoint    = "${var.matchbox_rpc_endpoint}"
+  client_cert = "${file(var.matchbox_client_cert)}"
+  client_key  = "${file(var.matchbox_client_key)}"
+  ca          = "${file(var.matchbox_trusted_ca_cert)}"
+}
+
+resource "matchbox_profile" "default" {
+  name = "${var.cluster_name}"
+}
+
+resource "matchbox_group" "default" {
+  name    = "${var.cluster_name}"
+  profile = "${matchbox_profile.default.name}"
+}
+
+resource "matchbox_profile" "master" {
+  name   = "${var.cluster_name}-master"
+  kernel = "${local.pxe_kernel}"
+
+  initrd = [
+    "${local.pxe_initrd}",
+  ]
+
+  args = [
+    "${local.kernel_args}",
+    "coreos.inst.ignition_url=${var.matchbox_http_endpoint}/ignition?mac=${mac:hexhyp}",
+  ]
+
+  #raw_ignition = "${file(var.master_ign_file)}"
+}
+
+resource "matchbox_profile" "worker" {
+  name   = "${var.cluster_name}-worker"
+  kernel = "${local.pxe_kernel}"
+
+  initrd = [
+    "${local.pxe_initrd}",
+  ]
+
+  args = [
+    "${local.kernel_args}",
+    "coreos.inst.ignition_url=${var.matchbox_http_endpoint}/ignition?mac=${mac:hexhyp}",
+  ]
+
+  #raw_ignition = "${file(var.worker_ign_file)}"
+}
+
+#https://github.com/poseidon/matchbox/blob/master/examples/terraform/bootkube-install/cluster.tf
+#https://github.com/poseidon/typhoon/blob/master/bare-metal/container-linux/kubernetes/groups.tf
+resource "matchbox_group" "master" {
+  name    = "${var.cluster_name}-master"
+  profile = "${matchbox_profile.master.name}"
+
+  selector {
+    mac = element(var.controller_macs)
+    
+  }
+}
+
+resource "matchbox_group" "worker" {
+  name    = "${var.cluster_name}-worker"
+  profile = "${matchbox_profile.worker.name}"
+
+  selector {
+    cluster_name = "${var.cluster_name}"
+    role       = "worker"
+  }
+}
+

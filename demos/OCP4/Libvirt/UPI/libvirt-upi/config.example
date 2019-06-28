@@ -1,0 +1,63 @@
+[all:vars]
+##################################### Mandatory ######################################
+# OCP 
+cluster_name="test"
+ocp_version="4.1"
+worker_nodes=3
+master_nodes=3
+
+pull_secret_path="/home/jooho/Downloads/pull-secret"
+ssh_public_key_path="/home/jooho/.ssh/id_rsa.pub"
+
+rhcos_kernel_path=/var/lib/matchbox/assets/rhcos/4.1/rhcos-kernel
+rhcos_initramfs_path=/var/lib/matchbox/assets/rhcos/4.1/rhcos-initramfs.img
+rhcos_os_image_url=192.168.222.1:8000/rhcos-bios.raw.gz
+
+#rhcos_install_dev=vda
+
+
+
+
+##################################### Optional ######################################
+## Comment-out value is default. If you delete any values from here, the default value of terraform values will be used .
+# KVM network
+#uri='qemu://system'
+#network_cidr="192.168.222.0/24"
+#network_domain="example.com"
+
+# KVM storage
+#libvirt_storage_pool_name="ocp4"
+#libvirt_storage_pool_path="/var/lib/libvirt/images/ocp4"
+
+# Web Server master/worker/bootstrap ign file
+#webserver_url="http://192.168.222.1:9000"
+#webserver_doc_path="/var/www/html"
+
+# Load Balancer
+#lb_os_type=centos 
+#lb_vm_volume_source="https://cloud.centos.org/centos/7/images/CentOS-7-x86_64-GenericCloud.qcow2"
+#lb_memory="512"
+#lb_vcpu="1"
+#lb_disk="80" #G
+
+# bootstrap 
+#bootstrap_vm_size="50" #G
+#bootstrap_vm_memory="4096"
+#bootstrap_vm_vcpu="1"
+
+# master
+#master_vm_size="80" #G
+#master_vm_memory="10240"
+#master_vm_vcpu="4"
+
+# worker
+#worker_vm_size="80" #G
+#worker_vm_memory="10240"
+#worker_vm_vcpu="4"
+
+#matchbox_rpc_endpoint="matchbox.example.com:8081"
+#matchbox_http_endpoint="matchbox.example.com:8080"
+#matchbox_client_cert="~/.matchbox/client.crt"
+#matchbox_client_key="~/.matchbox/client.key
+#matchbox_trusted_ca_cert="~/.matchbox/ca.crt"
+

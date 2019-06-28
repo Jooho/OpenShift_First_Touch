@@ -1,0 +1,27 @@
+
+{% set ip_prefix = network_cidr.split(".") %}
+
+address=/lb.{{ cluster_name }}.{{ network_domain }}/{{ ip_prefix[0] }}.{{ ip_prefix[1] }}.{{ ip_prefix[2] }}.2
+
+{% for master in range(master_nodes) %}
+address=/master-{{ loop.index -1 }}.{{ cluster_name }}.{{ network_domain }}/{{ ip_prefix[0] }}.{{ ip_prefix[1] }}.{{ ip_prefix[2] }}.1{{ loop.index - 1 }}
+{% endfor %}
+
+{% for worker in range(worker_nodes) %}
+address=/worker-{{ loop.index - 1 }}.{{ cluster_name }}.{{ network_domain }}/{{ ip_prefix[0] }}.{{ ip_prefix[1] }}.{{ ip_prefix[2] }}.10{{ loop.index - 1 }}
+{% endfor %}
+
+{% for master in range(master_nodes) %}
+srv-host=_etcd-server-ssl._tcp.{{ cluster_name }}.{{ network_domain }},etcd-{{ loop.index - 1 }}.{{ cluster_name }}.{{ network_domain }},2380,0,10
+address=/etcd-{{ loop.index -1 }}.{{ cluster_name }}.{{ network_domain }}/{{ ip_prefix[0] }}.{{ ip_prefix[1] }}.{{ ip_prefix[2] }}.1{{ loop.index - 1 }}
+{% endfor %}
+
+address=/api.{{ cluster_name }}.{{ network_domain }}/{{ ip_prefix[0] }}.{{ ip_prefix[1] }}.{{ ip_prefix[2] }}.2
+address=/api-int.{{ cluster_name }}.{{ network_domain }}/{{ ip_prefix[0] }}.{{ ip_prefix[1] }}.{{ ip_prefix[2] }}.2
+address=/.apps.{{ cluster_name }}.{{ network_domain }}/{{ ip_prefix[0] }}.{{ ip_prefix[1] }}.{{ ip_prefix[2] }}.2
+
+address=/matchbox.{{ network_domain }}/{{ ansible_default_ipv4.address }}
+#address=/matchbox.{{ network_domain }}/{{ ip_prefix[0] }}.{{ ip_prefix[1] }}.{{ ip_prefix[2] }}.1
+address=/bootstrap.{{ cluster_name }}.{{ network_domain }}/{{ ip_prefix[0] }}.{{ ip_prefix[1] }}.{{ ip_prefix[2] }}.253
+
+

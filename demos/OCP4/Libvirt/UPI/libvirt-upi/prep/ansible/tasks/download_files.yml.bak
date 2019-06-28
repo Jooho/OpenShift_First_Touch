@@ -1,0 +1,91 @@
+- name: Pre-requisites Processes
+  hosts: localhost
+  become: yes
+  become_user: root
+  gather_facts: no
+  vars:
+   - terraform_binary:
+       src: "https://releases.hashicorp.com/terraform/0.11.8/terraform_0.11.8_linux_amd64.zip"
+       dest: "{{ lookup('env','HOME') }}/.local/bin"
+  
+   - terraform_provider_libvirt:
+       src: "https://github.com/dmacvicar/terraform-provider-libvirt/releases/download/v0.5.2/terraform-provider-libvirt-0.5.2.Fedora_28.x86_64.tar.gz"
+       dest: "{{ lookup('env','HOME') }}/.terraform.d/plugins"
+
+   - terraform_provider_matchbox:
+       src: "https://github.com/poseidon/terraform-provider-matchbox/releases/download/v0.3.0/terraform-provider-matchbox-v0.3.0-linux-amd64.tar.gz"
+       dest: "{{ lookup('env','HOME') }}/.terraform.d/plugins"
+
+   - rhcos_kernel:
+       src: "https://mirror.openshift.com/pub/openshift-v4/dependencies/rhcos/4.1/4.1.0/rhcos-4.1.0-x86_64-installer-kernel"
+       dest: "/var/lib/match/assets/rhcos/4.1/rhcos-kernel"
+
+   - rhcos_initramfs:
+       src: "https://mirror.openshift.com/pub/openshift-v4/dependencies/rhcos/4.1/4.1.0/rhcos-4.1.0-x86_64-installer-initramfs.img"
+       dest: "/var/lib/match/assets/rhcos/4.1/rhcos-initramfs.img"
+
+   - openshift_installer:
+       src: "https://mirror.openshift.com/pub/openshift-v4/clients/ocp/4.1.3/openshift-install-linux-4.1.3.tar.gz"
+       dest: "/usr/bin"
+
+   - temp_dir: /tmp
+
+   - required_packages:
+     - dnf-plugins-core
+     - docker-ce 
+     - docker-ce-cli 
+     - containerd.io
+     - httpd
+  
+
+  pre_tasks:
+    - name: Install required packages
+      yum:
+        name: "{{ required_packages }}"
+        state: present
+        enablerepo: https://download.docker.com/linux/fedora/docker-ce.repo
+
+    - name: Create directories
+      file: 
+        path: "{{ item }}"
+        state: directory
+      with_items:
+      - "{{ temp_dir }}"
+      - "{{ terraform_binary.dest | dirname }}"
+      - "{{ terraform_provider_libvirt.dest | dirname }}"
+      - "{{ rhcos_kernel.dest | dirname }}"
+
+  tasks:
+    - name: Download terraform binary & libvirt provider
+      unarchive:
+        src: "{{ item.src }}" 
+        dest: "{{ item.dest }}"
+        mode: '0777'
+        remote_src: yes
+      with_items:
+      - "{{ terraform_binary }}"
+      - "{{ terraform_provider_libvirt }}"
+      - "{{ terraform_provider_matchbox }}"
+      - "{{ openshift_installer }}"
+
+    - set_fact:
+        matchbox_dir: "{{ (terraform_provider_matchbox.src | basename | splitext)[0] }}"
+    
+    - name: Move matchbox provider
+      copy:
+        src: "{{ terraform_provider_matchbox.dest }}/{{ (matchbox_dir | splitext)[0] }}/terraform-provider-matchbox"
+        dest: "{{ terraform_provider_matchbox.dest }}/terraform-provider-matchbox"
+
+    - name: Remove matchbox folder
+      file:
+        path: "{{ terraform_provider_matchbox.dest }}/{{ (matchbox_dir | splitext)[0] }}"
+        state: absent
+ 
+    - name: Download RHCOS kernal and initramfs
+      get_url:
+        url: "{{ item.src }}"
+        dest: "{{ item.dest | dirname }}/{{ item.dest | basename }}"
+      with_items:
+      - "{{ rhcos_kernel }}"
+      - "{{ rhcos_initramfs }}"
+

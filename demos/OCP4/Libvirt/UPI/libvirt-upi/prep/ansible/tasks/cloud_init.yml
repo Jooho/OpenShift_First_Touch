@@ -1,0 +1,57 @@
+---
+- name: Create Cloud-Init configurations for Load Balancer
+  hosts: hypervisor
+  gather_facts: no
+  become: yes
+  become_user: root
+
+  vars:
+    op: "install"
+
+    install_packages:
+    - haproxy
+    - policycoreutils-python 
+
+  tasks:
+    - name: Create cloud init user-data for centos
+      template:
+        src: ../templates/user-data-centos.j2
+        dest: "{{ lookup('env','PWD') }}/user-data"
+        mode: 0777        
+        force: true
+      when: lb_os_type != 'rhel' and op == 'install'
+
+    - name: Create cloud init user-data for rhel
+      template:
+        src: ../templates/user-data-rhel.j2
+        dest: "{{ lookup('env','PWD') }}/user-data"
+        mode: 0777        
+        force: true
+      when: lb_os_type == 'rhel' and op == 'install'
+
+    - name: Create cloud init meta-data 
+      template:
+        src: ../templates/meta-data.j2
+        dest: "{{ lookup('env','PWD') }}/meta-data"
+        mode: 0777        
+        force: true
+      when: op == 'install'
+
+    - name: Clean up user/meta-data
+      file:
+        path: "{{ item }}"
+        state: absent
+      when: op == 'destroy'
+      with_items:
+      - "{{ lookup('env','PWD') }}/user-data"
+      - "{{ lookup('env','PWD') }}/meta-data"
+
+    - name: Create fake user/meta-data
+      file:
+        path: "{{ item }}"
+        state: touch
+      when: op == 'destroy'
+      with_items:
+      - "{{ lookup('env','PWD') }}/user-data"
+      - "{{ lookup('env','PWD') }}/meta-data"
+

@@ -1,0 +1,14 @@
+- name: Install packages
+  import_playbook: ../tasks/install_packages.yml
+
+- name: Download essential files
+  import_playbook: ../tasks/download_files.yml
+
+- name: Config DNSMasq
+  import_playbook: ../tasks/dns_config.yml
+
+- name: Config Cloud-init 
+  import_playbook: ../tasks/matchbox_config.yml
+
+- name: Config OCP4 
+  import_playbook: ../tasks/ocp_vm_config.yml

@@ -1,0 +1,40 @@
+- name: Generate config files for terraform,ansible
+  hosts: localhost
+  gather_facts: no
+  become: yes
+  become_user: root
+
+  vars:
+    ssh_public_key_content: "{{ lookup('file', ssh_public_key_path ) }}"
+    pull_secret_content: "'{{ lookup('file', pull_secret_path ) }}'"
+
+  tasks:
+   - name: Create terraform.tfvar file for prep
+     template:
+       src: ../templates/terraform.tfvars.j2
+       dest: ../../terraform.tfvars 
+       backup: yes 
+       force: yes
+
+   - name: Create connection.tf 
+     template: 
+       src: ../templates/connection.tf.j2
+       dest: ../../connection.tf
+       backup: yes
+       force: yes
+
+   - name: Generate inventory file
+     template:
+       src: ../templates/inventory.j2
+       dest: ../inventory
+       backup: yes
+       force: yes
+ 
+   - name: Generate Libvirt network xlst file for bootp(iPXE)
+     template:
+       src: ../templates/bootp.xsl.j2
+       dest: ../../bootp.xsl
+       backup: yes
+       force: yes
+ 
+

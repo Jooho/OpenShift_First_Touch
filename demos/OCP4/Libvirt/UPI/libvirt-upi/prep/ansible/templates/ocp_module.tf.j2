@@ -1,0 +1,65 @@
+locals {
+
+  cluster_name="{{ cluster_name }}"
+  network_domain="{{ network_domain }}"
+
+}
+
+
+
+
+module "bootstrap"  {
+   source = "../modules/vm"
+
+   cluster_name="${local.cluster_name}"
+   network_domain="${local.network_domain}"
+   vm_name="bootstrap"
+   vm_pool_name="{{ libvirt_storage_pool_name }}"
+   vm_network_id="{{ ocp_network_id }}"
+   vm_size="{{ bootstrap_vm_size|int * 1024 * 1024 * 1024}}"
+   vm_memory="{{ bootstrap_vm_memory }}"
+   vm_vcpu="{{ bootstrap_vm_vcpu }}"
+   vm_hostname="bootstrap.{{ cluster_name }}.{{ network_domain }}"
+   vm_mac="{{ bootstrap_mac }}"
+   vm_ip="{{ ip_prefix[0] }}.{{ ip_prefix[1] }}.{{ ip_prefix[2] }}.253"
+}
+
+{% for master in range(master_nodes) %}
+
+module "master-{{ loop.index - 1 }}"  {
+   source = "../modules/vm"
+
+   cluster_name="${local.cluster_name}"
+   network_domain="${local.network_domain}"
+   vm_name="master-{{ loop.index - 1 }}"
+   vm_pool_name="{{ libvirt_storage_pool_name }}"
+   vm_network_id="{{ ocp_network_id }}"
+   vm_size="{{ master_vm_size|int * 1024 * 1024 * 1024}}"
+   vm_memory="{{ master_vm_memory }}"
+   vm_vcpu="{{ master_vm_vcpu }}"
+   vm_hostname="master-{{ loop.index - 1 }}.{{ cluster_name }}.{{ network_domain }}"
+   vm_mac="{{ master_macs[loop.index - 1] }}"
+   vm_ip="{{ ip_prefix[0] }}.{{ ip_prefix[1] }}.{{ ip_prefix[2] }}.1{{ loop.index - 1 }}"
+}
+
+{% endfor %}
+
+{% for worker in range(worker_nodes) %}
+
+module "worker-{{ loop.index - 1 }}"  {
+   source = "../modules/vm"
+
+   cluster_name="${local.cluster_name}"
+   network_domain="${local.network_domain}"
+   vm_name="worker-{{ loop.index - 1 }}"
+   vm_pool_name="{{ libvirt_storage_pool_name }}"
+   vm_network_id="{{ ocp_network_id }}"
+   vm_size="{{ worker_vm_size|int * 1024 * 1024 * 1024}}"
+   vm_memory="{{ worker_vm_memory }}"
+   vm_vcpu="{{ worker_vm_vcpu }}"
+   vm_hostname="worker-{{ loop.index - 1 }}.{{ cluster_name }}.{{ network_domain }}"
+   vm_mac="{{ worker_macs[loop.index - 1] }}"
+   vm_ip="{{ ip_prefix[0] }}.{{ ip_prefix[1] }}.{{ ip_prefix[2] }}.10{{ loop.index - 1 }}"
+}
+
+{% endfor %}

@@ -1,0 +1,20 @@
+- name: Pre-requisites Processes
+  hosts: localhost
+  become: yes
+  become_user: root
+  gather_facts: no
+  vars:
+   - required_packages:
+     - dnf-plugins-core
+     - docker-ce 
+     - docker-ce-cli 
+     - containerd.io
+     - httpd
+
+  tasks:
+    - name: Install required packages
+      yum:
+        name: "{{ required_packages }}"
+        state: present
+        enablerepo: https://download.docker.com/linux/fedora/docker-ce.repo
+

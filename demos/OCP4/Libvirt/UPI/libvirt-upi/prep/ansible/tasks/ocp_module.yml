@@ -1,0 +1,25 @@
+- name: Generate OCP4 VM moudle tf file
+  hosts: hypervisor
+  become: yes
+  become_user: root
+  gather_facts: no
+
+  vars:
+    ip_prefix: "{{ network_cidr.split('.') }}"
+
+  pre_tasks:
+    - name: Gather network info
+      virt_net:
+        command: facts
+        
+    - name: Gather network Id 
+      set_fact:
+         ocp_network_id: "{{ ansible_libvirt_networks[cluster_name].uuid }}"
+
+  tasks:
+    - name: Generate ocp_module.tf
+      template:
+        src: ../templates/ocp_module.tf.j2
+        dest: "{{ lookup('env','PWD') }}/../ocp4/ocp_module.tf"
+
+

@@ -1,0 +1,35 @@
+- name: Add LB to host groups
+  hosts: hypervisor
+  tasks:
+    - name: Add LB to host groups
+      add_host:
+        name: "lb.{{ cluster_name }}.{{ network_domain }}"
+        groups: lb
+
+- name: Remove Bootstrap from HAProxy 
+  hosts: lb
+  become: true
+  become_user: root
+  remote_user: centos 
+ 
+  tasks:
+    # disable server without backend pool name (apply to all available backend pool)
+    - name:  Disable bootstrap backend
+      haproxy:
+        state: disabled
+        host: "bootstrap.{{ cluster_name }}{{ network_domain }}"
+        socket: /var/lib/haproxy/stats
+ 
+    - name: Remove bootstrap backend from pool
+      lineinfile:
+        path: /etc/haproxy/haproxy.cfg
+        state: absent
+        regexp: "bootstrap"
+ 
+    - name: Enable service haproxy
+      service:
+        name: haproxy
+        enabled: yes
+        state: restarted
+
+

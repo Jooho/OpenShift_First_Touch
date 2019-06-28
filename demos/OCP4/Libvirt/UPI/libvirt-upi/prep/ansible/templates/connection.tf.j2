@@ -1,0 +1,6 @@
+# Configure the Libvirt provider
+provider "libvirt" {
+  uri = "{{libvirt_uri | default('qemu:///system') }}"
+  #uri = "qemu+tcp://192.168.122.1/system"
+}
+

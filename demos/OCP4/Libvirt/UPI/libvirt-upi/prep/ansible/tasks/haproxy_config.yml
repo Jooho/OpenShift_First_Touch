@@ -1,0 +1,60 @@
+---
+- name: Setup HAproxy in LB (Add LB to host groups)
+  hosts: hypervisor 
+  gather_facts: no 
+  pre_tasks:
+    - name: Check LB ssh up
+      wait_for:
+        host: "lb.{{ cluster_name }}.{{ network_domain }}"
+        port: 22
+        state: started
+      until: "{{ lb_ssh_up is succeeded }}"
+      delay: 10
+      register: lb_ssh_up
+  tasks:
+    - name: Add LB to host groups
+      add_host:
+        name: "lb.{{ cluster_name }}.{{ network_domain }}"
+        groups: lb
+
+- name: Setup HAproxy in LB (Configure haproxy)
+  hosts: lb
+  become: true   
+  become_user: root   
+  remote_user: centos
+  gather_facts: no 
+  pre_tasks:
+    - name: Install HAProxy
+      yum :
+        name: "haproxy"
+        state: latest
+      become: true
+  tasks:
+    - name: Copy HAProxy Config
+      template:
+        src: "../templates/haproxy.cfg.j2"
+        dest: "/etc/haproxy/haproxy.cfg"
+        backup: yes
+
+  post_tasks:
+    - name: Allow Haproxy to listen on tcp port 
+      seport:
+        ports: 6443
+        proto: tcp
+        setype: http_port_t
+        state: present
+
+    - name: Allow Haproxy to listen on tcp port 
+      seport:
+        ports: 22623
+        proto: tcp
+        setype: http_port_t
+        state: present
+
+    - name: Enable service haproxy
+      service:
+        name: haproxy
+        enabled: yes
+        state: restarted
+   
+

@@ -1,0 +1,45 @@
+cluster_name="{{ cluster_name }}"
+worker_nodes="{{ worker_nodes }}"
+master_nodes="{{ master_nodes }}"
+ocp_version="{{ ocp_version }}"
+
+uri="{{ uri |default('qemu://system') }}"
+network_domain="{{ network_domain | default('example.com') }}"
+network_cidr="{{ network_cidr | default('192.168.222.0/24') }}"
+libvirt_storage_pool_name="{{ libvirt_storage_pool_name | default('ocp4') }}"
+libvirt_storage_pool_path="{{ libvirt_storage_pool_path | default('/var/lib/libvirt/images/ocp4') }}"
+
+
+ssh_public_key="{{ ssh_public_key_content }}"
+
+lb_os_type="{{ lb_os_type | default('centos') }}" #rhel
+lb_vm_volume_source="{{ lb_vm_volume_source | default('https://cloud.centos.org/centos/7/images/CentOS-7-x86_64-GenericCloud.qcow2') }}"
+lb_memory="{{ lb_memory | default('512') }}"
+lb_vcpu="{{ lb_vcpu | default('1') }}"
+lb_disk="{{ lb_disk | default('80') }}"   #G
+
+bootstrap_vm_size="{{ bootstrap_vm_size | default('50') }}"
+bootstrap_vm_memory="{{ bootstrap_vm_memory | default('4096') }} "
+bootstrap_vm_vcpu="{{ bootstrap_vm_vcpu | default('1') }}"
+
+master_vm_size="{{ master_vm_size | default('80') }}"
+master_vm_memory="{{ master_vm_memory | default('10240') }}"
+master_vm_vcpu="{{ master_vm_vcpu | default('4') }}"
+
+worker_vm_size="{{ worker_vm_size | default('80') }}"
+worker_vm_memory="{{ worker_vm_memory | default('10240') }}"
+worker_vm_vcpu="{{ worker_vm_vcpu | default('4') }}"
+
+webserver_url="{{ webserver_url | default('http://192.168.222.1:9000') }}"
+webserver_doc_path="{{ webserver_doc_path | default('/var/www/html') }}"
+
+matchbox_rpc_endpoint="{{ matchbox_rpc_endpoint | default('matchbox.example.com:8081') }}"
+matchbox_client_cert="{{ matchbox_client_cert | default('~/.matchbox/client.crt') }}"
+matchbox_client_key="{{ matchbox_client_key | default('~/.matchbox/client.key') }}"
+matchbox_trusted_ca_cert="{{ matchbox_trusted_ca_cert | default('~/.matchbox/ca.crt') }}"
+
+rhcos_kernel_path="{{ rhcos_kernel_path | default('/var/lib/match/assets/rhcos/4.1/rhcos-kernel') }}"
+rhcos_initramfs_path="{{ rhcos_initramfs_path | default('/var/lib/match/assets/rhcos/4.1/rhcos-initramfs.img') }}"
+rhcos_os_image_url="{{rhcos_os_image_url | default('192.168.222.1:8000/rhcos-bios.raw.gz') }}"
+rhcos_install_dev="{{ rhcos_install_dev | default('vda') }}"
+

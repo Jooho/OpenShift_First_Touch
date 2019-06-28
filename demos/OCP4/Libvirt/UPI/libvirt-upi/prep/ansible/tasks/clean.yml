@@ -1,0 +1,80 @@
+- name: Clean all config files for clean test
+  hosts: localhost
+  gather_facts: no
+  become: yes
+  vars:
+    root_path: "../../../"
+    
+  tasks:
+    - name: Find *.retry files
+      find:
+        paths: "{{ root_path }}"
+        patterns: '*.retry'
+      register: retry_list
+
+    - name: Delete retry files 
+      file:
+         path: "{{ item.path }}"
+         state: absent
+      with_items:
+      - "{{ retry_list.files }}" 
+
+    - name: Delete files or directories
+      file:
+         path: "{{ item }}"
+         state: absent
+      with_items:
+      - "{{ root_path }}/connection.tf"
+      - "{{ root_path }}/prep/ansible.log"
+      - "{{ root_path }}/prep/matchbox_module.tf"
+      - "{{ root_path }}/prep/connection.tf"
+      - "{{ root_path }}/prep/meta-data"
+      - "{{ root_path }}/prep/user-data"
+      - "{{ root_path }}/prep/terraform.tfstate.backup"
+      - "{{ root_path }}/prep/terraform.tfstate"
+      - "{{ root_path }}/prep/terraform.tfvars"
+      - "{{ root_path }}/prep/matchbox-master"
+      - "{{ root_path }}/prep/ansible/inventory"
+      - "{{ root_path }}/ocp4/ocp_module.tf"
+      - "{{ root_path }}/ocp4/terraform.tfstate.backup"
+      - "{{ root_path }}/ocp4/terraform.tfstate"
+      - "{{ lookup('env','HOME')}}/.terraform.d/plugins/terraform-provider-libvirt"
+      - "{{ lookup('env','HOME')}}/~/.terraform.d/plugins/terraform-provider-matchbox"
+      - /etc/NetworkManager/dnsmasq.d/{{ cluster_name }}_dns.conf
+
+    - name: Delete Backup Files
+      shell: "rm -rf {{ item }}*"
+      with_items:
+      - "{{ root_path }}/prep/ansible/inventory"
+      - "{{ root_path }}/prep/terraform.tfvars"
+
+
+    - name: Delete folder
+      shell: "rm -rf {{ item }}"
+      with_items:
+      - "{{ root_path }}/prep/{{cluster_name}}"
+      - "{{ root_path }}/prep/ansible/inventory.*"
+      - "{{ root_path }}/prep/bootp.xsl*"
+      - /etc/matchbox
+      - /home/jooho/.matchbox
+      - /var/lib/matchbox/ignition
+      - /var/lib/matchbox/groups
+      - /var/lib/matchbox/profiles
+      - "{{ libvirt_storage_pool_path | default('/var/lib/libvirt/images/ocp4') }}"
+
+    - name: kill matchbox container
+      docker_container:
+        name: matchbox_server
+        state: absent
+        
+    - name: Remove ssh known_hosts
+      lineinfile:
+         path: "{{ lookup('env','HOME')}}/.ssh/known_hosts"
+         regexp: "{{ item }}"
+         state: absent
+      with_items:
+      - "lb.{{ cluster_name }}.{{ network_domain | default('example.com') }}"
+      - "bootstrap.{{ cluster_name }}.{{ network_domain | default('example.com') }}"
+      - "master(.*).{{ cluster_name }}.{{ network_domain | default('example.com') }}"
+      - "worker(.*).{{ cluster_name }}.{{ network_domain | default('example.com') }}"
+ 
