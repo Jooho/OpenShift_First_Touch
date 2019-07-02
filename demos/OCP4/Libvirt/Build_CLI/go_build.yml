@@ -6,7 +6,7 @@
     work_dir: '/tmp'
     GOBIN: "{{ work_dir }}/go/bin"
     GOPATH: "{{ work_dir }}/go"
-    git_repo_branch: 'v0.13.0'
+    git_repo_branch: 'release-4.1'
 
   environment:
     GOBIN: "{{ GOBIN }}"

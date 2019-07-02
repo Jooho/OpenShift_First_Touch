@@ -47,10 +47,11 @@ TAGS=libvirt hack/build.sh
 |name| default|required|description|
 |-----|-----|-----|-----|
 |work_dir|/tmp|no| The location where to clone openshift installer repository|
-|installer_tag|v0.13.0| no| The tag name which openshift installer tag is |
+|git_repo_branch |release-4.1| no| The tag name which openshift installer branch is |
 
 ```
-ansible-playbook go_build.yml -vvvvv
+ansible-playbook go_build.yml -e git_repo_branch=release-4.1 -vvvvv
+
 ```
 [go_build.yml](./go_build.yml)
 
