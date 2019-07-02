@@ -10,8 +10,10 @@
       find:
         paths: "{{ root_path }}"
         patterns: '*.retry'
+        recurse: yes
       register: retry_list
-
+ 
+    - debug: var=retry_list
     - name: Delete retry files 
       file:
          path: "{{ item.path }}"
@@ -53,8 +55,11 @@
       shell: "rm -rf {{ item }}"
       with_items:
       - "{{ root_path }}/prep/{{cluster_name}}"
+      - "{{ root_path }}/prep/.terraform"
       - "{{ root_path }}/prep/ansible/inventory.*"
       - "{{ root_path }}/prep/bootp.xsl*"
+      - "{{ root_path }}/ocp4/{{cluster_name}}"
+      - "{{ root_path }}/ocp4/.terraform"
       - /etc/matchbox
       - /home/jooho/.matchbox
       - /var/lib/matchbox/ignition

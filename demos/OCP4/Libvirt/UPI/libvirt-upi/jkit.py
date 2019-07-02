@@ -43,8 +43,7 @@ def launch(cmd=None,
        status = os.system(
          'ansible-playbook %s  -i config prep/ansible/tasks/generate_config_files.yml --flush-cache; \
          cd prep;  \
-         ansible-playbook %s  -i ansible/inventory ansible/tasks/cloud_init.yml  --flush-cache; \
-         ansible-playbook %s  -i ansible/inventory ansible/playbooks/prep.yml  -e @ansible/defaults/main.yml --flush-cache' \
+         ansible-playbook %s  -i ansible/inventory ansible/tasks/cloud_init.yml  --flush-cache' \
 
                 % (verbosity, verbosity, verbosity)
        )
@@ -53,6 +52,7 @@ def launch(cmd=None,
        if operate == 'apply':
           status = os.system(
            'cd prep;  \
+            ansible-playbook %s  -i ansible/inventory ansible/playbooks/prep.yml  -e @ansible/defaults/main.yml --flush-cache; \
             terraform init ; \
             terraform get ; \
             terraform apply -auto-approve' 
@@ -86,7 +86,7 @@ def launch(cmd=None,
          ansible-playbook %s  -i ansible/inventory ansible/tasks/cloud_init.yml  --flush-cache; \
          ansible-playbook %s  -i ansible/inventory ansible/playbooks/prep.yml  -e @ansible/defaults/main.yml --flush-cache; \
          terraform init ; terraform get ; terraform apply -auto-approve; \
-         cd ../ocp4;  terraform init ; terraform get ; terraform apply -auto-approve \
+         cd ../ocp4;  terraform init ; terraform get ; terraform apply -auto-approve; \
          cd ../prep; openshift-install --dir %s wait-for bootstrap-complete'
 
                 % (verbosity, verbosity, verbosity, clusterName)

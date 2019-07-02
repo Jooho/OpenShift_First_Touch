@@ -1,9 +1,9 @@
 [all:vars]
 ##################################### Mandatory ######################################
 # OCP 
-cluster_name="test"
+cluster_name="upi"
 ocp_version="4.1"
-worker_nodes=1
+worker_nodes=2
 master_nodes=1
 
 pull_secret_path="/home/jooho/Downloads/pull-secret"
@@ -47,12 +47,12 @@ bootstrap_vm_vcpu="4"
 
 # master
 master_vm_size="80" #G
-master_vm_memory="14096"
+master_vm_memory="10096"
 master_vm_vcpu="4"
 
 # worker
 worker_vm_size="80" #G
-worker_vm_memory="14096"
+worker_vm_memory="8096"
 worker_vm_vcpu="4"
 
 #matchbox_rpc_endpoint="matchbox.example.com:8081"

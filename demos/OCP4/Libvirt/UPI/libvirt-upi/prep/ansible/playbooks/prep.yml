@@ -7,7 +7,7 @@
 - name: Config DNSMasq
   import_playbook: ../tasks/dns_config.yml
 
-- name: Config Cloud-init 
+- name: Config Matchbox Server
   import_playbook: ../tasks/matchbox_config.yml
 
 - name: Config OCP4 
