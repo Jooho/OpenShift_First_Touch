@@ -45,7 +45,7 @@ def launch(cmd=None,
          cd prep;  \
          ansible-playbook %s  -i ansible/inventory ansible/tasks/cloud_init.yml  --flush-cache' \
 
-                % (verbosity, verbosity, verbosity)
+                % (verbosity, verbosity)
        )
 
     if cmd == 'prep':
@@ -56,6 +56,8 @@ def launch(cmd=None,
             terraform init ; \
             terraform get ; \
             terraform apply -auto-approve' 
+
+                % (verbosity)
           )
        if operate == 'dtr':
           status = os.system(
