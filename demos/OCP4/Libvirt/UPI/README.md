@@ -9,8 +9,12 @@ Environment:
 
 ## Overview
 
-Please refer this [slide]()
+Please refer this [slide](https://www.slideshare.net/jooholee81/openshift4-installation-by-upi-on-kvm)
 
+## Video
+[![OpenShift 4 installation using UPI(Bare metal) with KVM Overview ](http://img.youtube.com/vi/qMyyZpoJ6o4/0.jpg)](https://www.youtube.com/watch?v=qMyyZpoJ6o4)
+
+[![OpenShift 4 installation using UPI(Bare metal) with KVM Demo ](http://img.youtube.com/vi/UySkD8iWoSU/0.jpg)](https://www.youtube.com/watch?v=UySkD8iWoSU)
 
 ## Steps
 **1. Init  (using ansible)**
