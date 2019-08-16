@@ -185,6 +185,13 @@
 - Reference
   - https://github.com/openshift/openshift-ansible/issues/3784
 
+## [Network]
+- Long life connection
+```
+yum install of bcc bcc-tools  kernel-devel-`uname -r`
+sudo /usr/share/bcc/tools/tcplife
+```
+
 ## [Common]
 - Image Version Check
   - Logging
