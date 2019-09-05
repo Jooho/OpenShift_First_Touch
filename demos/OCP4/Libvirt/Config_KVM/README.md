@@ -18,7 +18,7 @@ The ansible playbook does not install golang package but it checks the version o
 
 **Manual way**
 
-[The official doc](https://github.com/openshift/installer/blob/master/docs/dev/libvirt-howto.md) show you how to set up KVM enviroment for openshift 4. Hence, I don't repeat the same steps here. If you have to do it manually, please refer the doc. 
+[The official doc](https://github.com/openshift/installer/tree/master/docs/dev/libvirt) show you how to set up KVM enviroment for openshift 4. Hence, I don't repeat the same steps here. If you have to do it manually, please refer the doc. 
 
 
 **Ansible Playbook**
