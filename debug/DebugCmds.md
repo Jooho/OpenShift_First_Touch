@@ -202,3 +202,10 @@ sudo /usr/share/bcc/tools/tcplife
   ```
   oc get po -n openshift-infra -o 'go-template={{range $pod := .items}}{{if eq $pod.status.phase "Running"}}{{range $container := $pod.spec.containers}}oc exec {{$pod.metadata.name}} -n openshift-infra -- find /root/buildinfo -name Dockerfile-openshift* | grep -o metrics.* {{"\n"}}{{end}}{{end}}{{end}}' | bash -
   ```
+
+
+## [OpenShift/Kubernetes]
+- Get event regarding node
+```
+oc get event --all-namespaces --field-selector=involvedObject.kind=Node -o yaml
+```
