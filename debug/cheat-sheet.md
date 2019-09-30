@@ -34,3 +34,12 @@ for im in $(docker images|grep '\<none' |awk '{print $3}'); do docker rmi --forc
 ```
 tput sgr0
 ```
+
+### [Storages]
+*storage speed check*
+```
+fio --rw=write --ioengine=sync --fdatasync=1 --directory=./test-data --size=22m --bs=2300 --name=mytest
+
+dd if=/dev/zero of=/var/lib/etcd/test/abc.img bs=8k count=10k oflag=dsync
+
+```

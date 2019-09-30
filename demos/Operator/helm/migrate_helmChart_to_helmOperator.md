@@ -7,8 +7,8 @@
     - if so, you can set the namespace for a CR.
 - `Release.Name` might be changed
 
-## Test NFS Provisioner Helm 
-Refer [helm chart doc](./helm_charts/nfs-provisioner/REAEME.md)
+## Test NFS Provisioner Helm Chart
+Refer [helm chart doc](./helm-charts/nfs-provisioner/REAEME.md)
 
 ## NFS Provisioner Helm Operator
 - Create a project for nfs-provisioner-operator
