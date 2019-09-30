@@ -87,12 +87,12 @@ openshift-install --dir upi/ wait-for install-complete'
 
 **2. Prep**
 ```
-./jkit.py prep -t [apply,dtr]  # dtr = destory
+./jkit.py prep -op [apply,dtr]  # dtr = destory
 ```
 
 **3. OCP**
 ```
-./jkit.py ocp -t [apply,dtr]   # dtr = destory
+./jkit.py ocp -op [apply,dtr]   # dtr = destory
 ```
 **4. Post**
 ```
