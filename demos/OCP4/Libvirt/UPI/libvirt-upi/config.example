@@ -61,3 +61,13 @@ rhcos_os_image_url=192.168.222.1:8000/rhcos-bios.raw.gz
 #matchbox_client_key="~/.matchbox/client.key
 #matchbox_trusted_ca_cert="~/.matchbox/ca.crt"
 
+
+# OCP 4.1
+# rhcos
+#rhcos_kernel_src="https://mirror.openshift.com/pub/openshift-v4/dependencies/rhcos/4.1/4.1.0/rhcos-4.1.0-x86_64-installer-kernel"
+#rhcos_initramfs_src="https://mirror.openshift.com/pub/openshift-v4/dependencies/rhcos/4.1/4.1.0/rhcos-4.1.0-x86_64-installer-initramfs.img"
+#rhcos_biso_src="https://mirror.openshift.com/pub/openshift-v4/dependencies/rhcos/4.1/4.1.0/rhcos-4.1.0-x86_64-metal-bios.raw.gz"
+
+# openshift installer
+#openshift_installer_src="https://mirror.openshift.com/pub/openshift-v4/clients/ocp/4.1.3/openshift-install-linux-4.1.3.tar.gz"
+

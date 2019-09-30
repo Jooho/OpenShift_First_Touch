@@ -2,15 +2,15 @@
 ##################################### Mandatory ######################################
 # OCP 
 cluster_name="upi"
-ocp_version="4.1"
+ocp_version="4.2"
 worker_nodes=2
 master_nodes=1
 
 pull_secret_path="/home/jooho/Downloads/pull-secret"
 ssh_public_key_path="/home/jooho/.ssh/id_rsa.pub"
 
-rhcos_kernel_path=assets/rhcos/4.1/rhcos-kernel
-rhcos_initramfs_path=assets/rhcos/4.1/rhcos-initramfs.img
+rhcos_kernel_path=assets/rhcos/{{ ocp_version }}/rhcos-kernel
+rhcos_initramfs_path=assets/rhcos//{{ ocp_version }}/rhcos-initramfs.img
 rhcos_os_image_url=192.168.222.1:9000/rhcos-bios.raw.gz
 
 #rhcos_install_dev=vda
@@ -60,4 +60,15 @@ worker_vm_vcpu="4"
 #matchbox_client_cert="~/.matchbox/client.crt"
 #matchbox_client_key="~/.matchbox/client.key
 #matchbox_trusted_ca_cert="~/.matchbox/ca.crt"
+
+# OCP 4.2
+# rhcos
+rhcos_kernel_src="https://mirror.openshift.com/pub/openshift-v4/dependencies/rhcos/pre-release/4.2.0-0.nightly-2019-08-28-152644/rhcos-42.80.20190828.2-installer-kernel"
+rhcos_initramfs_src="https://mirror.openshift.com/pub/openshift-v4/dependencies/rhcos/pre-release/4.2.0-0.nightly-2019-08-28-152644/rhcos-42.80.20190828.2-installer-initramfs.img"
+rhcos_bios_src="https://mirror.openshift.com/pub/openshift-v4/dependencies/rhcos/pre-release/4.2.0-0.nightly-2019-08-28-152644/rhcos-42.80.20190828.2-metal-bios.raw.gz"
+
+# openshift installer
+openshift_installer_src="https://mirror.openshift.com/pub/openshift-v4/clients/ocp-dev-preview/latest/openshift-install-linux-4.2.0-0.nightly-2019-09-27-191818.tar.gz"
+
+
 
