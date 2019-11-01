@@ -11,7 +11,7 @@
 - Download operator-sdk
   ```
   wget https://github.com/operator-framework/operator-sdk/releases/download/v${OPERATOR_VERSION}/operator-sdk-v${OPERATOR_VERSION}-x86_64-linux-gnu
-  mv operator-sdk-v0.6.0-x86_64-linux-gnu /usr/bin/operator-sdk
+  mv operator-sdk-v${OPERATOR_VERSION}-x86_64-linux-gnu /usr/bin/operator-sdk
   chmod 777 /usr/bin/.
   ```
 
