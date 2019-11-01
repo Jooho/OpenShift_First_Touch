@@ -5,7 +5,7 @@
 - Export environment Variable
   ```
   export WORK_DIR=/tmp
-  export OPERATOR_VERSION="0.6.0"
+  export OPERATOR_VERSION="0.12.0"
   ```
 
 - Download operator-sdk
