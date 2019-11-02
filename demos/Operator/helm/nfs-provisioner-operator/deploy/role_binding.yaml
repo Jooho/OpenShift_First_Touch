@@ -9,5 +9,5 @@ subjects:
   namespace: REPLACE_NAMESPACE
 roleRef:
   kind: ClusterRole
-  name: nfs-provisioner-operator
+  name: cluster-admin
   apiGroup: rbac.authorization.k8s.io
