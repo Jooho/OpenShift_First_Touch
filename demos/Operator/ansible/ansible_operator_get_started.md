@@ -5,13 +5,13 @@
 - Export environment Variable
   ```
   export WORK_DIR=/tmp
-  export OPERATOR_VERSION="0.6.0"
+  export OPERATOR_VERSION="0.12.0"
   ```
 
 - Download operator-sdk
   ```
   wget https://github.com/operator-framework/operator-sdk/releases/download/v${OPERATOR_VERSION}/operator-sdk-v${OPERATOR_VERSION}-x86_64-linux-gnu
-  mv operator-sdk-v0.6.0-x86_64-linux-gnu /usr/bin/operator-sdk
+  mv operator-sdk-v${OPERATOR_VERSION}-x86_64-linux-gnu /usr/bin/operator-sdk
   chmod 777 /usr/bin/.
   ```
 
