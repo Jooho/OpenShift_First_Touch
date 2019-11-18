@@ -2,25 +2,25 @@ apiVersion: machine.openshift.io/v1beta1
 kind: MachineSet
 metadata:
   labels:
-    machine.openshift.io/cluster-api-cluster: $CLUSTERID
+    machine.openshift.io/cluster-api-cluster: CLUSTERID
     machine.openshift.io/cluster-api-machine-role: workerocs
     machine.openshift.io/cluster-api-machine-type: workerocs
-  name: $CLUSTERID-workerocs-us-east-2a
+  name: CLUSTERID-workerocs-us-east-2a
   namespace: openshift-machine-api
 spec:
   replicas: 1
   selector:
     matchLabels:
-      machine.openshift.io/cluster-api-cluster: $CLUSTERID
-      machine.openshift.io/cluster-api-machineset: $CLUSTERID-workerocs-us-east-2a
+      machine.openshift.io/cluster-api-cluster: CLUSTERID
+      machine.openshift.io/cluster-api-machineset: CLUSTERID-workerocs-us-east-2a
   template:
     metadata:
       creationTimestamp: null
       labels:
-        machine.openshift.io/cluster-api-cluster: $CLUSTERID
+        machine.openshift.io/cluster-api-cluster: CLUSTERID
         machine.openshift.io/cluster-api-machine-role: workerocs
         machine.openshift.io/cluster-api-machine-type: workerocs
-        machine.openshift.io/cluster-api-machineset: $CLUSTERID-workerocs-us-east-2a
+        machine.openshift.io/cluster-api-machineset: CLUSTERID-workerocs-us-east-2a
     spec:
       metadata:
         creationTimestamp: null
@@ -41,7 +41,7 @@ spec:
             name: aws-cloud-credentials
           deviceIndex: 0
           iamInstanceProfile:
-            id: $CLUSTERID-worker-profile
+            id: CLUSTERID-worker-profile
           instanceType: m4.4xlarge
           kind: AWSMachineProviderConfig
           metadata:
@@ -54,14 +54,14 @@ spec:
           - filters:
             - name: tag:Name
               values:
-              - $CLUSTERID-worker-sg
+              - CLUSTERID-worker-sg
           subnet:
             filters:
             - name: tag:Name
               values:
-              - $CLUSTERID-private-us-east-2a
+              - CLUSTERID-private-us-east-2a
           tags:
-          - name: kubernetes.io/cluster/$CLUSTERID
+          - name: kubernetes.io/cluster/CLUSTERID
             value: owned
           userDataSecret:
             name: worker-user-data
@@ -72,25 +72,25 @@ apiVersion: machine.openshift.io/v1beta1
 kind: MachineSet
 metadata:
   labels:
-    machine.openshift.io/cluster-api-cluster: $CLUSTERID
+    machine.openshift.io/cluster-api-cluster: CLUSTERID
     machine.openshift.io/cluster-api-machine-role: workerocs
     machine.openshift.io/cluster-api-machine-type: workerocs
-  name: $CLUSTERID-workerocs-us-east-2b
+  name: CLUSTERID-workerocs-us-east-2b
   namespace: openshift-machine-api
 spec:
   replicas: 1
   selector:
     matchLabels:
-      machine.openshift.io/cluster-api-cluster: $CLUSTERID
-      machine.openshift.io/cluster-api-machineset: $CLUSTERID-workerocs-us-east-2b
+      machine.openshift.io/cluster-api-cluster: CLUSTERID
+      machine.openshift.io/cluster-api-machineset: CLUSTERID-workerocs-us-east-2b
   template:
     metadata:
       creationTimestamp: null
       labels:
-        machine.openshift.io/cluster-api-cluster: $CLUSTERID
+        machine.openshift.io/cluster-api-cluster: CLUSTERID
         machine.openshift.io/cluster-api-machine-role: workerocs
         machine.openshift.io/cluster-api-machine-type: workerocs
-        machine.openshift.io/cluster-api-machineset: $CLUSTERID-workerocs-us-east-2b
+        machine.openshift.io/cluster-api-machineset: CLUSTERID-workerocs-us-east-2b
     spec:
       metadata:
         creationTimestamp: null
@@ -111,7 +111,7 @@ spec:
             name: aws-cloud-credentials
           deviceIndex: 0
           iamInstanceProfile:
-            id: $CLUSTERID-worker-profile
+            id: CLUSTERID-worker-profile
           instanceType: m4.4xlarge
           kind: AWSMachineProviderConfig
           metadata:
@@ -124,14 +124,14 @@ spec:
           - filters:
             - name: tag:Name
               values:
-              - $CLUSTERID-worker-sg
+              - CLUSTERID-worker-sg
           subnet:
             filters:
             - name: tag:Name
               values:
-              - $CLUSTERID-private-us-east-2b
+              - CLUSTERID-private-us-east-2b
           tags:
-          - name: kubernetes.io/cluster/$CLUSTERID
+          - name: kubernetes.io/cluster/CLUSTERID
             value: owned
           userDataSecret:
             name: worker-user-data
@@ -142,25 +142,25 @@ apiVersion: machine.openshift.io/v1beta1
 kind: MachineSet
 metadata:
   labels:
-    machine.openshift.io/cluster-api-cluster: $CLUSTERID
+    machine.openshift.io/cluster-api-cluster: CLUSTERID
     machine.openshift.io/cluster-api-machine-role: workerocs
     machine.openshift.io/cluster-api-machine-type: workerocs
-  name: $CLUSTERID-workerocs-us-east-2c
+  name: CLUSTERID-workerocs-us-east-2c
   namespace: openshift-machine-api
 spec:
   replicas: 1
   selector:
     matchLabels:
-      machine.openshift.io/cluster-api-cluster: $CLUSTERID
-      machine.openshift.io/cluster-api-machineset: $CLUSTERID-workerocs-us-east-2c
+      machine.openshift.io/cluster-api-cluster: CLUSTERID
+      machine.openshift.io/cluster-api-machineset: CLUSTERID-workerocs-us-east-2c
   template:
     metadata:
       creationTimestamp: null
       labels:
-        machine.openshift.io/cluster-api-cluster: $CLUSTERID
+        machine.openshift.io/cluster-api-cluster: CLUSTERID
         machine.openshift.io/cluster-api-machine-role: workerocs
         machine.openshift.io/cluster-api-machine-type: workerocs
-        machine.openshift.io/cluster-api-machineset: $CLUSTERID-workerocs-us-east-2c
+        machine.openshift.io/cluster-api-machineset: CLUSTERID-workerocs-us-east-2c
     spec:
       metadata:
         creationTimestamp: null
@@ -181,7 +181,7 @@ spec:
             name: aws-cloud-credentials
           deviceIndex: 0
           iamInstanceProfile:
-            id: $CLUSTERID-worker-profile
+            id: CLUSTERID-worker-profile
           instanceType: m4.4xlarge
           kind: AWSMachineProviderConfig
           metadata:
@@ -194,14 +194,14 @@ spec:
           - filters:
             - name: tag:Name
               values:
-              - $CLUSTERID-worker-sg
+              - CLUSTERID-worker-sg
           subnet:
             filters:
             - name: tag:Name
               values:
-              - $CLUSTERID-private-us-east-2c
+              - CLUSTERID-private-us-east-2c
           tags:
-          - name: kubernetes.io/cluster/$CLUSTERID
+          - name: kubernetes.io/cluster/CLUSTERID
             value: owned
           userDataSecret:
             name: worker-user-data
