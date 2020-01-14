@@ -4,7 +4,7 @@ import click
 import os
 import sys
 import re
-from StringIO import StringIO
+from io import StringIO
 
 @click.command()
 @click.argument('cmd',
