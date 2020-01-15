@@ -19,6 +19,30 @@
     - name: Create Ignition for master/worker/bootstrap
       command: "openshift-install create ignition-configs --dir ../../{{ cluster_name }}"
 
+#    - name: Gather files cluster folder
+#      find:
+#        paths: "../../{{ cluster_name }}"
+#        recurse: yes
+#      register: file_list
+#      become: yes
+# 
+#    - name: Change permission of all files under cluster folder
+#      file:
+#        path: "{{ item.path }}"
+#        mode: 0775
+#      with_items:
+#      - "{{ file_list.files }}" 
+#      become: yes
+
+
+    - name: Change permission of ignition files
+      file:
+        path: "../../{{ cluster_name }}"
+        mode: '0775'
+        recurse: yes
+        state: directory
+      become: yes
+
     - name: Copy Inition files to httpd document path
       copy:
         src: "../../{{ cluster_name }}/{{ item }}"
@@ -27,6 +51,7 @@
       - bootstrap.ign
       - master.ign
       - worker.ign
+      become: true
 
     - name: Change HTTPD port to 9000
       lineinfile:

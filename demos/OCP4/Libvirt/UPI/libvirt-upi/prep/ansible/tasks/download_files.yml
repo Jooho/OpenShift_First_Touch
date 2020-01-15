@@ -6,11 +6,11 @@
 
   vars:
    - terraform_binary:
-       src: "https://releases.hashicorp.com/terraform/0.11.8/terraform_0.11.8_linux_amd64.zip"
+       src: " https://releases.hashicorp.com/terraform/0.11.8/terraform_0.11.8_linux_amd64.zip"
        dest: "{{ lookup('env','HOME') }}/.local/bin"
   
    - terraform_provider_libvirt:
-       src: "https://github.com/dmacvicar/terraform-provider-libvirt/releases/download/v0.5.2/terraform-provider-libvirt-0.5.2.Fedora_28.x86_64.tar.gz"
+       src: "https://github.com/dmacvicar/terraform-provider-libvirt/releases/download/v0.6.1/terraform-provider-libvirt-0.6.1+git.1578064534.db13b678.Fedora_28.x86_64.tar.gz"
        dest: "{{ lookup('env','HOME') }}/.terraform.d/plugins"
 
    - terraform_provider_matchbox:

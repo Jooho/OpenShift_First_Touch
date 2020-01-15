@@ -3,7 +3,7 @@
 # OCP 
 cluster_name="upi"
 ocp_version="4.2"
-worker_nodes=2
+worker_nodes=1
 master_nodes=1
 
 pull_secret_path="/home/jooho/Downloads/pull-secret"

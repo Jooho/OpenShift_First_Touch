@@ -6,15 +6,15 @@
   vars:
    - required_packages:
      - dnf-plugins-core
-     - docker-ce 
-     - docker-ce-cli 
-     - containerd.io
+     - podman
      - httpd
-
   tasks:
+#    - name: Install cri-o (Since Fedora 30, the install way is changed)
+#      shell: "VERSION=1.14; dnf module enable -y cri-o:$VERSION;  dnf install -y cri-o"
+#      become: yes
+
     - name: Install required packages
       yum:
         name: "{{ required_packages }}"
         state: present
-        enablerepo: https://download.docker.com/linux/fedora/docker-ce.repo
-
+      become: yes
