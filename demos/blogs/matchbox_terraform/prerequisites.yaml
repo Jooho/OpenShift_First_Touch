@@ -1,0 +1,51 @@
+- name: Pre-requisites Processes
+  hosts: localhost
+  gather_facts: no
+  become: yes
+  become_user: root
+
+  vars:
+   - terraform_binary:
+       src: " https://releases.hashicorp.com/terraform/0.11.8/terraform_0.11.8_linux_amd64.zip"
+       dest: "{{ lookup('env','HOME') }}/.local/bin"
+
+   - terraform_provider_matchbox:
+       src: "https://github.com/poseidon/terraform-provider-matchbox/releases/download/v0.3.0/terraform-provider-matchbox-v0.3.0-linux-amd64.tar.gz"
+       dest: "{{ lookup('env','HOME') }}/.terraform.d/plugins"
+
+   - required_packages:
+     - podman
+
+  tasks:
+    - name: Download terraform binary/matchbox terraform provider
+      unarchive:
+        src: "{{ item.src }}"
+        dest: "{{ item.dest }}"
+        mode: '0777'
+        remote_src: yes
+      with_items:
+      - "{{ terraform_binary }}"
+      - "{{ terraform_provider_matchbox }}"
+
+    - name: Move matchbox provider
+      copy:
+        src: "{{ terraform_provider_matchbox.dest }}/{{ (matchbox_dir | splitext)[0] }}/terraform-provider-matchbox"
+        dest: "{{ terraform_provider_matchbox.dest }}/terraform-provider-matchbox"
+
+    - name: Remove matchbox folder
+      file:
+        path: "{{ terraform_provider_matchbox.dest }}/{{ (matchbox_dir | splitext)[0] }}"
+        state: absent
+
+    - name: Install required packages
+      yum:
+        name: "{{ required_packages }}"
+        state: present
+      become: yes
+
+    - name: Start Matchbox container
+      shell: >
+         podman run -d --name matchbox_server --net host -v /var/lib/matchbox:/var/lib/matchbox:Z -v /etc/matchbox:/etc/matchbox:Z,ro quay.io/coreos/matchbox:latest -address=0.0.0.0:8080 -rpc-address=0.0.0.0:8081 -log-level=debug
+      become: true
+
+
