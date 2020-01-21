@@ -63,6 +63,7 @@ worker_vm_vcpu="4"
 
 # OCP 4.2
 # rhcos
+<<<<<<< HEAD
 rhcos_kernel_src="https://mirror.openshift.com/pub/openshift-v4/dependencies/rhcos/pre-release/latest/rhcos-42.80.20191002.0-installer-kernel"
 rhcos_initramfs_src="https://mirror.openshift.com/pub/openshift-v4/dependencies/rhcos/4.2/latest/rhcos-4.2.0-x86_64-installer-initramfs.img"
 rhcos_bios_src="https://mirror.openshift.com/pub/openshift-v4/dependencies/rhcos/4.2/latest/rhcos-4.2.0-x86_64-metal-bios.raw.gz"
@@ -79,6 +80,14 @@ openshift_installer_src="https://mirror.openshift.com/pub/openshift-v4/clients/o
 
 # openshift installer
 #openshift_installer_src="https://mirror.openshift.com/pub/openshift-v4/clients/ocp-dev-preview/latest/openshift-install-linux-4.4.0-0.nightly-2019-11-26-041012.tar.gz"
+=======
+rhcos_kernel_src="https://mirror.openshift.com/pub/openshift-v4/dependencies/rhcos/pre-release/4.2.0-rc.5/rhcos-42.80.20191002.0-installer-kernel"
+rhcos_initramfs_src="https://mirror.openshift.com/pub/openshift-v4/dependencies/rhcos/pre-release/4.2.0-rc.5/rhcos-42.80.20191002.0-installer-initramfs.img"
+rhcos_bios_src="https://mirror.openshift.com/pub/openshift-v4/dependencies/rhcos/pre-release/4.2.0-rc.5/rhcos-42.80.20191002.0-metal-bios.raw.gz"
+
+# openshift installer
+openshift_installer_src="https://mirror.openshift.com/pub/openshift-v4/clients/ocp-dev-preview/latest/openshift-install-linux-4.4.0-0.nightly-2020-01-14-004804.tar.gz"
+>>>>>>> 912361964e24642bd99be26e956e5bb799cf429e
 
 
 

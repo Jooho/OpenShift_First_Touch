@@ -25,21 +25,21 @@ module "matchbox" {
 
   master_names   = [
   {% for master in range(master_nodes) %}
-    "master-{{ loop.index - 1 }}"{% if loop.index <= range(master_nodes) %},{% endif %}
+    "master-{{ loop.index - 1 }}"{% if loop.index <= master_nodes %},{% endif %}
 
   {% endfor %}
   ]
 
   master_macs    = [
     {% for master in range(master_nodes) %}
-      "{{ master_macs[ loop.index - 1 ]}}"{% if loop.index <= range(master_nodes) %},{% endif %}
+      "{{ master_macs[ loop.index - 1 ]}}"{% if loop.index <= master_nodes %},{% endif %}
 
     {% endfor %}
   ]
 
   master_domains = [
     {% for master in range(master_nodes) %}
-      "master-{{ loop.index - 1 }}.{{ cluster_name }}.{{ network_domain }}"{% if loop.index <= range(master_nodes) %},{% endif %}
+      "master-{{ loop.index - 1 }}.{{ cluster_name }}.{{ network_domain }}"{% if loop.index <= master_nodes %},{% endif %}
 
     {% endfor %}
 
@@ -49,21 +49,21 @@ module "matchbox" {
 
   worker_names   = [
   {% for worker in range(worker_nodes) %}
-    "worker-{{ loop.index - 1 }}"{% if loop.index <= range(worker_nodes) %},{% endif %}
+    "worker-{{ loop.index - 1 }}"{% if loop.index <= worker_nodes %},{% endif %}
 
   {% endfor %}
   ]
 
   worker_macs    = [
     {% for worker in range(worker_nodes) %}
-      "{{ worker_macs[ loop.index - 1 ]}}"{% if loop.index <= range(worker_nodes) %},{% endif %}
+      "{{ worker_macs[ loop.index - 1 ]}}"{% if loop.index <= worker_nodes %},{% endif %}
 
     {% endfor %}
   ]
 
   worker_domains = [
     {% for worker in range(worker_nodes) %}
-      "worker-{{ loop.index - 1 }}.{{ cluster_name }}.{{ network_domain }}"{% if loop.index <= range(worker_nodes) %},{% endif %}
+      "worker-{{ loop.index - 1 }}.{{ cluster_name }}.{{ network_domain }}"{% if loop.index <= worker_nodes %},{% endif %}
 
     {% endfor %}
 

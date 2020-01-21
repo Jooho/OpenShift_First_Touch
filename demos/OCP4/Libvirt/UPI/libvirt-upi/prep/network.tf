@@ -11,11 +11,11 @@ resource "libvirt_network" "ocp_network" {
      enabled = true
      local_only = false
    }
-   provisioner "local-exec" {
-       command = <<EOF
-          ansible-playbook -i ./ansible/inventory ./ansible/tasks/matchbox_config.yml -e @ansible/defaults/main.yml
-        EOF
-   }
+#   provisioner "local-exec" {
+#       command = <<EOF
+#          ansible-playbook -i ./ansible/inventory ./ansible/tasks/matchbox_config.yml -e @ansible/defaults/main.yml
+#        EOF
+#   }
 
    provisioner "local-exec" {
        command = <<EOF

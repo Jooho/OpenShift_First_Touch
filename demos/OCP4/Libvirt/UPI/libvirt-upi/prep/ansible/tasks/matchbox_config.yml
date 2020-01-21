@@ -38,18 +38,24 @@
       - { src: ../../matchbox-master/scripts/tls/server.key, dest: /etc/matchbox/server.key }
 
     - name: Start Matchbox container
-      docker_container:
-        name: matchbox_server
-        state: started
-        image: quay.io/coreos/matchbox:latest
-        network_mode: host
-        volumes:
-          - /var/lib/matchbox:/var/lib/matchbox:Z 
-          - /etc/matchbox:/etc/matchbox:Z,ro
-        command: -address=0.0.0.0:8080 -rpc-address=0.0.0.0:8081 -log-level=debug
-        recreate: yes
-        force_kill: true
+      shell: >
+         podman run -d --name matchbox_server --net host -v /var/lib/matchbox:/var/lib/matchbox:Z -v /etc/matchbox:/etc/matchbox:Z,ro quay.io/coreos/matchbox:latest -address=0.0.0.0:8080 -rpc-address=0.0.0.0:8081 -log-level=debug
       become: true
+
+#    - name: Start Matchbox container
+#      docker_container:
+#        name: matchbox_server
+#        state: started
+#        image: quay.io/coreos/matchbox:latest
+#        network_mode: host
+#        volumes:
+#          - /var/lib/matchbox:/var/lib/matchbox:Z 
+#          - /etc/matchbox:/etc/matchbox:Z,ro
+#        command: -address=0.0.0.0:8080 -rpc-address=0.0.0.0:8081 -log-level=debug
+#        recreate: yes
+#        force_kill: true
+#      become: true
+
 
   tasks:
     - name: Create matchbox.tf file

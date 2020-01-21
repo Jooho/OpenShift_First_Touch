@@ -1,3 +1,7 @@
+# Move Project!
+# Please check [this repo](https://github.com/Jooho/ocp4-libvirt) for the latest version
+
+
 # OpenShift 4 UPI Installation 
 
 This script is for the demonstration how you can install Openshift 4 by UPI for bare metal with KVM. 
