@@ -11,10 +11,10 @@
      - containerd.io
      - httpd
 
-  tasks:
-    - name: Install required packages
-      yum:
-        name: "{{ required_packages }}"
-        state: present
-        enablerepo: https://download.docker.com/linux/fedora/docker-ce.repo
+#  tasks:
+#    - name: Install required packages
+#      yum:
+#        name: "{{ required_packages }}"
+#        state: present
+#        enablerepo: https://download.docker.com/linux/fedora/docker-ce.repo
 
