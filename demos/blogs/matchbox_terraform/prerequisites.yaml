@@ -46,9 +46,15 @@
         state: present
       become: yes
 
+    - name: Check if Matchbox Server is running
+      shell: >
+        podman container exists matchbox_server
+      ignore_errors: yes
+      register: matchbox_server_exist
+
     - name: Start Matchbox container
       shell: >
          podman run -d --name matchbox_server --net host -v /var/lib/matchbox:/var/lib/matchbox:Z -v /etc/matchbox:/etc/matchbox:Z,ro quay.io/coreos/matchbox:latest -address=0.0.0.0:8080 -rpc-address=0.0.0.0:8081 -log-level=debug
       become: true
-
+      when: matchbox_server_exist.rc
 
