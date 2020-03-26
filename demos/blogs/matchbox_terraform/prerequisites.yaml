@@ -26,7 +26,10 @@
       with_items:
       - "{{ terraform_binary }}"
       - "{{ terraform_provider_matchbox }}"
-
+    
+    - set_fact:
+        matchbox_dir: "{{ (terraform_provider_matchbox.src | basename | splitext)[0] }}"
+        
     - name: Move matchbox provider
       copy:
         src: "{{ terraform_provider_matchbox.dest }}/{{ (matchbox_dir | splitext)[0] }}/terraform-provider-matchbox"
