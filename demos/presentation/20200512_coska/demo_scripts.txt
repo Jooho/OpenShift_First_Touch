@@ -1,0 +1,216 @@
+# Prerequisites
+
+./cluster.sh create coska
+
+#INFO Install complete!                            
+#INFO To access the cluster as the system:admin user when using 'oc', run 'export KUBECONFIG=/home/jooho/dev/MIG/ocp4/install-info/coska/auth/kubeconfig' 
+#INFO Access the OpenShift web-console here: https://console-openshift-console.apps.coska.jlee.rhcee.support 
+#INFO Login to the console with user: kubeadmin, password: HEtWq-XHUrK-8WuDY-ynpzZ 
+
+## Create joe user
+./cluster.sh joe coska HEtWq-XHUrK-8WuDY-ynpzZ
+
+
+# Start Demo
+./ocp4.sh coska
+cd /home
+./login.sh
+oc completion bash > bash_completion.sh
+source bash_completion.sh
+
+# Web console url
+https://console-openshift-console.apps.coska.jlee.rhcee.support/
+
+
+
+# 1. NFS Provisioner Operator
+
+cd /tmp
+mkdir COSKA
+cd COSKA
+
+git clone https://github.com/Jooho/jhouse_openshift.git
+
+cd jhouse_openshift/demos/Operator/helm/nfs-provisioner-operator/
+
+# Node Label
+oc label node ip-10-0-129-143.ec2.internal app=nfs-provisioner 
+
+# NFS Operator
+oc new-project nfs-provisioner-operator
+oc create -f deploy/crds/jhouse_v1alpha1_nfs_crd.yaml 
+oc create -f deploy/service_account.yaml
+oc create -f deploy/role.yaml
+
+export OPERATOR_NAMESPACE=$(oc config view --minify -o jsonpath='{.contexts[0].context.namespace}')
+sed -i "s|REPLACE_NAMESPACE|$OPERATOR_NAMESPACE|g" deploy/role_binding.yaml
+
+oc create -f deploy/role_binding.yaml
+
+sed -i 's|REPLACE_IMAGE|quay.io/jooholee/nfs-provisioner-operator:v0.0.1|g'  deploy/operator.yaml
+oc create -f deploy/operator.yaml
+
+# NFS Provisioner
+oc create -f deploy/crds/jhouse_v1alpha1_nfs_cr.yaml
+
+oc logs $(oc get pod -n nfs-provisioner-operator -o name) 
+oc project nfs-provisioner
+oc logs $(oc get pod -n nfs-provisioner -o name) 
+
+# Default SC
+oc patch storageclass nfs-storageclass  -p '{"metadata": {"annotations":{"storageclass.kubernetes.io/is-default-class":"true"}}}'
+oc patch storageclass gp2  -p '{"metadata": {"annotations":{"storageclass.kubernetes.io/is-default-class":"false"}}}'
+
+# Test PVC
+echo "# Source: nfs-provisioner/templates/tests/test-pvc.yaml
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+ name: test-pvc
+ namespace: default
+spec:
+ accessModes:
+  - ReadWriteMany
+ resources:
+   requests:
+     storage: 1Gi
+ storageClassName: nfs-storageclass"|oc create -f -
+
+# Delete test PVC
+oc delete pvc --all -n nfs-provioner
+
+
+# Delete nfs-proviosioner svc
+oc delete service nfs-provisioner -n nfs-provisioner
+oc get svc -w
+
+# Cleanup
+
+cd /tmp/COSKA/jhouse_openshift/demos/Operator/helm/nfs-provisioner-operator/
+oc project nfs-provisioner-operator
+oc delete -f deploy/crds/jhouse_v1alpha1_nfs_cr.yaml 
+oc delete -f deploy/operator.yaml
+oc delete -f deploy/role_binding.yaml
+oc delete -f deploy/role.yaml
+oc delete -f deploy/service_account.yaml
+oc delete -f deploy/crds/jhouse_v1alpha1_nfs_crd.yaml 
+oc delete project nfs-provisioner-operator nfs-provisioner
+for i in $(oc get pv |grep test-pvc |grep -v Bound| awk '{print $1}'); do oc delete pv $i;done
+
+
+
+
+
+#2. Sample application(BookInfo)
+## Kiali Console
+https://kiali-istio-system.apps.coska.jlee.rhcee.support
+
+
+# Deploy application
+oc new-project bookinfo
+oc apply -n bookinfo -f https://raw.githubusercontent.com/Maistra/istio/maistra-1.1/samples/bookinfo/platform/kube/bookinfo.yaml
+oc get pod
+oc get svc
+oc get route
+
+# Deploy istio objects
+oc apply -n bookinfo -f https://raw.githubusercontent.com/Maistra/istio/maistra-1.1/samples/bookinfo/networking/bookinfo-gateway.yaml
+oc apply -n bookinfo -f https://raw.githubusercontent.com/Maistra/istio/maistra-1.1/samples/bookinfo/networking/destination-rule-all.yaml
+
+# Add bookinfo project to servicemesh members
+oc -n istio-system patch --type='json' smmr default -p '[{"op": "add", "path": "/spec/members", "value":["'"bookinfo"'"]}]'   #oc edit ServiceMeshMemberRoll default -n istio-system)
+
+# Check the application
+export GATEWAY_URL=$(oc -n istio-system get route istio-ingressgateway -o jsonpath='{.spec.host}')
+curl -o /dev/null -s -w "%{http_code}\n" http://$GATEWAY_URL/productpage
+
+# Enable auto route creation feature
+oc -n istio-system patch smcp --type='json'  basic-install  -p '[{"op": "replace", "path": "/spec/istio/gateways/istio-ingressgateway/ior_enabled", "value": true}]'
+
+# Recreate bookinfo-gateway
+oc delete -n bookinfo -f https://raw.githubusercontent.com/Maistra/istio/maistra-1.1/samples/bookinfo/networking/bookinfo-gateway.yaml
+
+echo "apiVersion: networking.istio.io/v1alpha3
+kind: Gateway
+metadata:
+  name: bookinfo-gateway
+spec:
+  selector:
+    istio: ingressgateway # use istio default controller
+  servers:
+  - port:
+      number: 80
+      name: http
+      protocol: HTTP
+    hosts:
+    - 'coska.apps.coska.jlee.rhcee.support'
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: bookinfo
+spec:
+  hosts:
+  - '*'
+  gateways:
+  - bookinfo-gateway
+  http:
+  - match:
+    - uri:
+        exact: /productpage
+    - uri:
+        prefix: /static
+    - uri:
+        exact: /login
+    - uri:
+        exact: /logout
+    - uri:
+        prefix: /api/v1/products
+    route:
+    - destination:
+        host: productpage
+        port:
+          number: 9080"|oc create -f -
+
+oc get route -n istio-system
+
+
+# Kiali console 
+- Request (traffic animation)
+
+
+# Create virtualService for Jason to let him see only Review2
+
+echo "apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: reviews
+spec:
+  hosts:
+  - reviews
+  http:
+  - match:
+    - headers:
+        end-user:
+          exact: jason
+    route:
+    - destination:
+        host: reviews
+        subset: v2
+  - route:
+    - destination:
+        host: reviews
+        subset: v1" |oc create -f -
+
+
+**Clean Up**
+
+oc delete project bookinfo
+oc -n istio-system patch --type='json' smmr default -p '[{"op": "remove", "path": "/spec/members", "value":["'"bookinfo"'"]}]'
+oc -n istio-system patch smcp --type='json'  basic-install  -p '[{"op": "replace", "path": "/spec/istio/gateways/istio-ingressgateway/ior_enabled", "value": false}]'
+
+
+
+
+
+
