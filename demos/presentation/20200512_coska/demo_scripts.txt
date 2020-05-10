@@ -1,16 +1,3 @@
-# Prerequisites
-
-./cluster.sh create coska
-
-#INFO Install complete!                            
-#INFO To access the cluster as the system:admin user when using 'oc', run 'export KUBECONFIG=/home/jooho/dev/MIG/ocp4/install-info/coska/auth/kubeconfig' 
-#INFO Access the OpenShift web-console here: https://console-openshift-console.apps.coska.jlee.rhcee.support 
-#INFO Login to the console with user: kubeadmin, password: HEtWq-XHUrK-8WuDY-ynpzZ 
-
-## Create joe user
-./cluster.sh joe coska HEtWq-XHUrK-8WuDY-ynpzZ
-
-
 # Start Demo
 ./ocp4.sh coska
 cd /home
