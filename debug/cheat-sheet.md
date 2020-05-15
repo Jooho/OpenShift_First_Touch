@@ -43,3 +43,8 @@ fio --rw=write --ioengine=sync --fdatasync=1 --directory=./test-data --size=22m 
 dd if=/dev/zero of=/var/lib/etcd/test/abc.img bs=8k count=10k oflag=dsync
 
 ```
+*rhcos*
+```
+oc run fiotest --image=quay.io/jooholee/fio --restart=Never --attach -i --tty
+fio --rw=write --ioengine=sync --fdatasync=1 --directory=./ --size=22m --bs=2300 --name=mytest
+```
