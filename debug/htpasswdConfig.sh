@@ -59,4 +59,6 @@ oc adm policy add-cluster-role-to-user cluster-admin joe
 
 echo "...waiting for applying htpasswd"
 sleep 10
-oc login --user $username --passwod $password
+
+echo "oc login --user $username --password $password"
+oc login --user $username --password $password
