@@ -38,7 +38,7 @@ fi
 
 
 echo $username $password
-htpasswd -c -B -b htpasswd joe redhat
+htpasswd -c -B -b htpasswd $username $password
 
 oc create secret generic htpass-secret --from-file=htpasswd=./htpasswd -n openshift-config
 
@@ -55,10 +55,10 @@ spec:
       fileData:
         name: htpass-secret"| oc apply -f -
 
-oc adm policy add-cluster-role-to-user cluster-admin joe
+oc adm policy add-cluster-role-to-user cluster-admin $username
 
 echo "...waiting for applying htpasswd"
 sleep 10
 
-echo "oc login --user $username --password $password"
-oc login --user $username --password $password
+echo "oc login --username $username --password $password"
+oc login --username $username --password $password
