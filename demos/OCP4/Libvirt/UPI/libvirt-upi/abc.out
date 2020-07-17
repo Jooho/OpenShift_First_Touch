@@ -1,0 +1,57 @@
+{  
+   "ignition":{  
+      "config":{  
+         "append":[  
+            {  
+               "source":"https://api-int.upi.example.com:22623/config/master",
+               "verification":{  
+
+               }
+            }
+         ]
+      },
+      "security":{  
+         "tls":{  
+            "certificateAuthorities":[  
+               {  
+                  "source":"data:text/plain;charset=utf-8;base64,LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSURFRENDQWZpZ0F3SUJBZ0lJS3plbjFmdDJRYnd3RFFZSktvWklodmNOQVFFTEJRQXdKakVTTUJBR0ExVUUKQ3hNSmIzQmxibk5vYVdaME1SQXdEZ1lEVlFRREV3ZHliMjkwTFdOaE1CNFhEVEU1TVRJd016QXpNekl6TkZvWApEVEk1TVRFek1EQXpNekl6TkZvd0pqRVNNQkFHQTFVRUN4TUpiM0JsYm5Ob2FXWjBNUkF3RGdZRFZRUURFd2R5CmIyOTBMV05oTUlJQklqQU5CZ2txaGtpRzl3MEJBUUVGQUFPQ0FROEFNSUlCQ2dLQ0FRRUF5MFdBaTVwaTZuL1UKaWFLREVIMW03NVJvei9tRXZtamVzUGJhZFVRVTlXMVc0aFVFeldXUWx6ay91dlU1dmU2MlJEblg1THl0WkIwMApkWFpLSjN2amovcGNxZVoxUjk5VDZ3aktONHMrbWpQMHpnS09kREhxV1lMTDFBSnR4aDZHRW0yS1ZDUzUxeW0xCnFtVEEybUhheHh4clAvN3o0OExVbys5N2pYb2pFMFAzZXNkdWU1RHcrSXg4aVY2enJtZUdhdHN3djBhWFExUjcKVHErMEI5RHRSRklaWlpBYTJhNCszVkRBNVFIRnBlZ29YckZ0ZVg5M0NRZmhNTFd2UG9RekFDZVdaTmFQMlVDdwo3aXJXWVE3NmZwSm1tSDdQRjkwMXNaT0wybkdzSy9FcDlEUHNPY2hzU2ZJQ2l6TTlmemJBdWRrcGhaUS96UVZ2CkNVWkFZTVdoSXdJREFRQUJvMEl3UURBT0JnTlZIUThCQWY4RUJBTUNBcVF3RHdZRFZSMFRBUUgvQkFVd0F3RUIKL3pBZEJnTlZIUTRFRmdRVUdiTU5nckZBUTA0aWdWa2xRZkJZT1B2RTNtMHdEUVlKS29aSWh2Y05BUUVMQlFBRApnZ0VCQUtVd3FmZ1grN3hRWDBwZ00xTVoyR290N2JiWlRwYitOMTBrNzRObUxISmRET1R0MjRwYjJaVldPUFlZCnFpN1ltVDFqMmQxUGM3d1U3dDVuUEozUkViMlVIdTFqMEZSaytzRCtEOVZzUlBYcW90WEhZd3RzajN3aGV1UTYKeXVaaVdaQm1oUHB1UlQ3ZmVlNk9pMnZlTlVkbnRlMkR6VnZsdjF2RVhWUEZVRHRNdWFYbmxQbUhhamNyOGxRcQo0SWhlV2xWb1dReEI4S1BOZWVma1JnQXd2SG56eVZtZm9JYUpCTTQyRzk1c3AwRms1U3IzUTVxM1puT0JLRUc2CmRtdWFQaVhiajJlQ1FoMGdBOTYvUklVSHRIb290d1JQcDJPQ1JnV01aaExKWjdEM0ZrOUlOenZiOWlrVVBRZHgKOWtUdnVvdWNLdjZORmVpa0JwR2hPd2JHNFg0PQotLS0tLUVORCBDRVJUSUZJQ0FURS0tLS0tCg==",
+                  "verification":{  
+
+                  }
+               }
+            ]
+         }
+      },
+      "timeouts":{  
+
+      },
+      "version":"2.2.0"
+   },
+   "networkd":{  
+
+   },
+   "passwd":{  
+
+   },
+   "storage":{  
+      "files":[  
+         {  
+            "filesystem":"root",
+            "path":"/etc/chrony.conf",
+            "mode":"0644",
+            "contents":{  
+               "source":"data:text/plain;charset=utf-8;base64,IyBVc2UgcHVibGljIHNlcnZlcnMgZnJvbSB0aGUgcG9vbC5udHAub3JnIHByb2plY3QuCiMgUGxlYXNlIGNvbnNpZGVyIGpvaW5pbmcgdGhlIHBvb2wgKGh0dHA6Ly93d3cucG9vbC5udHAub3JnL2pvaW4uaHRtbCkuCnNlcnZlciBvY29jazIub24uYmVsbC5jYSBpYnVyc3QKI3Bvb2wgMi5mZWRvcmEucG9vbC5udHAub3JnIGlidXJzdAoKIyBSZWNvcmQgdGhlIHJhdGUgYXQgd2hpY2ggdGhlIHN5c3RlbSBjbG9jayBnYWlucy9sb3NzZXMgdGltZS4KZHJpZnRmaWxlIC92YXIvbGliL2Nocm9ueS9kcmlmdAoKIyBBbGxvdyB0aGUgc3lzdGVtIGNsb2NrIHRvIGJlIHN0ZXBwZWQgaW4gdGhlIGZpcnN0IHRocmVlIHVwZGF0ZXMKIyBpZiBpdHMgb2Zmc2V0IGlzIGxhcmdlciB0aGFuIDEgc2Vjb25kLgptYWtlc3RlcCAxLjAgMwoKIyBFbmFibGUga2VybmVsIHN5bmNocm9uaXphdGlvbiBvZiB0aGUgcmVhbC10aW1lIGNsb2NrIChSVEMpLgpydGNzeW5jCgojIEVuYWJsZSBoYXJkd2FyZSB0aW1lc3RhbXBpbmcgb24gYWxsIGludGVyZmFjZXMgdGhhdCBzdXBwb3J0IGl0LgojaHd0aW1lc3RhbXAgKgoKIyBJbmNyZWFzZSB0aGUgbWluaW11bSBudW1iZXIgb2Ygc2VsZWN0YWJsZSBzb3VyY2VzIHJlcXVpcmVkIHRvIGFkanVzdAojIHRoZSBzeXN0ZW0gY2xvY2suCiNtaW5zb3VyY2VzIDIKCiMgQWxsb3cgTlRQIGNsaWVudCBhY2Nlc3MgZnJvbSBsb2NhbCBuZXR3b3JrLgojYWxsb3cgMTkyLjE2OC4wLjAvMTYKCiMgU2VydmUgdGltZSBldmVuIGlmIG5vdCBzeW5jaHJvbml6ZWQgdG8gYSB0aW1lIHNvdXJjZS4KI2xvY2FsIHN0cmF0dW0gMTAKCiMgU3BlY2lmeSBmaWxlIGNvbnRhaW5pbmcga2V5cyBmb3IgTlRQIGF1dGhlbnRpY2F0aW9uLgprZXlmaWxlIC9ldGMvY2hyb255LmtleXMKCiMgR2V0IFRBSS1VVEMgb2Zmc2V0IGFuZCBsZWFwIHNlY29uZHMgZnJvbSB0aGUgc3lzdGVtIHR6IGRhdGFiYXNlLgpsZWFwc2VjdHogcmlnaHQvVVRDCgojIFNwZWNpZnkgZGlyZWN0b3J5IGZvciBsb2cgZmlsZXMuCmxvZ2RpciAvdmFyL2xvZy9jaHJvbnkKCiMgU2VsZWN0IHdoaWNoIGluZm9ybWF0aW9uIGlzIGxvZ2dlZC4KI2xvZyBtZWFzdXJlbWVudHMgc3RhdGlzdGljcyB0cmFja2luZwo="
+            }
+         },
+{  
+            "filesystem":"root",
+            "path":"/etc/test.conf",
+            "mode":"0644",
+            "contents": "test"
+         }
+      ]
+   },
+   "systemd":{  
+
+   }
+}

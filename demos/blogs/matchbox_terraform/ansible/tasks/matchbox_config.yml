@@ -1,0 +1,66 @@
+- name: Config MatchBox, iPXE, Webserver, OCP4 
+  hosts: localhost
+  become: yes
+  become_user: root
+
+  vars:
+    ip_prefix: "{{ network_cidr.split('.') }}"
+
+  pre_tasks:
+    - name: Generate MatchBox Client Cert
+      shell: "cd ../../matchbox-master/scripts/tls ; ./cert-gen"
+      environment: 
+         SAN: "DNS.1:{{ matchbox_rpc_endpoint | regex_replace(':8081')  }},IP.1:{{ ip_prefix[0] }}.{{ ip_prefix[1] }}.{{ ip_prefix[2] }}.1,IP.2:{{ ansible_default_ipv4.address }}"
+
+    - name: Create matchbox cert folder
+      file:
+        path: "{{ item }}"
+        state: directory
+      with_items:
+      - /etc/matchbox
+      - "{{ lookup('env','HOME') }}/.matchbox"
+
+    - name: Copy generated client/server certs
+      copy:
+        src: "{{ item.src }}"
+        dest: "{{ item.dest }}"
+        owner: "{{ ansible_ssh_user }}"
+        group: "{{ ansible_ssh_user }}"
+        remote_src: yes
+      become: true
+      become_user: root
+      with_items:
+      - { src: ../../matchbox-master/scripts/tls/ca.crt, dest: "{{ lookup('env', 'HOME')}}/.matchbox/ca.crt" }
+      - { src: ../../matchbox-master/scripts/tls/ca.crt, dest: /etc/matchbox/ca.crt }
+      - { src: ../../matchbox-master/scripts/tls/client.crt, dest: "{{ lookup('env', 'HOME')}}/.matchbox/client.crt" }
+      - { src: ../../matchbox-master/scripts/tls/client.key, dest: "{{ lookup('env', 'HOME')}}/.matchbox/client.key" }
+      - { src: ../../matchbox-master/scripts/tls/server.crt, dest: /etc/matchbox/server.crt }
+      - { src: ../../matchbox-master/scripts/tls/server.key, dest: /etc/matchbox/server.key }
+
+    - name: Start Matchbox container
+      shell: >
+         podman run -d --name matchbox_server --net host -v /var/lib/matchbox:/var/lib/matchbox:Z -v /etc/matchbox:/etc/matchbox:Z,ro quay.io/coreos/matchbox:latest -address=0.0.0.0:8080 -rpc-address=0.0.0.0:8081 -log-level=debug
+      become: true
+
+#    - name: Start Matchbox container
+#      docker_container:
+#        name: matchbox_server
+#        state: started
+#        image: quay.io/coreos/matchbox:latest
+#        network_mode: host
+#        volumes:
+#          - /var/lib/matchbox:/var/lib/matchbox:Z 
+#          - /etc/matchbox:/etc/matchbox:Z,ro
+#        command: -address=0.0.0.0:8080 -rpc-address=0.0.0.0:8081 -log-level=debug
+#        recreate: yes
+#        force_kill: true
+#      become: true
+
+
+  tasks:
+    - name: Create matchbox.tf file
+      template: 
+         src: ../templates/matchbox_module.tf.j2
+         dest: ../../matchbox_module.tf
+
+    

@@ -1,0 +1,2 @@
+- name: Config Matchbox Server
+  import_playbook: ../tasks/matchbox_config.yml

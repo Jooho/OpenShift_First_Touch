@@ -1,0 +1,13 @@
+
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  name: {{ .Chart.Name }}
+spec:
+  port:
+    targetPort: http
+  to:
+    kind: Service
+    name: {{ .Values.service.name }}
+    weight: 100
+  wildcardPolicy: None

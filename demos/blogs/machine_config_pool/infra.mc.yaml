@@ -1,0 +1,17 @@
+apiVersion: machineconfiguration.openshift.io/v1
+kind: MachineConfig
+metadata:
+  labels:
+    machineconfiguration.openshift.io/role: infra
+  name: 50-infra
+spec:
+  config:
+    ignition:
+      version: 2.2.0
+    storage:
+      files:
+      - contents:
+          source: data:,test
+        filesystem: root
+        mode: 0644
+        path: /etc/testinfra

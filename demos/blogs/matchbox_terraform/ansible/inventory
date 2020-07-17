@@ -1,0 +1,14 @@
+[all:vars]
+network_domain=example.com
+network_cidr="192.168.222.0/24"
+
+
+matchbox_rpc_endpoint=matchbox.example.com:8081
+matchbox_http_endpoint=matchbox.example.com:8080
+matchbox_client_cert=~/.match/client.crt
+matchbox_client_key=~/.match/client.key
+matchbox_trusted_ca_cert=~/.match/ca.crt
+
+[hypervisor]
+127.0.0.1 ansible_connection=local
+
