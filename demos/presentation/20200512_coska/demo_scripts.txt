@@ -1,16 +1,3 @@
-# Prerequisites
-
-./cluster.sh create coska
-
-#INFO Install complete!                            
-#INFO To access the cluster as the system:admin user when using 'oc', run 'export KUBECONFIG=/home/jooho/dev/MIG/ocp4/install-info/coska/auth/kubeconfig' 
-#INFO Access the OpenShift web-console here: https://console-openshift-console.apps.coska.jlee.rhcee.support 
-#INFO Login to the console with user: kubeadmin, password: HEtWq-XHUrK-8WuDY-ynpzZ 
-
-## Create joe user
-./cluster.sh joe coska HEtWq-XHUrK-8WuDY-ynpzZ
-
-
 # Start Demo
 ./ocp4.sh coska
 cd /home
@@ -77,12 +64,14 @@ spec:
  storageClassName: nfs-storageclass"|oc create -f -
 
 # Delete test PVC
-oc delete pvc --all -n nfs-provioner
+oc delete pvc --all -n nfs-provisioner
 
 
 # Delete nfs-proviosioner svc
+oc get svc -n nfs-provisioner
 oc delete service nfs-provisioner -n nfs-provisioner
 oc get svc -w
+# oc delete service nfs-provisioner -n nfs-provisioner; date;oc get svc -w;date
 
 # Cleanup
 
@@ -96,8 +85,6 @@ oc delete -f deploy/service_account.yaml
 oc delete -f deploy/crds/jhouse_v1alpha1_nfs_crd.yaml 
 oc delete project nfs-provisioner-operator nfs-provisioner
 for i in $(oc get pv |grep test-pvc |grep -v Bound| awk '{print $1}'); do oc delete pv $i;done
-
-
 
 
 
@@ -120,9 +107,16 @@ oc apply -n bookinfo -f https://raw.githubusercontent.com/Maistra/istio/maistra-
 # Add bookinfo project to servicemesh members
 oc -n istio-system patch --type='json' smmr default -p '[{"op": "add", "path": "/spec/members", "value":["'"bookinfo"'"]}]'   #oc edit ServiceMeshMemberRoll default -n istio-system)
 
+# Restart all pods to inject envoy pod
+oc delete pod --all -n bookinfo
+oc get pod
+
 # Check the application
 export GATEWAY_URL=$(oc -n istio-system get route istio-ingressgateway -o jsonpath='{.spec.host}')
 curl -o /dev/null -s -w "%{http_code}\n" http://$GATEWAY_URL/productpage
+
+http://istio-ingressgateway-istio-system.apps.coska.jlee.rhcee.support/productpage
+
 
 # Enable auto route creation feature
 oc -n istio-system patch smcp --type='json'  basic-install  -p '[{"op": "replace", "path": "/spec/istio/gateways/istio-ingressgateway/ior_enabled", "value": true}]'
@@ -174,6 +168,8 @@ spec:
 
 oc get route -n istio-system
 
+http://coska.apps.coska.jlee.rhcee.support/productpage
+
 
 # Kiali console 
 - Request (traffic animation)
@@ -202,6 +198,9 @@ spec:
         host: reviews
         subset: v1" |oc create -f -
 
+#  gateways:
+#    - bookinfo-gateway
+
 
 **Clean Up**
 
@@ -211,6 +210,7 @@ oc -n istio-system patch smcp --type='json'  basic-install  -p '[{"op": "replace
 
 
 
-
+#404 error code because Flash
+# https://stackoverflow.com/questions/20646822/how-to-serve-static-files-in-flask/29521067#29521067
 
 

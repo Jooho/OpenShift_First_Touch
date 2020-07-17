@@ -1,0 +1,79 @@
+ 
+# An OpenShift template to deploy the hello-openshift docker image
+# and expose the application through a service and a route
+
+kind: Template
+apiVersion: v1
+metadata:
+  name: hello-openshift
+  annotations:
+    description: Deploy the hello-openshift example application from its Docker image.
+    tags: hello,example,docker,image
+labels:
+  template: hello-openshift
+
+parameters:
+
+- name: APPLICATION_NAME
+  description: The name of the application
+  generate: expression
+  from: "[a-z]{3}[0-9]{2}"
+- name: ROUTE_DOMAIN
+  description: The domain used by the openshift router
+  value: localhost
+
+objects:
+
+# defines the deployment configuration
+- kind: DeploymentConfig
+  apiVersion: v1
+  metadata:
+    name: ${APPLICATION_NAME}
+  spec:
+    replicas: 1
+    selector:
+      deploymentconfig: ${APPLICATION_NAME}
+    strategy:
+      type: Rolling
+      rollingParams:
+        intervalSeconds: 1
+        timeoutSeconds: 60
+        updatePeriodSeconds: 1
+    template:
+      metadata:
+        name: ${APPLICATION_NAME}
+        labels:
+          deploymentconfig: ${APPLICATION_NAME}
+      spec:
+        containers:
+        - name: hello-openshift
+          image: openshift/hello-openshift
+          readinessProbe:
+            httpGet:
+              port: 8080
+              path: /
+            initialDelaySeconds: 30
+            timeoutSeconds: 10
+    triggers:
+    - type: ConfigChange
+  status: {}
+
+- kind: Service
+  apiVersion: v1
+  metadata:
+    name: ${APPLICATION_NAME}
+  spec:
+    selector:
+      deploymentconfig: ${APPLICATION_NAME}
+    ports:
+    - port: 8080
+
+- kind: Route
+  apiVersion: v1
+  metadata:
+    name: ${APPLICATION_NAME}
+  spec:
+    host: ${APPLICATION_NAME}.${ROUTE_DOMAIN}
+    to:
+      kind: Service
+      name: ${APPLICATION_NAME}
