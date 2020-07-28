@@ -38,5 +38,6 @@ class Dice(val numSides: Int) {
 - [Returning a value from a function](https://kotlinlang.org/docs/reference/basic-syntax.html#defining-functions)
 - [Kotlin style guide](https://developer.android.com/kotlin/style-guide)
 - [Control Flow](https://kotlinlang.org/docs/reference/control-flow.html)
+- [Accessibility](https://developer.android.com/guide/topics/ui/accessibility)
 
 ## Already read
