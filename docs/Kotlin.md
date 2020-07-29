@@ -4,6 +4,8 @@
 ```
 
 **When**
+
+Ex1
 ~~~
 fun main() {
     val myFirstDice = Dice(6)
@@ -26,6 +28,18 @@ class Dice(val numSides: Int) {
         return (1..numSides).random()
     }
 }
+~~~
+
+Ex2
+~~~
+
+val a = "trout"
+ 
+when(a.length){
+     1 -> println("length is 1 :$a")
+     in 2..50 -> println("length is between 2 to 50 :$a")
+     else -> println("length is more than 50 :$a")
+ }
 ~~~
 
 **Elvis Operator**
