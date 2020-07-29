@@ -53,6 +53,31 @@ Along with the complete if-expression, this can be expressed with the Elvis oper
 val l = b?.length ?: -1
 ~~~
 
+**For**
+
+Ex1
+~~~
+val swarm = arrayOf("test1","test2")
+for ((index, element) in swarm.withIndex()) {
+     println("Fish at $index is $element")
+ }
+~~~
+
+Ex2
+~~~
+for (i in 'b'..'g') print(i)
+~~~
+
+Ex3
+~~~
+for (i in 5 downTo 1) print(i)
+~~~
+
+Ex4
+~~~
+for ( i in 3..6 step 2) print(i)
+~~~
+
 
 # Reference
 ## Not read
