@@ -1,9 +1,9 @@
-IntRange & random()
+**IntRange & random()**
 ```
 (1..6).random()
 ```
 
-When
+**When**
 ~~~
 fun main() {
     val myFirstDice = Dice(6)
@@ -27,6 +27,18 @@ class Dice(val numSides: Int) {
     }
 }
 ~~~
+
+**Elvis Operator**
+
+When we have a nullable reference b, we can say "if b is not null, use it, otherwise use some non-null value":
+~~~
+val l: Int = if (b != null) b.length else -1
+~~~
+Along with the complete if-expression, this can be expressed with the Elvis operator, written ?::
+~~~
+val l = b?.length ?: -1
+~~~
+
 
 # Reference
 ## Not read
