@@ -11,7 +11,7 @@ export custom_console_secret=custom-console-tls
 
 ~~~
 
-## [Generate SSL](./GENERATE_SSL.md)
+## [Generate SSL](https://github.com/Jooho/ansible-cheat-sheet/tree/master/ansible-playbooks/ansible-playbook-generate-self-signed-cert)
 ~~~
 # Generate Certificate
 mkdir ${work_dir}
