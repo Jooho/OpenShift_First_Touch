@@ -4,9 +4,12 @@
 ~~~
 export cert_dir=/tmp/certs
 export work_dir=/tmp/ssl
+export subdomain=apps.bell.jlee.rhcee.support
 
-export custom_console_hostname=custom-console.apps.bell.tamlab.brq.redhat.com
+export custom_console_hostname=custom-console.${subdomain}
 export custom_console_secret=custom-console-tls
+
+export grafana_hostname=grafana-openshift-monitoring.${subdomain}
 ~~~
 
 ## [Generate SSL](./GENERATE_SSL.md)
@@ -18,7 +21,7 @@ git clone git@github.com:Jooho/ansible-cheat-sheet.git
 cd ansible-cheat-sheet/ansible-playbooks/ansible-playbook-generate-self-signed-cert/
 ansible-galaxy install -f -r requirements.yaml
 
-ansible-playbook ./playbook.yaml -e use_intermediate_cert=false -e cert_commonName=${custom_console_hostname} -e cert_base_dir=${cert_dir} -b -e '{san_dns: [{ index: 1, dns: "${custom_console_hostname}" }]}' -vvvv
+ansible-playbook ./playbook.yaml -e use_intermediate_cert=false -e cert_commonName=${custom_console_hostname} -e cert_base_dir=${cert_dir} -b -vvvv
 
 # Apply a custom cert for OCP4 custom console url
 cd ${cert_dir}
