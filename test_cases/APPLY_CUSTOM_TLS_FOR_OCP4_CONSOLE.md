@@ -4,7 +4,7 @@
 ~~~
 export cert_dir=/tmp/certs
 export work_dir=/tmp/ssl
-export subdomain=apps.bell.jlee.rhcee.support
+export subdomain=apps.bell.tamlab.brq.redhat.com
 
 export custom_console_hostname=custom-console.${subdomain}
 export custom_console_secret=custom-console-tls
