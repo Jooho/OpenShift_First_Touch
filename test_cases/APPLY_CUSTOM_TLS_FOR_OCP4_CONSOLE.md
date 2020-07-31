@@ -9,7 +9,6 @@ export subdomain=apps.bell.jlee.rhcee.support
 export custom_console_hostname=custom-console.${subdomain}
 export custom_console_secret=custom-console-tls
 
-export grafana_hostname=grafana-openshift-monitoring.${subdomain}
 ~~~
 
 ## [Generate SSL](./GENERATE_SSL.md)
