@@ -55,7 +55,8 @@ oc get route -n openshift-console
 ## Clean up
 ~~~
 rm -rf ${cert_dir} ${work_dir}
-oc delete secret custom-tls-secret -n openshift-config
+oc delete secret $(custom_console_secret}  -n openshift-config
+oc patch console.operator cluster -p="[{'op': 'remove', 'path': '/spec/route'}]" --type='json'
 ~~~
 
 
