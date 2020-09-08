@@ -48,3 +48,8 @@ dd if=/dev/zero of=/var/lib/etcd/test/abc.img bs=8k count=10k oflag=dsync
 oc run fiotest --image=quay.io/jooholee/fio --restart=Never --attach -i --tty
 fio --rw=write --ioengine=sync --fdatasync=1 --directory=./ --size=22m --bs=2300 --name=mytest
 ```
+
+*cgroups count*
+```
+ find sys/fs/cgroup/freezer/kubepods.slice -name kubepods*-pod*.slice | while read dir; do echo -n "$dir "; find $dir -name cgroup.procs | grep -c "crio\-.*\.scope"; done | sort -nrk2
+```
