@@ -1,0 +1,13 @@
+- apiVersion: rbac.authorization.k8s.io/v1beta1
+  kind: RoleBinding
+  metadata:
+    name: leader-locking-nfs-provisioner
+  subjects:
+    - kind: ServiceAccount
+      name: nfs-provisioner
+      # replace with namespace where provisioner is deployed
+      namespace: "${NAMESPACE}"
+  roleRef:
+    kind: Role
+    name: leader-locking-nfs-provisioner
+    apiGroup: rbac.authorization.k8s.io
