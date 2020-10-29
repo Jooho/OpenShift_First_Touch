@@ -44,30 +44,44 @@ export BUNDLE_IMG=quay.io/jooholee/${NEW_OP_NAME}-bundle:${VERSION}
 
 
     type NFSProvisionerSpec struct {
-            // +operator-sdk:csv:customresourcedefinitions:type=spec
-            HostPath string `json:"hostPath,omitempty"`
-            // +operator-sdk:csv:customresourcedefinitions:type=spec
-            Pvc string `json:"pvc,omitempty"`
-            // +operator-sdk:csv:customresourcedefinitions:type=spec
-            NodeSelector map[string]string `json:"nodeSelector,omitempty"`
+    	// HostPathDir is the direcotry where NFS server will use.
+      // +operator-sdk:csv:customresourcedefinitions:type=spec,displayName="HostPath directory",xDescriptors={"urn:alm:descriptor:com.tectonic.ui:string", "urn:alm:descriptor:io.kubernetes:custom"}
+      HostPathDir string `json:"hostPathDir,omitempty"`
 
-            // Action-Items
-            // +operator-sdk:csv:customresourcedefinitions:type=spec
-            SCForNFSPvc string `json:"scForNFSPvc,omitempty"` //https://golang.org/pkg/encoding/json/
-            // +operator-sdk:csv:customresourcedefinitions:type=spec
-            SCForNFSProvisioner string `json:"scForNFS,omitempty"` //https://golang.org/pkg/encoding/json/
+      // PVC Name is the PVC resource that already created for NFS server.
+      // Do not set StorageClass name with this param. Then, operator will fail to deploy NFS Server.
+      // +operator-sdk:csv:customresourcedefinitions:type=spec,displayName="PVC Name",xDescriptors={"urn:alm:descriptor:com.tectonic.ui:string", "urn:alm:descriptor:io.kubernetes:custom"}
+      Pvc string `json:"pvc,omitempty"`
+
+      // StorageSize is the PVC size for NFS server.
+      // By default, it sets 10G.
+      // +operator-sdk:csv:customresourcedefinitions:type=spec,displayName="Storage Size",xDescriptors={"urn:alm:descriptor:com.tectonic.ui:string", "urn:alm:descriptor:io.kubernetes:custom"}
+      StorageSize string `json:"storageSize,omitempty"`
+
+      // torageClass Name for NFS server will provide a PVC for NFS server.
+      // Do not set PVC name with this param. Then, operator will fail to deploy NFS Server
+      // +operator-sdk:csv:customresourcedefinitions:type=spec,displayName="StorageClass Name for NFS server",xDescriptors={"urn:alm:descriptor:com.tectonic.ui:string","urn:alm:descriptor:io.kubernetes:custom"}
+      SCForNFSPvc string `json:"scForNFSPvc,omitempty"` //https://golang.org/pkg/encoding/json/
+
+      // NFS server will be running on a specific node by NodeSeletor
+      // +operator-sdk:csv:customresourcedefinitions:type=spec
+      NodeSelector map[string]string `json:"nodeSelector,omitempty"`
+
+      // StorageClass Name for NFS Provisioner is the StorageClass name that NFS Provisioner will use. Default value is `nfs`
+      // +operator-sdk:csv:customresourcedefinitions:type=spec,displayName="StorageClass Name for NFS Provisioner",xDescriptors={"urn:alm:descriptor:com.tectonic.ui:string","urn:alm:descriptor:io.kubernetes:custom"}
+      SCForNFSProvisioner string `json:"scForNFS,omitempty"` //https://golang.org/pkg/encoding/json/
      ~~~
 
 - Build a new operator image and push it
   ~~~
   make generate 
   make manifests
-  make podman-build podman-push IMG=${IMG}
+  make podman-build podman-push
   ~~~
   
 
 - Using user part for Operator itself.
-  - File - `./config/manifests/bases/nfs-provisioner-operator.clusterserviceversion.yaml`
+  - File - `./config/manifests/bases/${NEW_OP_NAME}.clusterserviceversion.yaml`
     ~~~
     description: This operator deploy NFS server with local storage and also provide provisioner for storageClass.
     displayName: NFS Provisioner Operator
@@ -87,7 +101,7 @@ export BUNDLE_IMG=quay.io/jooholee/${NEW_OP_NAME}-bundle:${VERSION}
       keywords:
       - nfs
       - storage
-      - pv provisioner
+      - provisioner
       links:
       - name: Nfs Provisioner Operator
         url: https://github.com/jooho/nfs-provisioner-operator
@@ -124,13 +138,13 @@ export BUNDLE_IMG=quay.io/jooholee/${NEW_OP_NAME}-bundle:${VERSION}
 
 - Update bundle 
   ~~~
-  make bundle IMG=${BUNDLE_IMG}
+  make bundle 
   ~~~
 
 - Check if `bundle/manifests/nfs-provisioner-operator.clusterserviceversion.yaml` is updated.
   ~~~
   ...
-  replaces: nfs-provisioner-operator.v0.0.1
+  replaces: test-nfs-provisioner-operator.v0.0.1
   version: 0.0.2
   ~~~
 

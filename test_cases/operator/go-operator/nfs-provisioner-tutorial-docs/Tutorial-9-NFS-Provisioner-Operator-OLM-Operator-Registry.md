@@ -39,25 +39,11 @@ OLM and Operator Registry consumes Operator bundles via an index image, which ar
 
   export VERSION=0.0.1
   export IMG=quay.io/jooholee/${NEW_OP_NAME}:${VERSION}
-  export BUNDLE_IMG=quay.io/jooholee/${NEW_OP_NAME}:-bundle${VERSION}
+  export BUNDLE_IMG=quay.io/jooholee/${NEW_OP_NAME}-bundle:${VERSION}
   export CHANNELS=alpha
   export DEFAULT_CHANNEL=alpha
-  
-  make bundle
   ~~~
 
-- Delete replaces
-  ~~~
-  vi bundle/manifests/nfs-provisioner-operator.clusterserviceversion.yaml
-  
-  replaces: test-nfs-provisioner-operator.v0.0.2   <=== Delete
-  version: 0.0.1
-  ~~~
-
-- Build a bundle image 0.0.1
-  ~~~
-  make bundle-build bundle-push IMG=${BUNDLE_IMG}
-  ~~~
 - Add the bundle(0.0.1) to the db
   ~~~
   opm registry add -b ${BUNDLE_IMG} -d "test-registry.db"
@@ -104,11 +90,13 @@ OLM and Operator Registry consumes Operator bundles via an index image, which ar
   openshift-marketplace   community-operators      Community Operators            grpc   Red Hat     27d
   openshift-marketplace   redhat-marketplace       Red Hat Marketplace            grpc   Red Hat     27d
   openshift-marketplace   redhat-operators         Red Hat Operators              grpc   Red Hat     27d
-  test                    nfsprovisioner-catalog   Test NFS Provisioner Catalog   grpc   jooho       15s
+  test-nfs-provisioner-operator                    nfsprovisioner-catalog   Test NFS Provisioner Catalog   grpc   jooho       15s
 
   ~~~
 - Check CatalogSource Status
   ~~~
+   oc get catalogsource nfsprovisioner-catalog  -o yaml
+   ...
     spec:
     address: 10.10.116.250:50051
     displayName: Test NFS Provisioner Catalog
@@ -284,7 +272,7 @@ Refer above images - (3. Install NFS Provisioner via console)
 ### 5. Add the bundle to the index 
 - Add a new bundle on top of the previous index image
   ~~~
-  opm index add --bundles ${BUNDLE_IMG} --from-index ${INDEX_IMG}:${PRE_VERSION} --tag ${INDEX_IMG}:${VERSION} -p podman
+  opm index add --bundles ${BUNDLE_IMG} --from-index ${INDEX_IMG}:${PRE_VERSION} --tag ${INDEX_IMG}:${VERSION} -c podman
   ~~~
 
 - Check the image
@@ -297,6 +285,11 @@ Refer above images - (3. Install NFS Provisioner via console)
   podman push ${INDEX_IMG}:${VERSION}
   ~~~
 
+- Update CatalogSource
+  ~~~
+   echo "oc patch catalogsource nfsprovisioner-catalog --patch '{\"spec\": {\"image\": \"${INDEX_IMG}:${VERSION}\"}}'  --type=merge" |bash -
+  ~~~
+- 
 ### 6. Check if stable channel added
 Refer above images - (3. Install NFS Provisioner via console)
 

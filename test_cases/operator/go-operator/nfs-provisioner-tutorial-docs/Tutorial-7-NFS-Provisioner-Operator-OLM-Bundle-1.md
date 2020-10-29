@@ -90,7 +90,12 @@ Comma-separated list of maintainers and their emails (e.g. 'name1:email1, name2:
 make bundle-build 
 ~~~
 
-### 6. Validate the new operator bundle(optional)
+### 6. Push the new operator bundle
+~~~
+make bundle-push
+~~~
+
+### 7. Validate the new operator bundle(optional)
 This validation command is one of `make bundle` commands so you can skip this
 
 - Basic
@@ -105,10 +110,7 @@ Since 1.1.0, you can set optional validator.
   operator-sdk bundle validate --list-optional
   operator-sdk bundle validate ./bundle --select-optional name=operatorhub
   ~~~
-### 7. Push the new operator bundle
-~~~
-make bundle-push IMG=${BUNDLE_IMG}
-~~~
+
 
 ### 8. Deploy bundle and Check recources
 ~~~
