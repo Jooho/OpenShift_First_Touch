@@ -248,14 +248,14 @@ oc get pod
 
 #### 10.2 On Cluster
 ~~~
+oc logs deployment.apps/${NEW_OP_NAME}-controller-manager  -c manager -f
 oc apply -f config/samples/cache_v1alpha1_nfsprovisioner.yaml 
-oc logs deployment.apps/nfs-provisioner-operator-controller-manager  -c manager
 ~~~
 
 
 ### 11. Create NFS PVC
 ~~~
-oc create -f $TEST_HOME/test-pvc.yaml
+oc create -f ${TEST_HOME}/test-pvc-operator.yaml
 ~~~
 
 ### 12. Clean up
