@@ -21,9 +21,13 @@
 ### 1. Set environment variables for a new bundle
 
 ~~~
+export NEW_OP_NAME=test-nfs-provisioner-operator
+export NEW_OP_HOME=${ROOT_HOME}/operator-projects/${NEW_OP_NAME}
+export NAMESPACE=${NEW_OP_NAME}
+
 export VERSION=0.0.2
-export IMG=quay.io/jooholee/nfs-provisioner-operator:${VERSION}
-export BUNDLE_IMG=quay.io/jooholee/nfs-provisioner-operator-bundle:${VERSION}
+export IMG=quay.io/jooholee/${NEW_OP_NAME}:${VERSION}
+export BUNDLE_IMG=quay.io/jooholee/${NEW_OP_NAME}-bundle:${VERSION}
 ~~~
 
 ### 2. Update manifests and metadata of CSV 
@@ -153,7 +157,7 @@ export BUNDLE_IMG=quay.io/jooholee/nfs-provisioner-operator-bundle:${VERSION}
 
 ### 4. Clean up
 ~~~
-operator-sdk cleanup nfs-provisioner-operator
+operator-sdk cleanup ${NEW_OP_NAME}
 ~~~
 
 
@@ -173,7 +177,7 @@ FATA[0002] Failed to run bundle: install mode type "SingleNamespace" not support
 
 ### 5. Clean up
 ~~~
-operator-sdk cleanup nfs-provisioner-operator
+operator-sdk cleanup ${NEW_OP_NAME}
 ~~~
 
 
