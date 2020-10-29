@@ -206,6 +206,7 @@ oc get pod
     name: nfsprovisioner-sample
   spec:
     scForNFSPvc: local-sc   #<==  this tutorial will use local sc first
+    storageSize: 1G
   ~~~
 - Create a new CR for existed PVC
   ~~~
@@ -229,7 +230,7 @@ oc get pod
   spec:
     nodeSelector:
       kubernetes.io/hostname: worker-0.bell.tamlab.brq.redhat.com
-    hostPathDir: "/home/core/test"
+    hostPathDir: "/home/core/nfs"
   ~~~
 
 
@@ -250,7 +251,7 @@ oc logs deployment.apps/nfs-provisioner-operator-controller-manager  -c manager
 
 ### 11. Create NFS PVC
 ~~~
-oc create -f $TEST_HOME/test-pvc.yaml
+oc create -f $TEST_HOME/test-pvc-operator.yaml
 ~~~
 
 ### 12. Clean up

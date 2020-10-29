@@ -37,8 +37,8 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/types"
 
-	cachev1alpha1 "github.com/jooho/nfs-provisioner-operator/api/v1alpha1"
-	"github.com/jooho/nfs-provisioner-operator/controllers/defaults"
+	cachev1alpha1 "github.com/jooho/test-nfs-provisioner-operator/api/v1alpha1"
+	"github.com/jooho/test-nfs-provisioner-operator/controllers/defaults"
 )
 
 // NFSProvisionerReconciler reconciles a NFSProvisioner object
@@ -597,6 +597,12 @@ func (r *NFSProvisionerReconciler) pvcForNFSProvisioner(m *cachev1alpha1.NFSProv
 		scName = m.Spec.SCForNFSPvc
 	}
 
+	pvcSize := defaults.StorageSize
+
+	if m.Spec.StorageSize != "" {
+		pvcSize = m.Spec.StorageSize
+	}
+
 	pvc := &corev1.PersistentVolumeClaim{
 
 		ObjectMeta: metav1.ObjectMeta{
@@ -607,7 +613,7 @@ func (r *NFSProvisionerReconciler) pvcForNFSProvisioner(m *cachev1alpha1.NFSProv
 			AccessModes: []corev1.PersistentVolumeAccessMode{corev1.ReadWriteOnce},
 			Resources: corev1.ResourceRequirements{
 				Requests: corev1.ResourceList{
-					corev1.ResourceStorage: resource.MustParse("10Gi"),
+					corev1.ResourceStorage: resource.MustParse(pvcSize),
 				},
 			},
 			StorageClassName: &scName,

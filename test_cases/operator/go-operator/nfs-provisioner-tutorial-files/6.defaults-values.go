@@ -8,6 +8,8 @@ const (
 	//HostPathDir is the directory that NFS server will use.
 	//NFS server will use PVC by default.
 	HostPathDir = "/home/core/nfs"
+	//StorageSize is the PVC size for NFS server will use.
+	StorageSize = "10G"
 	//Pvc is the storage for NFS server will use.
 	Pvc = "nfs-server"
 	//SCForNFSPvc is the storageClass name to create PVC for NFS server.
@@ -32,5 +34,6 @@ const (
 
 var (
 	// NodeSelector is for the node where NFS server will be running
-	NodeSelector = map[string]string{"app": "nfs-provisioner"}
+	// NodeSelector = map[string]string{"app": "nfs-provisioner"}
+	 NodeSelector = map[string]string{}
 )

@@ -22,30 +22,32 @@ import (
 
 // NFSProvisionerSpec defines the desired state of NFSProvisioner
 type NFSProvisionerSpec struct {
-	// HostPathDir is the folder that NFS server will use.
-	// +operator-sdk:csv:customresourcedefinitions:type=spec
+	// HostPathDir is the direcotry where NFS server will use.
+	// +operator-sdk:csv:customresourcedefinitions:type=spec,displayName="HostPath directory",xDescriptors={"urn:alm:descriptor:com.tectonic.ui:string", "urn:alm:descriptor:io.kubernetes:custom"}
 	HostPathDir string `json:"hostPathDir,omitempty"`
 
-	// PVC resource will be attached to NFS server
-	// If there is already pvc created, you can use this param
-	// +operator-sdk:csv:customresourcedefinitions:type=spec
+	// PVC Name is the PVC resource that already created for NFS server.
+	// Do not set StorageClass name with this param. Then, operator will fail to deploy NFS Server.
+	// +operator-sdk:csv:customresourcedefinitions:type=spec,displayName="PVC Name",xDescriptors={"urn:alm:descriptor:com.tectonic.ui:string", "urn:alm:descriptor:io.kubernetes:custom"}
 	Pvc string `json:"pvc,omitempty"`
+
+	// StorageSize is the PVC size for NFS server.
+	// By default, it sets 10G.
+	// +operator-sdk:csv:customresourcedefinitions:type=spec,displayName="Storage Size",xDescriptors={"urn:alm:descriptor:com.tectonic.ui:string", "urn:alm:descriptor:io.kubernetes:custom"}
+	StorageSize string `json:"storageSize,omitempty"`
+
+	// torageClass Name for NFS server will provide a PVC for NFS server.
+	// Do not set PVC name with this param. Then, operator will fail to deploy NFS Server
+	// +operator-sdk:csv:customresourcedefinitions:type=spec,displayName="StorageClass Name for NFS server",xDescriptors={"urn:alm:descriptor:com.tectonic.ui:string","urn:alm:descriptor:io.kubernetes:custom"}
+	SCForNFSPvc string `json:"scForNFSPvc,omitempty"` //https://golang.org/pkg/encoding/json/
 
 	// NFS server will be running on a specific node by NodeSeletor
 	// +operator-sdk:csv:customresourcedefinitions:type=spec
 	NodeSelector map[string]string `json:"nodeSelector,omitempty"`
 
-	// Action-Items
-	// StorageClass for NFS PVC
-	// If you want to delegate this operator to create a pvc for NFS Server from StorageClass, you set this param for the storageclass name
-	// +operator-sdk:csv:customresourcedefinitions:type=spec
-	SCForNFSPvc string `json:"scForNFSPvc,omitempty"` //https://golang.org/pkg/encoding/json/
-
-	// StorageClass name gor NFS provisioner
-	// This operator will create a StorageClass for NFS provisioner named "nfs". If you want to change it, you set this param.
-	// +operator-sdk:csv:customresourcedefinitions:type=spec
+	// StorageClass Name for NFS Provisioner is the StorageClass name that NFS Provisioner will use. Default value is `nfs`
+	// +operator-sdk:csv:customresourcedefinitions:type=spec,displayName="StorageClass Name for NFS Provisioner",xDescriptors={"urn:alm:descriptor:com.tectonic.ui:string","urn:alm:descriptor:io.kubernetes:custom"}
 	SCForNFSProvisioner string `json:"scForNFS,omitempty"` //https://golang.org/pkg/encoding/json/
-
 }
 
 // NFSProvisionerStatus defines the observed state of NFSProvisioner
