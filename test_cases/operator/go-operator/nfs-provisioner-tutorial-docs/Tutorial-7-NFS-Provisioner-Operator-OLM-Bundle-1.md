@@ -36,9 +36,13 @@
 ### 1. Set environment variables for a new bundle
 
 ~~~
+export NEW_OP_NAME=test-nfs-provisioner-operator
+export NEW_OP_HOME=${ROOT_HOME}/operator-projects/${NEW_OP_NAME}
+export NAMESPACE=${NEW_OP_NAME}
+
 export VERSION=0.0.1
-export IMG=quay.io/jooholee/nfs-provisioner-operator:${VERSION}
-export BUNDLE_IMG=quay.io/jooholee/nfs-provisioner-operator-bundle:${VERSION}
+export IMG=quay.io/jooholee/${NEW_OP_NAME}:${VERSION}
+export BUNDLE_IMG=quay.io/jooholee/${NEW_OP_NAME}-bundle:${VERSION}
 export CHANNELS=alpha
 export DEFAULT_CHANNEL=alpha
 ~~~
@@ -125,7 +129,7 @@ operator-sdk run bundle ${BUNDLE_IMG}
 For next tutorial, do not delete this.
 
 ~~~
-operator-sdk cleanup nfs-provisioner-operator
+operator-sdk cleanup ${NEW_OP_NAME}
 ~~~
 
 
