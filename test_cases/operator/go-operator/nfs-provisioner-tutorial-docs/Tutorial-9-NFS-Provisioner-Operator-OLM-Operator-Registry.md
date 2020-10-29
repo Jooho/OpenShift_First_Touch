@@ -33,9 +33,13 @@ OLM and Operator Registry consumes Operator bundles via an index image, which ar
 ### 1. Create Registry DB with NFS Provisioner 0.0.1 (beta channel)
 - Set env variables
   ~~~
+  export NEW_OP_NAME=test-nfs-provisioner-operator
+  export NEW_OP_HOME=${ROOT_HOME}/operator-projects/${NEW_OP_NAME}
+  export NAMESPACE=${NEW_OP_NAME}
+
   export VERSION=0.0.1
-  export IMG=quay.io/jooholee/nfs-provisioner-operator:${VERSION}
-  export BUNDLE_IMG=quay.io/jooholee/nfs-provisioner-operator-bundle:${VERSION}
+  export IMG=quay.io/jooholee/${NEW_OP_NAME}:${VERSION}
+  export BUNDLE_IMG=quay.io/jooholee/${NEW_OP_NAME}:-bundle${VERSION}
   export CHANNELS=alpha
   export DEFAULT_CHANNEL=alpha
   
@@ -46,7 +50,7 @@ OLM and Operator Registry consumes Operator bundles via an index image, which ar
   ~~~
   vi bundle/manifests/nfs-provisioner-operator.clusterserviceversion.yaml
   
-  replaces: nfs-provisioner-operator.v0.0.2   <=== Delete
+  replaces: test-nfs-provisioner-operator.v0.0.2   <=== Delete
   version: 0.0.1
   ~~~
 
@@ -132,9 +136,13 @@ OLM and Operator Registry consumes Operator bundles via an index image, which ar
 ### 4. Update the bundle to 0.0.2 (beta channel)
 - Set env variable for bundle 0.0.2
   ~~~
+  export NEW_OP_NAME=test-nfs-provisioner-operator
+  export NEW_OP_HOME=${ROOT_HOME}/operator-projects/${NEW_OP_NAME}
+  export NAMESPACE=${NEW_OP_NAME}
+
   export VERSION=0.0.2
-  export IMG=quay.io/jooholee/nfs-provisioner-operator:${VERSION}
-  export BUNDLE_IMG=quay.io/jooholee/nfs-provisioner-operator-bundle:${VERSION}
+  export IMG=quay.io/jooholee/${NEW_OP_NAME}:${VERSION}
+  export BUNDLE_IMG=quay.io/jooholee/${NEW_OP_NAME}-bundle:${VERSION}
   export CHANNELS=beta
   export DEFAULT_CHANNEL=beta
 
@@ -188,11 +196,14 @@ rm test-registry.db
 
 - Set env variables
   ~~~
+  export NEW_OP_NAME=test-nfs-provisioner-operator
+  export NEW_OP_HOME=${ROOT_HOME}/operator-projects/${NEW_OP_NAME} 
+  
   export NAMESPACE=test-index-op-registry
   export VERSION=0.0.1
-  export IMG=quay.io/jooholee/nfs-provisioner-operator:${VERSION}
-  export INDEX_IMG=quay.io/jooholee/nfs-provisioner-operator-index
-  export BUNDLE_IMG=quay.io/jooholee/nfs-provisioner-operator-bundle:${VERSION}
+  export IMG=quay.io/jooholee/${NEW_OP_NAME}:${VERSION}
+  export INDEX_IMG=quay.io/jooholee/${NEW_OP_NAME}-index
+  export BUNDLE_IMG=quay.io/jooholee/${NEW_OP_NAME}-bundle:${VERSION}
   export CHANNELS=alpha
   export DEFAULT_CHANNEL=alpha
   ~~~
@@ -259,9 +270,9 @@ Refer above images - (3. Install NFS Provisioner via console)
   ~~~
   export PRE_VERSION=0.0.1
   export VERSION=0.0.2
-  export IMG=quay.io/jooholee/nfs-provisioner-operator:${VERSION}
-  export INDEX_IMG=quay.io/jooholee/nfs-provisioner-operator-index
-  export BUNDLE_IMG=quay.io/jooholee/nfs-provisioner-operator-bundle:${VERSION}
+  export IMG=quay.io/jooholee/${NEW_OP_NAME}:${VERSION}
+  export INDEX_IMG=quay.io/jooholee/${NEW_OP_NAME}-index
+  export BUNDLE_IMG=quay.io/jooholee/${NEW_OP_NAME}-bundle:${VERSION}
   export CHANNELS=beta
   export DEFAULT_CHANNEL=beta
   ~~~
@@ -291,9 +302,9 @@ Refer above images - (3. Install NFS Provisioner via console)
 
 ### 7. Clean up
 ~~~
-oc delete csv nfs-provisioner-operator.v0.0.2  
+oc delete csv ${NEW_OP_NAME}.v0.0.2  
 
-oc delete subscription nfs-provisioner-operator
+oc delete subscription ${NEW_OP_NAME}
 
 oc delete catalogsource nfsprovisioner-catalog 
 ~~~
