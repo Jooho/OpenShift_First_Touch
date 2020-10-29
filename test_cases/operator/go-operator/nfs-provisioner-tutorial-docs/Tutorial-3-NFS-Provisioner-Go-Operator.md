@@ -118,25 +118,30 @@ but Tutorial 4 will explain this controller in detail.
   - Pvc
 
   ~~~
-  cp ../nfs-provisioner-tutorial/5.full_finished.go ${NEW_OP_HOME}/controllers/nfsprovisioner_controller.go 
+  cp ${DEMO_HOME}/nfs-provisioner-tutorial-files/5.full_finished_controller.go  ${NEW_OP_HOME}/controllers/nfsprovisioner_controller.go 
   ~~~
 
 - Copy [Default vaules](../nfs-provisioner-tutorial/6.defaults-values.md) 
   ~~~
   mkdir ${NEW_OP_HOME}/controllers/defaults
-  cp ../nfs-provisioner-tutorial/6.defaults-values.md ${NEW_OP_HOME}/controllers/defaults/default.go
+  cp ${DEMO_HOME}/nfs-provisioner-tutorial-files/6.defaults-values.md ${NEW_OP_HOME}/controllers/defaults/default.go
   ~~~
 
 - Add securityv1 schema
   ~~~
   import (
     ...
+    "github.com/jooho/test-nfs-provisioner-operator/controllers"
     securityv1 "github.com/openshift/api/security/v1"
+     // +kubebuilder:scaffold:imports
   )
+  
   func init(){
   ..
-	//Add 3rd API Scheme
-	utilruntime.Must(securityv1.AddToScheme(scheme))
+  utilruntime.Must(cachev1alpha1.AddToScheme(scheme))
+  
+  //Add 3rd API Scheme
+  utilruntime.Must(securityv1.AddToScheme(scheme))
 
   }
   ~~~
@@ -151,13 +156,13 @@ but Tutorial 4 will explain this controller in detail.
 
     mv ./main.go  ./cmd/main.go
     ~~~
-  - Update Makefile
+  - Update Dockerfile
     ~~~
-    vi Makefil
-    s/main.go /cmd\/main.go/g
+    sed "s/COPY main.go/COPY cmd\/main.go/g" -i Dockerfile
     ~~~
+    
 
-- Bduil
+- Build
   ```
   make podman-build IMG=${IMG}
   ```
