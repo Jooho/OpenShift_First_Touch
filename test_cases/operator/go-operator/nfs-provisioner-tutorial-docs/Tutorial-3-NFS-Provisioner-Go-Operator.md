@@ -31,11 +31,11 @@ This tutorial show how to create a new NFS Provisioner go operator with operator
 ### 1. Set Environment variables for a new operator
 
 ```
-export NEW_OP_NAME=nfs-provisioner-operator
+export NEW_OP_NAME=test-nfs-provisioner-operator
 export NEW_OP_HOME=${ROOT_HOME}/operator-projects/${NEW_OP_NAME}
 export NAMESPACE=${NEW_OP_NAME}
 export VERSION=0.0.1
-export IMG=quay.io/jooholee/nfs-provisioner-operator:${VERSION}
+export IMG=quay.io/jooholee/${NEW_OP_NAME}:${VERSION}
 ```
 
 ### 2. Create Go Operator
