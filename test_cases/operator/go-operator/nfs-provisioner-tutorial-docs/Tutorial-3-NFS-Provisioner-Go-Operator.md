@@ -169,6 +169,11 @@ make podman-push IMG=${IMG}
 
 ### 9. Deploy Operator 
 
+#### 9.0 Create CRD
+~~~
+make install
+~~~
+
 #### 9.1 On Local
 ```
 oc new-project ${NAMESPACE}
