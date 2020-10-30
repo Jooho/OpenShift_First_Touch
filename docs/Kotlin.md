@@ -53,6 +53,19 @@ Along with the complete if-expression, this can be expressed with the Elvis oper
 val l = b?.length ?: -1
 ~~~
 
+Remainder with null value
+~~~
+println("what date is your birthday?")
+var birthday = readLine()?.toIntOrNull() ?:1
+
+or
+
+println("what date is your birthday?")
+var birthday = readLine()?.toIntOrNull()
+var index = if (birthday == null) 1 else birthday%7
+~~~
+
+
 **For**
 
 Ex1
@@ -77,6 +90,22 @@ Ex4
 ~~~
 for ( i in 3..6 step 2) print(i)
 ~~~
+
+**$ operator**
+~~~
+println("Good ${if(Calendar.getInstance().get(Calendar.HOUR_OF_DAY) <=12) "Morning" else "Night"} Kotlin")
+
+val isUnit = println("This is an expression")
+println(isUnit)
+
+val temperature = 10
+val isHot = temperature > 50
+println(isHot)
+
+val message = "You are ${if (temperature > 50) "fried" else "safe"} fish"
+println(message)
+~~~
+
 
 
 # Reference

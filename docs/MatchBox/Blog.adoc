@@ -1,0 +1,288 @@
+---
+title: "Matchbox Overview"
+date: 2019-08-06T14:05:19-04:00
+authors: []
+categories:
+  -
+tags:
+  - matchbox  
+draft: true
+---
+
+= Coreos Matchbox overview
+
+https://coreos.com/matchbox/docs/latest/matchbox.html[Matchbox] help network boot and provision CoreOS Clusters. With Matchbox, you can easily map Ignition configs and kernel args with specific VMs or bare metals. For OCP4 bare metal installation, using Matchbox give you more flexibility to setup a right ignition configs file for each node.
+
+This Matchbox uses label concept to select a right host (such as MAC address, UUID, stage, region) and it can map to a specific profile that contains GRUB setting and Ignition or Cloud-Configs and so on.
+
+From this doc, you can learn how the Matchbox works and how to setup it using terraform.
+
+image:/static/images/matchbox_concept.png
+
+
+== How Matchbox work
+
+Basically, Matchbox uses the same concept that how kubernetes service object map to pods. Just as we use selector labels of Service to find labeled pods, we use the selector of a Machine Group to find matched VMs or bare metals. 
+
+`Machine Group` play a role to match one or more machines via selectors.
+Then, it maps a right profile for the matched machins. `Profiles` consist of detail information regarding GRUB setting such as kernel image/initfsram or kernel boot parameters and also ignition file path. 
+
+To make it simple, you can remember like that `Machine Group` try to find right VMs by a selector and `Profiles` provides proper information for the VMs.
+
+```
++-------------------+                                         +-------------------------+
+|         VM        |  ------> iPXE server(Matchbox) -------> |      Machine Group      |
+|mac:xx:xx:xx:xx:a1 |                                         |  File (worker-grp.json) | 
++-------------------+                                         |  Selector(mac:....:a1)  | 
+                                                              |   Profile(worker-pf)    | 
+                                                              +-------------------------+
+                                                                           |
+           +---------------------------------------------------------------+
+           |
+           V
++-------------------------+
+|         Profiles        |
+|  File (worker-pf.json)  |
+|    Boot nformation      |
++-------------------------+
+
+```
+
+Apart from mac address, you can send various labels when the vm is booting up at first like `region: us-west` or `os: installed`. 
+
+Matchbox provides the following configs via HTTP endpoint:
+
+- iPXE script
+- iPXE
+- GRUB2
+- Cloud config
+- Container Linux config/Ignition config
+- Generic config
+- Metadata
+
+
+**Folder structure**
+
+[source]
+----
+/var/lib/matchbox
+|----- /assets (contains kernel/initrmfs file (or you can specify URL to download))
+|----- /groups
+|----- /profiles
+|----- /ignition
+|----- /cloud
+|----- /generic
+----
+
+
+
+== Get started
+
+=== Install
+There are several ways to install Matchbox but it will use container way. If you are looking for other method, please refer https://coreos.com/matchbox/docs/latest/deployment.html[official doc]
+
+You have to generate self signed certificate so that Matchbox client communicate with Matchbox gRPC which uses TLS. Then, the certificates should be distributed to right places. please follow the below steps.
+
+==== Create folders
+
+[source,script]
+----
+mkdir /etc/matchbox
+mkdir ~/.matchbox
+mdirt /var/lib/matchbox/assets -p
+----
+
+==== Clone match github
+
+[source,script]
+----
+git clone https://github.com/coreos/matchbox.git 
+----
+
+==== Generate Cert
+Please update IP part according to your system. The laptop IP is used in common.
+Moreover, you need to add the hostname to /etc/hosts
+
+[source,script]
+----
+export SAN=DNS.1:matchbox.example.com,IP.1:%CHANGE_ME
+./matchbox-master/scripts/tls ; ./cert-gen
+
+
+# example
+export SAN=DNS.1:matchbox.example.com,IP.1:192.168.126.1
+./matchbox-master/scripts/tls ; ./cert-gen
+----
+
+==== Distribute Certs
+[source,script]
+----
+cd ./matchbox-master/scripts/tls 
+
+cp ca.crt ~/.matchbox/ca.crt
+cp ca.crt /etc/matchbox/ca.crt
+cp client.* ~/.matchbox/.
+cp server.* /etc/matchbox/.
+----
+
+==== Deploy matchbox server 
+
+[source,script]
+----
+mkdir -p /var/lib/matchbox/assets
+sudo docker run --net=host --rm -v /var/lib/matchbox:/var/lib/matchbox:Z -v /etc/matchbox:/etc/matchbox:Z,ro quay.io/coreos/matchbox:latest -address=0.0.0.0:8080 -rpc-address=0.0.0.0:8081 -log-level=debug
+----
+
+
+==== Verify 
+
+- gRPC-Certificate
+
+[source,script]
+----
+ openssl s_client -connect matchbox.example.com:8081 -CAfile /etc/matchbox/ca.crt -cert ~/.matchbox/client.crt -key ~/.matchbox/client.key
+----
+
+- Http protocol
+
+[source,script]
+----
+ $ dig matchbox.example.com
+ $ curl http://matchbox.example.com:8080
+matchbox
+----
+
+=== Config Matchbox using Terraform
+
+This show how to config Matchbox by Terraform. It assume that you have terraform basic knowledge. 
+
+* Download Matchbox Terraform Provider.
+  - Latest version is `3.0`
+  - https://github.com/poseidon/terraform-provider-matchbox/releases[Download Link]
+
+[source,terraform]
+----
+matchbox_terraform_provider_version=3.0
+
+curl -L https://github.com/poseidon/terraform-provider-matchbox/releases/download/v0.${matchbox_terraform_provider_version}/terraform-provider-matchbox-v0.3.0-linux-amd64.tar.gz | tar zxv
+
+cp terraform-provider-matchbox-v0.${matchbox_terraform_provider_version}-linux-amd64/terraform-provider-matchbox ~/.terraform.d/plugins/terraform-provider-matchbox_${matchbox_terraform_provider_version}
+----
+
+
+- Create a sample tf file.
+
+[source,terraform]
+----
+# Initialize Matchbox Terraform Provider.
+provider "matchbox" {
+  version = "0.3.0"
+  endpoint    = "matchbox.example.com:8081"
+  client_cert = "${file("~/.matchbox/client.crt")}"
+  client_key  = "${file("~/.matchbox/client.key")}"
+  ca          = "${file("~/.matchbox/ca.crt")}"
+}
+
+# Create a group
+resource "matchbox_group" "bootstrap" {
+
+  name = "bootstrap"
+
+  profile = "bootstrap"
+
+  selector = {
+    mac = "${var.bootstrap_mac}"             # find VM by mac
+  }
+  metadata = {
+    ssh_authorized_key = "${var.ssh_authorized_key}"
+  }
+}
+
+# Create a profile
+resource "matchbox_profile" "bootstrap" {
+  name  = "bootstrap"
+
+  kernel = "assets/rhcos_kernel"
+
+  initrd = ["assets/rhcos_initramfs.img"]
+
+  args = ["test"]
+}
+----
+
+- Test
+
+```
+terraform init
+terraform plan
+terraform apply
+```
+
+- Verify
+
+```
+cat /var/lib/matchbox/groups/bootstrap.json 
+{
+	"id": "bootstrap",
+	"profile": "bootstrap",
+	"selector": {
+		"mac": "10:10:10:10:10:10"
+	},
+	"metadata": {
+		"ssh_authorized_key": "test key"
+	}
+}
+
+cat /var/lib/matchbox/profiles/bootstrap.json 
+{
+	"id": "bootstrap",
+	"boot": {
+		"kernel": "assets/rhcos_kernel",
+		"initrd": [
+			"assets/rhcos_initramfs.img"
+		],
+		"args": [
+			"test"
+		]
+	}
+}
+
+```
+
+- Find a machine by mac and gather information 
+
+```
+# ipxe
+
+curl http://matchbox.example.com:8080/ipxe?mac=10-10-10-10-10-10
+#!ipxe
+kernel assets/rhcos_kernel test
+initrd assets/rhcos_initramfs.img}
+boot
+
+# metadata
+curl http://matchbox.example.com:8080/metadata?mac=10-10-10-10-10-10
+SSH_AUTHORIZED_KEY=test key
+MAC=10:10:10:10:10:10
+REQUEST_QUERY_MAC=10:10:10:10:10:10
+REQUEST_RAW_QUERY=mac=10-10-10-10-10-10
+```
+
+* TBD 
+  - More examples
+    . iPXE script
+    . iPXE
+    . GRUB2
+    . Cloud config
+    . Container Linux config/Ignition config
+    . Generic config
+    . Metadata
+    . Deploy RHCOS on KVM with Matchbox
+
+
+oc adm ca create-signer-cert \
+    --config={{ mktemp.stdout }}/admin.kubeconfig \
+    --key='{{ mktemp.stdout }}/ca.key' \
+    --cert='{{ mktemp.stdout }}/ca.crt' \
+    --serial='{{ mktemp.stdout }}/ca.serial.txt' \
+    --name="metrics-signer@{{lookup('pipe','date +%s')}}" 
