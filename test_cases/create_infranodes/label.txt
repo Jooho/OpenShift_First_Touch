@@ -1,0 +1,6 @@
+oc label node worker-0.bell.tamlab.brq.redhat.com node-role.kubernetes.io/infra=""
+oc label node worker-0.bell.tamlab.brq.redhat.com node-role.kubernetes.io/worker-
+oc label node worker-1.bell.tamlab.brq.redhat.com node-role.kubernetes.io/infra=""
+oc label node worker-1.bell.tamlab.brq.redhat.com node-role.kubernetes.io/worker-
+oc label node worker-2.bell.tamlab.brq.redhat.com node-role.kubernetes.io/infra=""
+oc label node worker-2.bell.tamlab.brq.redhat.com node-role.kubernetes.io/worker-
