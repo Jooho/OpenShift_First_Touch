@@ -262,7 +262,7 @@ oc apply -f config/samples/cache_v1alpha1_nfsprovisioner.yaml
 
 ### 11. Create NFS PVC
 ~~~
-oc create -f ${TEST_HOME}/test-pvc-operator.yaml
+oc create -f ${TEST_HOME}/test-pvc.yaml
 ~~~
 
 ### 12. Clean up
