@@ -160,6 +160,7 @@ but Tutorial 4 will explain this controller in detail.
     mkdir ./cmd
 
     mv ./main.go  ./cmd/main.go
+    sed "s/\.\/main.go/\.\/cmd\/main.go/g" -i Makefile
     ~~~
   - Update Dockerfile
     ~~~
