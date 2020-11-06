@@ -95,6 +95,8 @@ y
           // Error show error messages briefly
           Error string `json:"error"`
   }
+  
+  cp ${DEMO_HOME}/nfs-provisioner-tutorial-files/7.nfsprovisioner_type.go ${NEW_OP_HOME}/api/v1alpha1/nfsprovisioner_types.go 
   ~~~
 - Update `api/v1alpha1/zz_generated.deepcopy.go file` based on type.go
   ~~~
