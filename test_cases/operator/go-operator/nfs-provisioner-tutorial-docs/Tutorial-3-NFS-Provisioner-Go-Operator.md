@@ -263,7 +263,7 @@ oc get pod
 
 #### 10.2 On Cluster
 ~~~
-oc logs deployment.apps/${NEW_OP_NAME}-controller-manager  -c manager -f
+oc logs deployment.apps/nfs-provisioner-operator-controller-manager -c manager -f
 oc apply -f config/samples/cache_v1alpha1_nfsprovisioner.yaml 
 ~~~
 
