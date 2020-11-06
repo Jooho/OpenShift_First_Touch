@@ -196,6 +196,12 @@ make run ENABLE_WEBHOOKS=false
 #### 9.2 On Cluster
 
 ```
+# Update prefix 
+vi config/default/kustomization.yaml
+
+namePrefix: nfs-provisioner-operator-    #<====
+
+
 # Update namespace
 cd config/default/; kustomize edit set namespace "${NAMESPACE}" ;cd ../..
 
