@@ -70,6 +70,10 @@ y
           // If there is already pvc created, you can use this param
           Pvc string `json:"pvc,omitempty"`
 
+          // StorageSize is the PVC size for NFS server.
+          // By default, it sets 10G.
+          StorageSize string `json:"storageSize,omitempty"`
+
           // NFS server will be running on a specific node by NodeSeletor
           NodeSelector map[string]string `json:"nodeSelector,omitempty"`
 
@@ -103,7 +107,7 @@ y
 
 ### 6. Controller Update 
 From this tutorial, we will use [this file](
-../nfs-provisioner-tutorial/5.full_finished.go)
+../nfs-provisioner-tutorial-files/5.full_finished_controller.go)
 but Tutorial 4 will explain this controller in detail.
 
 - Controller
@@ -121,14 +125,15 @@ but Tutorial 4 will explain this controller in detail.
   cp ${DEMO_HOME}/nfs-provisioner-tutorial-files/5.full_finished_controller.go  ${NEW_OP_HOME}/controllers/nfsprovisioner_controller.go 
   ~~~
 
-- Copy [Default vaules](../nfs-provisioner-tutorial/6.defaults-values.md) 
+- Copy [Default vaules](../nfs-provisioner-tutorial-files/6.defaults-values.md) 
   ~~~
   mkdir ${NEW_OP_HOME}/controllers/defaults
-  cp ${DEMO_HOME}/nfs-provisioner-tutorial-files/6.defaults-values.md ${NEW_OP_HOME}/controllers/defaults/default.go
+  cp ${DEMO_HOME}/nfs-provisioner-tutorial-files/6.defaults-values.go ${NEW_OP_HOME}/controllers/defaults/default.go
   ~~~
 
 - Add securityv1 schema
   ~~~
+  vi main.go
   import (
     ...
     "github.com/jooho/test-nfs-provisioner-operator/controllers"
