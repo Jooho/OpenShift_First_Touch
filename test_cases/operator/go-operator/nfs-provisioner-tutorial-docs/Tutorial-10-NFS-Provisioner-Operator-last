@@ -1,0 +1,20 @@
+refactoring
+~~~
+mkdir pkg
+mv api ./pkg
+mv controllers ./pkg
+
+sed -i '%s/COPY api\//COPY pkg\/api\//g' Dockerfile
+sed -i '%s/COPY controllers\//COPY pkg\/controllers\//g' Dockerfile
+~~~
+
+
+[Webhook](https://book.kubebuilder.io/cronjob-tutorial/webhook-implementation.html)
+
+
+kubebuilder create webhook --group cache --version v1alpha1 --kind NFSProvisioner --defaulting --programmatic-validation
+
+or 
+
+operator-sdk create webhook  --group cache --version v1alpha1 --kind NFSProvisioner --defaulting --programmatic-validation
+
