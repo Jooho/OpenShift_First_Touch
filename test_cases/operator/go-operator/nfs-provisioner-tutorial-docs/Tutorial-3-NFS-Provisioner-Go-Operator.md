@@ -70,6 +70,10 @@ y
           // If there is already pvc created, you can use this param
           Pvc string `json:"pvc,omitempty"`
 
+          // StorageSize is the PVC size for NFS server.
+          // By default, it sets 10G.
+          StorageSize string `json:"storageSize,omitempty"`
+
           // NFS server will be running on a specific node by NodeSeletor
           NodeSelector map[string]string `json:"nodeSelector,omitempty"`
 
@@ -91,6 +95,8 @@ y
           // Error show error messages briefly
           Error string `json:"error"`
   }
+  
+  cp ${DEMO_HOME}/nfs-provisioner-tutorial-files/7.nfsprovisioner_type.go ${NEW_OP_HOME}/api/v1alpha1/nfsprovisioner_types.go 
   ~~~
 - Update `api/v1alpha1/zz_generated.deepcopy.go file` based on type.go
   ~~~
@@ -103,7 +109,7 @@ y
 
 ### 6. Controller Update 
 From this tutorial, we will use [this file](
-../nfs-provisioner-tutorial/5.full_finished.go)
+../nfs-provisioner-tutorial-files/5.full_finished_controller.go)
 but Tutorial 4 will explain this controller in detail.
 
 - Controller
@@ -121,14 +127,15 @@ but Tutorial 4 will explain this controller in detail.
   cp ${DEMO_HOME}/nfs-provisioner-tutorial-files/5.full_finished_controller.go  ${NEW_OP_HOME}/controllers/nfsprovisioner_controller.go 
   ~~~
 
-- Copy [Default vaules](../nfs-provisioner-tutorial/6.defaults-values.md) 
+- Copy [Default vaules](../nfs-provisioner-tutorial-files/6.defaults-values.md) 
   ~~~
   mkdir ${NEW_OP_HOME}/controllers/defaults
-  cp ${DEMO_HOME}/nfs-provisioner-tutorial-files/6.defaults-values.md ${NEW_OP_HOME}/controllers/defaults/default.go
+  cp ${DEMO_HOME}/nfs-provisioner-tutorial-files/6.defaults-values.go ${NEW_OP_HOME}/controllers/defaults/default.go
   ~~~
 
 - Add securityv1 schema
   ~~~
+  vi main.go
   import (
     ...
     "github.com/jooho/test-nfs-provisioner-operator/controllers"
@@ -155,6 +162,7 @@ but Tutorial 4 will explain this controller in detail.
     mkdir ./cmd
 
     mv ./main.go  ./cmd/main.go
+    sed "s/\.\/main.go/\.\/cmd\/main.go/g" -i Makefile
     ~~~
   - Update Dockerfile
     ~~~
@@ -188,6 +196,12 @@ make run ENABLE_WEBHOOKS=false
 #### 9.2 On Cluster
 
 ```
+# Update prefix 
+vi config/default/kustomization.yaml
+
+namePrefix: nfs-provisioner-operator-    #<====
+
+
 # Update namespace
 cd config/default/; kustomize edit set namespace "${NAMESPACE}" ;cd ../..
 
@@ -249,14 +263,14 @@ oc get pod
 
 #### 10.2 On Cluster
 ~~~
-oc logs deployment.apps/${NEW_OP_NAME}-controller-manager  -c manager -f
+oc logs deployment.apps/nfs-provisioner-operator-controller-manager -c manager -f
 oc apply -f config/samples/cache_v1alpha1_nfsprovisioner.yaml 
 ~~~
 
 
 ### 11. Create NFS PVC
 ~~~
-oc create -f ${TEST_HOME}/test-pvc-operator.yaml
+oc create -f ${TEST_HOME}/test-pvc.yaml
 ~~~
 
 ### 12. Clean up

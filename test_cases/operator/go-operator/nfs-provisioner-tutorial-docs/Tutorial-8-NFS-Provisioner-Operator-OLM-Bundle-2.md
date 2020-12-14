@@ -200,5 +200,5 @@ operator-sdk cleanup ${NEW_OP_NAME}
 ### Tip
 image to base64
 ~~~
-base64 -w 0 test_cases/operator/go-operator/docs/images/128px-Human-folder-remote-nfs.svg.png
+base64 -w 0 ${DEMO_HOME}/nfs-provisioner-tutorial-docs/images/128px-Human-folder-remote-nfs.svg.png
 ~~~
