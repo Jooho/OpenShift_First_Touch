@@ -14,7 +14,7 @@
 ## Docs
 
 - OCP4 
-  - [Develoepr Preview Installation Steps](./docs/ocp4-steps.txt)
+  - [Developer Preview Installation Steps](./docs/ocp4-steps.txt)
   
 - EAP
   - [TLS(Passthrough) - TODO application](./docs/eap/eap-ssl-todo-app.md)
