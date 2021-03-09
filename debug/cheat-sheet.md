@@ -53,3 +53,33 @@ fio --rw=write --ioengine=sync --fdatasync=1 --directory=./ --size=22m --bs=2300
 ```
  find sys/fs/cgroup/freezer/kubepods.slice -name kubepods*-pod*.slice | while read dir; do echo -n "$dir "; find $dir -name cgroup.procs | grep -c "crio\-.*\.scope"; done | sort -nrk2
 ```
+
+# GPG
+*Generate GPG Key*
+~~~
+gpg --full-generate-key
+~~~
+
+*Export Public Key*
+~~~
+gpg --armor --output public-key.gpg --export user@example.com
+~~~
+
+*Import Another Public Key*
+~~~
+gpg --import public-key.gpg
+// Check 
+gpg --list-keys
+// Validate
+gpg --fingerprint public-key.gpg
+~~~
+
+*Encrypt Msg*
+~~~
+gpg --output encrypted-doc.gpg --encrypt --sign --armor --recipient user3@example3.com -recipient user@example.com doc-to-encrypt.txt
+~~~
+
+*Decrypt Msg*
+~~~
+gpg --output decrypted-doc --decrypt doc-to-decrypt.gpg
+~~~
