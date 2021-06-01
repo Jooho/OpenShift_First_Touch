@@ -33,8 +33,8 @@ Based on the [doc](https://docs.pachyderm.com/latest/deploy-manage/deploy/opensh
     ~~~
     pachctl deploy custom --persistent-disk aws --object-store s3 \
     any-string 10 \
-    'pachyderm' 'b236287d-a4ee-49f3-a305-bfa1e701b79f' '9bb676e3-76b0-454e-bf12-962b58c23c86' 'test-minio-tenant-1.apps.jooho-test.wop8.s1.devshift.org' \
-    --static-etcd-volume=gp2 --local-roles --dry-run > manifest.json
+    'pachyderm' 'b236287d-a4ee-49f3-a305-bfa1e701b79f' '9bb676e3-76b0-454e-bf12-962b58c23c86' 'minio.minio-tenant-1.svc.cluster.local' \
+    --static-etcd-volume=gp2 ---local-roles --dry-run --no-verify-ssl  --require-critical-servers-only  > manifest.json
     ~~~
 
 
